@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/icon.css">
+    <script type="text/javascript" src="/static/cnki2/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/cnki2/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/static/cnki2/base.css">
+    <title>Detection</title>
+    <script type="text/javascript">
+        //$(function(){
+        //	setInterval(function() {
+        //		$("#detectionGrid").datagrid("reload");
+        //	}, 1000 * 20);
+        //});
+
+        function fmt_date(value, row, rowIndex) {
+            if (value == undefined) {
+                return "";
+            }
+            var date = new Date();
+            try {
+                date.setTime(value);
+                return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+            } catch (e) {
+                return value;
+            }
+        }
+
+        function fmt_state(value, row, rowIndex) {
+            switch (value) {
+                case '-2':
+                    return "文件解析出错";
+                case '-1':
+                    return "待提交";
+                case '0':
+                    return "等待检测";
+                case '1':
+                    return "正在检测...";
+                case '2':
+                    return "等待获取报告";
+                case '3':
+                    return "正在生成报告...";
+                case '4':
+                    return "检测完成";
+                default:
+                    return "未知";
+            }
+        }
+
+        function fmt_action(value, row, rowIndex) {
+            var action = "";
+            if (row.state == '-2') {
+                action += "<a href='javascript:openSubmitTextWin(\"" + row.id + "\",\"" + row.title + "\");' target='_blank'>提交文本</a>&nbsp;";
+            }
+            if (row["filename"] != undefined && row["filename"].length > 0) {
+                action += "<a href='/user/detection/doc/download?id=" + row.id + "' target='_blank'>下载原文</a>";
+            }
+
+            if (row.state == '4') {
+
+                var url = "/fenjie/common/download?id=" + row.id;
+                action += "&nbsp;<a href='" + url + "' target='_blank'>下载报告</a>";
+                action += "&nbsp;<a href='javascript:;' onclick=\"retryPackage('" + row.id + "')\" target='_blank'>重新打包</a>";
+            } else {
+                if (row.matchNo == '1') {
+                    action += "&nbsp;<a href='javascript:updateMatchNo(\"" + row.taskid + "\"," + false + ")'>随机编号</a>";
+                }
+            }
+            return action;
+        }
+
+        function search() {
+            var day = $("#detectionDay").datebox("getValue");
+            var user = null;
+            var domain = null;
+            if ($("#user") != undefined) {
+                user = $("#user").val();
+            }
+            if ($("#domain") != undefined) {
+                domain = $("#domain").val();
+            }
+            $("#detectionGrid").datagrid("reload", {
+                day: day,
+                user: user,
+                domain: domain
+            });
+        }
+
+        function fmt_similarity(value, row, rowIndex) {
+            if (value != undefined && row.state >= 2) {
+                return parseFloat(value * 100).toFixed(1);
+            }
+            return "";
+        }
+
+        function fmt_matchNo(value, row, rowIndex) {
+            switch (value) {
+                case '-1':
+                    return "无编号";
+                case '0':
+                    return "随机编号";
+                case '1':
+                    return "匹配编号";
+                default:
+                    return "未知";
+            }
+        }
+
+        function batchDownload() {
+            var rows = $("#detectionGrid").datagrid("getSelections");
+            if (rows.length == 0) {
+                $.messager.alert("Warning", "请选择需要批量打包的记录.");
+                return;
+            }
+            var ids = "";
+            for (var i = 0; i < rows.length; i++) {
+                ids += rows[i].id + ",";
+            }
+            window.open("/user/detection/batchDownload?ids=" + ids, "downloadWindow")
+        }
+
+        function updateMatchNo(taskid, matchNo) {
+            $.post("/user/detection/matchNo", {taskid: taskid, matchNo: matchNo}, function (data, statue) {
+                $("#detectionGrid").datagrid("reload");
+            });
+        }
+
+        function searchOne(val) {
+            $("#detectionGrid").datagrid("reload", {
+                title: val
+            });
+        }
+
+        function openSubmitTextWin(id, title) {
+            $("#submitTextWin").window("setTitle", "【" + title + "】文本提交");
+            $("#submitTextForm input[name='id']").val(id);
+            $("#submitTextWin").window("open");
+        }
+
+        function submitText() {
+            $('#submitTextForm').form({
+                url: "/user/detection/post",
+                onSubmit: function () {
+                    var length = $("#submitTextForm textarea[name='text']").val().length;
+                    if (length == 0) {
+                        $.messager.alert("警告", "请不要提交空文本");
+                        return false;
+                    }
+                },
+                success: function (data) {
+                    $("#submitTextWin").window("close");
+                    data = eval(data);
+                    $.messager.alert("信息", data.message);
+                    if (data.result == true) {
+                        $("#detectionGrid").datagrid("reload");
+                    }
+                }
+            });
+            $('#submitTextForm').submit();
+        }
+
+        function serverAndDomain_fmt(value, row, index) {
+            if (row["orderid"] == "-") {
+                return "-";
+            }
+            console.log('打印域名的值');
+            console.log(row);
+            console.log(value);
+            return "http://" + row.serverName + "/fenjie/" + row.domain;
+        }
+
+        function retryPackage(id) {
+            $.messager.confirm("确认", "确认重新打包？非特殊情况请勿重新打包!", function (r) {
+                if (r) {
+                    $.post("/user/detection/package/retry?id=" + id, {}, function (data, status) {
+                        if (data.result) {
+                            $.messager.alert("信息", data.message);
+                            $("#detectionGrid").datagrid("reload");
+                        } else {
+                            $.messager.alert("错误", data.message);
+                        }
+                    });
+                }
+            });
+
+        }
+
+    </script>
+    <style type="text/css">
+        * {
+            font-size: 12px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<table id="detectionGrid" class="easyui-datagrid"
+       data-options="url:'/detectionlist/',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true,toolbar:'#listBar'">
+    <thead>
+    <tr>
+        <th data-options="field:'taskid',width:100,checkbox:true"></th>
+
+        <th data-options="field:'orderid',width:200">订单编号</th>
+        <th data-options="field:'title',width:200">标题</th>
+        <th data-options="field:'author',width:100">作者</th>
+        <th data-options="field:'postTime',width:150,align:'right',formatter:fmt_date">提交时间</th>
+        <th data-options="field:'state',width:80,align:'right',formatter:fmt_state">状态</th>
+        <th data-options="field:'similarity',width:80,align:'right',formatter:fmt_similarity">相似度</th>
+        <th data-options="field:'attr1',width:200,formatter:fmt_action">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td field="taskid"></td>
+        <td field="orderid">{{ message.orderid }}</td>
+        <td field="title">{{ message.title }}</td>
+        <td field="author">{{ message.author }}</td>
+        <td field="postTime">{{ message.postTime }}</td>
+        <td field="state">{{ message.state }}</td>
+        <td field="similarity">{{ message.similarity }}</td>
+        <td field="attr1"></td>
+    </tr>
+    </tbody>
+</table>
+<div id="listBar">
+    检测日期:<input id="detectionDay" type="text" class="easyui-datebox" data-options="width:150">&nbsp;&nbsp;
+
+    <!--[pojo.UserProduct@3d8d668]-->
+
+    <select id="domain">
+        <option value="">--所有宝贝--</option>
+
+        <option value="cnkicn">cnkicn</option>
+
+    </select>
+
+    <a href="javascript:search();" class="easyui-linkbutton" data-options="plain:true">搜索</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input class="easyui-searchbox" data-options="prompt:'需要检索的标题或订单号',searcher:searchOne" style="width:200px"></input>
+    <a href="javascript:batchDownload();" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-download'">批量下载</a>
+</div>
+<div id="submitTextWin" class="easyui-window"
+     data-options="width:800,height:500,collapsible:false,minimizable:false,maximizable:false,closed:true,modal:true">
+    <form action="" id="submitTextForm" method="post">
+        <input type="hidden" name="id"/>
+        <textarea rows="" cols="" style="width:783px;height:420px;" name="text"></textarea>
+        <div style="text-align:center;padding-top:5px;"><a href="javascript:submitText();" class="easyui-linkbutton">提&nbsp;交</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

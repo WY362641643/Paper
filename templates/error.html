@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/icon.css">
+    <script type="text/javascript" src="/static/cnki2/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/cnki2/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/static/cnki2/base.css">
+    <title>Detection</title>
+    <script type="text/javascript">
+        $(function () {
+            setInterval(function () {
+                $("#detectionGrid").datagrid("reload");
+            }, 1000 * 20);
+        });
+
+        function fmt_date(value, row, rowIndex) {
+            if (value == undefined) {
+                return "";
+            }
+            var date = new Date();
+            try {
+                date.setTime(value);
+                return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+            } catch (e) {
+                return value;
+            }
+        }
+
+        function fmt_state(value, row, rowIndex) {
+            switch (value) {
+                case -2:
+                    return "文件解析出错";
+                case -1:
+                    return "待提交";
+                case 0:
+                    return "等待检测";
+                case 1:
+                    return "正在检测...";
+                case 2:
+                    return "等待获取报告";
+                case 3:
+                    return "正在生成报告..."
+                case 4:
+                    return "检测完成";
+                default:
+                    return "未知";
+            }
+        }
+
+        function fmt_action(value, row, rowIndex) {
+            var action = "";
+            if (row.state == -2) {
+                action += "<a href='javascript:openSubmitTextWin(\"" + row.id + "\",\"" + row.title + "\");' target='_blank'>提交文本</a>&nbsp;";
+            }
+            action += "<a href='/user/detection/doc/download?id=" + row.id + "' target='_blank'>下载原文</a>";
+            return action;
+        }
+
+
+        function fmt_similarity(value, row, rowIndex) {
+            if (value != undefined && row.state >= 2) {
+                return parseFloat(value * 100).toFixed(1);
+            }
+            return "";
+        }
+
+        function fmt_matchNo(value, row, rowIndex) {
+            switch (value) {
+                case -1:
+                    return "无编号";
+                case 0:
+                    return "随机编号";
+                case 1:
+                    return "匹配编号";
+                default:
+                    return "未知";
+            }
+        }
+
+        function openSubmitTextWin(id, title) {
+            $("#submitTextWin").window("setTitle", "【" + title + "】文本提交");
+            $("#submitTextForm input[name='id']").val(id);
+            $("#submitTextWin").window("open");
+        }
+
+        function submitText() {
+            $('#submitTextForm').form({
+                url: "/user/detection/post",
+                onSubmit: function () {
+                    var length = $("#submitTextForm textarea[name='text']").val().length;
+                    if (length == 0) {
+                        $.messager.alert("警告", "请不要提交空文本");
+                        return false;
+                    }
+                },
+                success: function (data) {
+                    $("#submitTextWin").window("close");
+                    data = eval(data);
+                    $.messager.alert("信息", data.message);
+                    if (data.result == true) {
+                        $("#detectionGrid").datagrid("reload");
+                    }
+                }
+            });
+            $('#submitTextForm').submit();
+        }
+
+    </script>
+    <style type="text/css">
+        * {
+            font-size: 12px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+    <style type="text/css"></style>
+</head>
+<body>
+<div class="panel datagrid">
+    <div class="datagrid-wrap panel-body panel-body-noheader" title="" style="width: 1918px;">
+        <div class="datagrid-view" style="width: 1918px; height: 25px;">
+            <div class="datagrid-view1" style="width: 26px;">
+                <div class="datagrid-header" style="width: 26px; height: 24px;">
+                    <div class="datagrid-header-inner" style="display: block;">
+                        <table class="datagrid-htable" border="0" cellspacing="0" cellpadding="0" style="height: 25px;">
+                            <tbody>
+                            <tr class="datagrid-header-row">
+                                <td rowspan="0">
+                                    <div class="datagrid-header-rownumber"></div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="datagrid-body" style="width: 26px; margin-top: 0px; height: 0px;">
+                    <div class="datagrid-body-inner">
+                        <table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="datagrid-footer" style="width: 26px;">
+                    <div class="datagrid-footer-inner" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="datagrid-view2" style="width: 1892px;">
+                <div class="datagrid-header" style="width: 1892px; height: 24px;">
+                    <div class="datagrid-header-inner" style="display: block;">
+                        <table class="datagrid-htable" border="0" cellspacing="0" cellpadding="0" style="height: 25px;">
+                            <tbody>
+                            <tr class="datagrid-header-row">
+                                <td field="taskid">
+                                    <div class="datagrid-header-check"><input type="checkbox"></div>
+                                </td>
+                                <td field="domain">
+                                    <div class="datagrid-cell datagrid-cell-c1-domain" style=""><span>别名(域名)</span><span
+                                            class="datagrid-sort-icon">&nbsp;</span></div>
+                                </td>
+                                <td field="orderid" class="">
+                                    <div class="datagrid-cell datagrid-cell-c1-orderid" style=""><span>订单编号</span><span
+                                            class="datagrid-sort-icon">&nbsp;</span></div>
+                                </td>
+                                <td field="title">
+                                    <div class="datagrid-cell datagrid-cell-c1-title" style=""><span>标题</span><span
+                                            class="datagrid-sort-icon">&nbsp;</span></div>
+                                </td>
+                                <td field="author">
+                                    <div class="datagrid-cell datagrid-cell-c1-author" style=""><span>作者</span><span
+                                            class="datagrid-sort-icon">&nbsp;</span></div>
+                                </td>
+                                <td field="postTime">
+                                    <div class="datagrid-cell datagrid-cell-c1-postTime" style="text-align: right;">
+                                        <span>提交时间</span><span class="datagrid-sort-icon">&nbsp;</span></div>
+                                </td>
+                                <td field="attr1">
+                                    <div class="datagrid-cell datagrid-cell-c1-attr1" style=""><span>操作</span><span
+                                            class="datagrid-sort-icon">&nbsp;</span></div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="datagrid-body" style="width: 1892px; margin-top: 0px; overflow-x: hidden; height: 0px;">
+                    <table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0">
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="datagrid-footer" style="width: 1892px;">
+                    <div class="datagrid-footer-inner" style="display: none;"></div>
+                </div>
+            </div>
+            <table id="detectionGrid" class="easyui-datagrid"
+                   data-options="url:&#39;/errorlist/&#39;,pagination:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true"
+                   style="display: none;">
+                <thead>
+                <tr>
+                    <th data-options="field:&#39;taskid&#39;,width:100,checkbox:true"></th>
+                    <th data-options="field:&#39;domain&#39;,width:200">别名(域名)</th>
+                    <th data-options="field:&#39;orderid&#39;,width:200">订单编号</th>
+                    <th data-options="field:&#39;title&#39;,width:200">标题</th>
+                    <th data-options="field:&#39;author&#39;,width:100">作者</th>
+                    <th data-options="field:&#39;postTime&#39;,width:150,align:&#39;right&#39;,formatter:fmt_date">
+                        提交时间
+                    </th>
+                    <th data-options="field:&#39;attr1&#39;,width:100,formatter:fmt_action">操作</th>
+                </tr>
+                </thead>
+            </table>
+            <style type="text/css" easyui="true">
+                .datagrid-cell-c1-domain {
+                    width: 191px
+                }
+
+                .datagrid-cell-c1-orderid {
+                    width: 191px
+                }
+
+                .datagrid-cell-c1-title {
+                    width: 191px
+                }
+
+                .datagrid-cell-c1-author {
+                    width: 91px
+                }
+
+                .datagrid-cell-c1-postTime {
+                    width: 141px
+                }
+
+                .datagrid-cell-c1-attr1 {
+                    width: 91px
+                }
+            </style>
+        </div>
+        <div class="datagrid-pager pagination">
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                <tr>
+                    <td><select class="pagination-page-list">
+                        <option>10</option>
+                        <option>20</option>
+                        <option>30</option>
+                        <option>40</option>
+                        <option>50</option>
+                    </select></td>
+                    <td>
+                        <div class="pagination-btn-separator"></div>
+                    </td>
+                    <td><a href="javascript:void(0)"
+                           class="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled" group=""
+                           id=""><span class="l-btn-left l-btn-icon-left"><span
+                            class="l-btn-text l-btn-empty">&nbsp;</span><span
+                            class="l-btn-icon pagination-first">&nbsp;</span></span></a></td>
+                    <td><a href="javascript:void(0)"
+                           class="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled" group=""
+                           id=""><span class="l-btn-left l-btn-icon-left"><span
+                            class="l-btn-text l-btn-empty">&nbsp;</span><span
+                            class="l-btn-icon pagination-prev">&nbsp;</span></span></a></td>
+                    <td>
+                        <div class="pagination-btn-separator"></div>
+                    </td>
+                    <td><span style="padding-left:6px;">Page</span></td>
+                    <td><input class="pagination-num" type="text" value="1" size="2"></td>
+                    <td><span style="padding-right:6px;">of 0</span></td>
+                    <td>
+                        <div class="pagination-btn-separator"></div>
+                    </td>
+                    <td><a href="javascript:void(0)"
+                           class="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled" group=""
+                           id=""><span class="l-btn-left l-btn-icon-left"><span
+                            class="l-btn-text l-btn-empty">&nbsp;</span><span
+                            class="l-btn-icon pagination-next">&nbsp;</span></span></a></td>
+                    <td><a href="javascript:void(0)"
+                           class="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled" group=""
+                           id=""><span class="l-btn-left l-btn-icon-left"><span
+                            class="l-btn-text l-btn-empty">&nbsp;</span><span
+                            class="l-btn-icon pagination-last">&nbsp;</span></span></a></td>
+                    <td>
+                        <div class="pagination-btn-separator"></div>
+                    </td>
+                    <td><a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id=""><span
+                            class="l-btn-left l-btn-icon-left"><span class="l-btn-text l-btn-empty">&nbsp;</span><span
+                            class="l-btn-icon pagination-load">&nbsp;</span></span></a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination-info">Displaying 0 to 0 of 0 items</div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel window" style="display: none; width: 788px; left: 560px; top: 206px;">
+    <div class="panel-header panel-header-noborder window-header" style="width: 788px;">
+        <div class="panel-title">New Window</div>
+        <div class="panel-tool"><a class="panel-tool-close" href="javascript:void(0)"></a></div>
+    </div>
+    <div id="submitTextWin" class="easyui-window panel-body panel-body-noborder window-body"
+         data-options="width:800,height:500,collapsible:false,minimizable:false,maximizable:false,closed:true,modal:true"
+         title="" style="width: 786px; height: 464px;">
+        <form action="/errorlist/" id="submitTextForm" method="post">
+            <input type="hidden" name="id">
+            <textarea rows="" cols="" style="width:783px;height:420px;" name="text"></textarea>
+            <div style="text-align:center;padding-top:5px;">
+                <a href="javascript:submitText();" class="easyui-linkbutton l-btn l-btn-small" group="" id="">
+                    <span class="l-btn-left">
+                        <span class="l-btn-text">提&nbsp;交</span>
+                    </span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="window-shadow" style="display: none; left: 560px; top: 206px;"></div>
+<div class="window-mask" style="width: 1920px; height: 912px; display: none;"></div>
+</body>
+</html>

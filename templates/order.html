@@ -1,0 +1,83 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="/static/cnki2/easyui.css">
+<link rel="stylesheet" type="text/css" href="/static/cnki2/icon.css">
+<script type="text/javascript" src="/static/cnki2/jquery.min.js"></script>
+<script type="text/javascript" src="/static/cnki2/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/static/cnki2/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" href="/static/cnki2/base.css">
+<title>OrderManage</title>
+<script type="text/javascript">
+function fmt_aciton(value,row,index) {
+	return "<a href='javascript:clearNum(\""+row.orderid+"\")'>清空订单件数</a>"
+}
+
+function clearNum(orderid) {
+	$.messager.confirm("警告","确认清空此订单可用件数？此操作不可逆！",function(r){
+		if(r) {
+			$.get("/user/order/clear?orderid="+orderid, function(data,status){
+				if (data.result == true) {
+					$("#orderGrid").datagrid("reload");
+				}
+				$.messager.alert("消息",data.result == true?"清空成功":"清空失败");
+			});
+		}
+	});
+}
+
+function search(val){
+	if (val.length > 0 && !/\d{16}/.test(val)) {
+		$.messager.alert("消息","请输入正确的订单号");
+		return;
+	}
+	$("#orderGrid").datagrid("reload",{
+		orderid:val
+	});
+}
+
+function fmt_date(value,row,rowIndex){
+	if(value==undefined){
+		return "";
+	}
+	var date = new Date();
+	try{
+		date.setTime(value);
+		return date.getFullYear()+"-"+fmtInt((date.getMonth()+1))+"-"+fmtInt(date.getDate())+" "+fmtInt(date.getHours())+":"+fmtInt(date.getMinutes())+":"+fmtInt(date.getSeconds());
+	}catch(e){
+		return value;
+	}
+}
+
+function fmtInt(val) {
+	if (val < 10) {
+		return "0"+val;
+	}
+	return val;
+}
+
+
+</script>
+
+</head>
+<body>
+	<table id="orderGrid" class="easyui-datagrid" data-options="url:'/user/order/list',pagination:true,striped:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true,toolbar:'#gridBar'">
+		<thead>
+			<tr>
+                <th data-options="field:'orderid',width:200">订单号</th>
+                <th data-options="field:'addTime',width:200,formatter:fmt_date">时间</th>
+                <th data-options="field:'num',width:100,align:'right'">可用件数</th>
+                <th data-options="field:'similarity',width:100,align:'right',formatter:fmt_aciton">操作</th>
+            </tr>
+		</thead>
+	</table>
+	
+	<div id="gridBar">
+		订单检索：<input class="easyui-searchbox" data-options="prompt:'需要检索的订单号',searcher:search" style="width:200px"></input>
+	</div>
+</body>
+</html>

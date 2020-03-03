@@ -1,0 +1,73 @@
+
+<!-- saved from url=(0091)http://i.tianqi.com/index.php?c=code&id=8&color=%23FFFFFF&bdc=%23&py=tangshan&num=2&site=12 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>唐山天气预报代码调用</title>
+    <link href="css/mobile.css" rel="stylesheet" type="text/css">
+    <script src="./hm.js"></script><script type="text/javascript" src="./jquery.min(1).js"></script><style type="text/css"></style>
+    <!--[if IE 6]>
+    <script type="text/javascript" mce_src="DD_belatedPNG.js" src="//static.tianqistatic.com/static/js/DD_belatedPNG.js"></script>
+    <script type="text/javascript">DD_belatedPNG.fix(".pngtqico");</script>
+    <![endif]-->
+    <script type="text/javascript">
+        var color = bgcolor = bdcolor = site = icon = "";
+        var num = 2;
+        $(document).ready(function(){
+            if (typeof(icon) != 'undefined' && icon != '') {
+                $("img.pngtqico").each(function(i){
+                    this.src = this.src.replace("tianqibig", icon);
+                });
+            }
+
+            if (typeof(bgcolor) != 'undefined' && bgcolor != '') {
+                $("#mobile8").css('background-color', bgcolor);
+            }
+            if (typeof(bdcolor) != 'undefined' && bdcolor != '') {
+                $("#mobile8").css('border', '1px solid ' + bdcolor);
+            }
+            if (typeof(color) != 'undefined' && color != '') {
+                $("#mobile8 a").css('color', color);
+                $("#mobile8 div.wtname").css('color', color);
+            }
+            if (num == 0) {
+                num = 2;
+            }
+            if (num == 3) {
+                $("#day_3").show();
+                $("#mobile8 div.wtname").css('marginTop', "0px");
+            }
+            if (num < 3) {
+                $("#day_3").hide();
+            }
+            if (num == 1) {
+                $("#day_2").hide();
+            }
+        });
+    </script>
+</head>
+<body marginwidth="0" marginheight="0" style="background-color:transparent;">
+<div id="mobile8">
+    <a target="_blank" href="http://tangshan.tianqi.com/?tq" title="唐山天气预报,点击查看唐山未来七天天气预报 " style="color: rgb(255, 255, 255);">
+        <div class="wtleft">
+            <div class="wtname" style="color: rgb(255, 255, 255);"><strong>唐山</strong>天气预报</div>
+            <div id="day_1" class="wtline">今天：3℃～-9℃ 阴</div>
+            <div id="day_2" class="wtline">明天：3℃～-4℃ 多云</div>
+            <div id="day_3" class="wtline" style="display:none;">后天：1℃～-8℃ 小雪</div>
+        </div>
+        <div class="wtpic"><img class="pngtqico" align="absmiddle" src="./b2.png" style="border:0;width:46px;height:46px"></div>
+    </a>
+</div>
+<div style="display: none;">
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?86f43783acc56b0c8abb5bb039edc763";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script type="text/javascript" src="./z_stat.php"></script><script src="./core.php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=1277635480" target="_blank" title="站长统计">站长统计</a>
+</div>
+<script type="text/javascript">num=2;color="#FFFFFF";bdcolor="#";site="12";temp=0;</script></body></html>
