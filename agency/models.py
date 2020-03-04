@@ -55,7 +55,7 @@ class Surplus(models.Model):
         }
         return d
 # 检测卡列表
-class isActivateCode(models.Model):
+class IsActivateCode(models.Model):
     card = models.CharField(max_length=12,unique=True,verbose_name='卡号')
     isActivate = models.BooleanField(default=True,verbose_name='是否销毁')
 
@@ -74,8 +74,13 @@ class DetectionList(models.Model):
     title = models.CharField(max_length=64,null=True,blank=True,verbose_name='标题')
     author = models.CharField(max_length=16,null=True,blank=True,verbose_name='作者')
     date = models.CharField(max_length=14,null=True,blank=True,verbose_name='提交时间')
-    iscode = models.IntegerField(null=True,blank=True,verbose_name='状态')
-    similarity = models.CharField(max_length=8,null=True,blank=True,verbose_name='相似度')
+    iscode = models.IntegerField(null=True,blank=True,default=-2,verbose_name='状态')
+        # --状态 -2文件解析出错 ,-1待提交： 0待检测， 1检测中， 2等待获取报告, 3正在生产报告, 4检测完成
+    similarity = models.FloatField(null=True,blank=True,default=0,verbose_name='相似度') # --相似度，值区间0~1
+    taskid = models.CharField(max_length=38,blank=True,verbose_name='taskid')
+    filepath = models.CharField(max_length=254,default='',verbose_name='文本路径')
+    htmlurl = models.URLField(blank=True,null=True,verbose_name='在线报告地址')
+    zipurl = models.URLField(blank=True,null=True,verbose_name='报告压缩包地址')
 
     # 重写__str__函数3
     def __str__(self):
@@ -88,13 +93,15 @@ class DetectionList(models.Model):
     def dic(self):
         d = {
             'id':self.id,
-            'account':self.account,
             'orderid':self.orderacc,
             'title':self.title,
             'author':self.author,
             'postTime':self.date,
             'state':self.iscode,
             'similarity':self.similarity,
+            'taskid':self.taskid,
+            'htmlurl':self.htmlurl,
+            'zipurl':self.zipurl,
         }
         return d
 # 错误列表

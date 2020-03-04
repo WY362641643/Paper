@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+ <title>nick getBase64</title>
+</head>
+<body id="titBody">
+<div>html转pdf文件</div>
+<button onclick="downloadresume()">下载</button>
+
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+<!--以上两个文件是js把html转pdf文件的两个库 -->
+<script>
+
+//html文件转成pdf格式文件函数
+    function downloadresume(){
+    var pdf = new jsPDF('p', 'pt', 'a4');
+                pdf.internal.scaleFactor = 1;
+                var options = {
+                    pagesplit: true
+                };
+                //$('.pdf-wrapper')
+                pdf.addHTML($("#titBody"), options, function() {
+                    console.log(pdf);
+                    pdf.save('网页截屏.pdf');
+                });
+                var imgSrc = "https://img.alicdn.com/bao/uploaded/TB1qimQIpXXXXXbXFXXSutbFXXX.jpg";
+
+   function getBase64(img){//传入图片路径，返回base64
+   function getBase64Image(img,width,height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
+    var canvas = document.createElement("canvas");
+    canvas.width = width ? width : img.width;
+    canvas.height = height ? height : img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    var dataURL = canvas.toDataURL();
+    return dataURL;
+   }
+   var image = new Image();
+   image.crossOrigin = '';
+   image.src = img;
+   var deferred=$.Deferred();
+   if(img){
+    image.onload =function (){
+     deferred.resolve(getBase64Image(image));//将base64传给done上传处理
+    }
+    return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
+   }
+   }
+ //转base64调用的方法
+   getBase64(imgSrc)
+    .then(function(base64){
+    $("#test").attr("src",base64)
+     console.log(base64);
+    },function(err){
+     console.log(err);
+    });
+    }
+</script>
+</body>
+</html>

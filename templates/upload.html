@@ -1,46 +1,58 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	
-	<link rel="stylesheet" type="text/css" href="/static/cnki2/easyui.css">
-	<link rel="stylesheet" type="text/css" href="/static/cnki2/icon.css">
-	<link rel="stylesheet" type="text/css" href="/static/cnki2/uploadify.css">
-	<script type="text/javascript" src="/static/cnki2/jquery.min.js"></script><style type="text/css"></style>
-	<script type="text/javascript" src="/static/cnki2/jquery.cookie.js"></script>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-	<script type="text/javascript" src="/static/cnki2/jquery.uploadify.min.js"></script>
-	<link rel="stylesheet" href="/static/cnki2/base.css">
-	<link rel="stylesheet" type="text/css" href="/static/cnki2/webuploader.css">
-	<script type="text/javascript" src="/static/cnki2/webuploader.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/uploadify.css">
+    <script type="text/javascript" src="/static/cnki2/jquery.min.js"></script>
+    <style type="text/css"></style>
+    <script type="text/javascript" src="/static/cnki2/jquery.cookie.js"></script>
 
-	<title>Detection</title>
-	<script type="text/javascript">
+    <script type="text/javascript" src="/static/cnki2/jquery.uploadify.min.js"></script>
+    <link rel="stylesheet" href="/static/cnki2/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/webuploader.css">
+    <script type="text/javascript" src="/static/cnki2/webuploader.min.js"></script>
+
+    <title>Detection</title>
+    <script type="text/javascript">
         var multiUploader = null;
+        function editType(){
+            let file=$("#file").val();
+            if(!file){
+               let filename=file.substr(file.lastIndexOf("."));
+             if(filename!='.docx'|| filename!='.txt'){
+                       alert("请上传docx 或 txt 格式的文件");
+                     }
 
-        $(function(){
-              var hasMatchNo = $.cookie('matchNo');
-			  if(hasMatchNo){
-				     $("input[name='matchNo']").each(function(){
-						 if($(this).val() == hasMatchNo){
-							 $(this).attr("checked","checked");
-						 }
-					 });
-			  }
-			$("input[name='matchNo']").click(function(){
-				var match = $(this).val();
-				$.cookie('matchNo', match, { expires: 7 });
-				//console.log(">>>"+$.cookie('matchNo'))
-			});
+                }
+        }
+        $(function () {
+            var hasMatchNo = $.cookie('matchNo');
+            if (hasMatchNo) {
+                $("input[name='matchNo']").each(function () {
+                    if ($(this).val() == hasMatchNo) {
+                        $(this).attr("checked", "checked");
+                    }
+                });
+            }
+            $("input[name='matchNo']").click(function () {
+                var match = $(this).val();
+                $.cookie('matchNo', match, {expires: 7});
+                //console.log(">>>"+$.cookie('matchNo'))
+            });
             multiUploader = WebUploader.create({
-                auto : false,
+                auto: false,
                 multiple: true,
-                fileNumLimit : 10,
+                fileNumLimit: 10,
                 // fileSingleSizeLimit: 100*1024*1024,
-                swf : '/static/webuploader/Uploader.swf',
-                server : "/upload/",
+                swf: '/static/webuploader/Uploader.swf',
+                server: "/upload/",
                 prepareNextFile: true,//允许在文件传输时提前把下一个文件准备好
-                pick : $("#detectionFile"),
-                resize : false,
+                pick: $("#detectionFile"),
+                resize: false,
                 accept: {
                     title: "office word document",
                     extensions: 'doc,docx',
@@ -49,51 +61,49 @@
             });
             //console.log(multiUploader);
 
-            multiUploader.on("fileQueued", function(file) {
+            multiUploader.on("fileQueued", function (file) {
                 //console.log(">>>>");
-                $("#multiFileResult tbody").append("<tr id='file_row_" + file.id +  "'><td>"+file.name+"</td><td></td><td></td><td><a href='javascript:;;' onclick='javascript:multiUploader.removeFile(\"" + file.id +"\");$(\"#file_row_" + file.id +"\").remove();'>移除</a></td>");
+                $("#multiFileResult tbody").append("<tr id='file_row_" + file.id + "'><td>" + file.name + "</td><td></td><td></td><td><a href='javascript:;;' onclick='javascript:multiUploader.removeFile(\"" + file.id + "\");$(\"#file_row_" + file.id + "\").remove();'>移除</a></td>");
             });
-            multiUploader.on("uploadBeforeSend", function(block, data) {
+            multiUploader.on("uploadBeforeSend", function (block, data) {
                 data.JSESSIONID = '72F8FB9229EB3D0EBBF87E076FDCAE71';
                 data.matchNo = $("input[name='matchNo']:checked").val();
             });
-            multiUploader.on("uploadSuccess", function(file, json){
-                try{
+            multiUploader.on("uploadSuccess", function (file, json) {
+                try {
                     var filename = file.name;
                     if (filename.length > 50) {
-                        filename = filename.substring(0,30)+"...";
+                        filename = filename.substring(0, 30) + "...";
                     }
 
 
-                    if (json.result==true){
-                        $("#file_row_" + file.id+" td:eq(2)").html("<span style='color:red'>提交完成</span> ");
-                    } else{
+                    if (json.result == true) {
+                        $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>提交完成</span> ");
+                    } else {
                         var error = json.message;
-                        $("#file_row_" + file.id+" td:eq(2)").html("<span style='color:red'>提交失败，错误：" +error+"</span> ");
+                        $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>提交失败，错误：" + error + "</span> ");
                     }
-                }catch(e){
-                    $("#file_row_" + file.id+" td:eq(2)").html("<span style='color:red'>错误：" + e + "</span> ");
+                } catch (e) {
+                    $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>错误：" + e + "</span> ");
                 }
-                $("#file_row_" + file.id+" a").attr("onclick","$('#file_row_" + file.id +"').remove();").text("移除");
+                $("#file_row_" + file.id + " a").attr("onclick", "$('#file_row_" + file.id + "').remove();").text("移除");
             });
-            multiUploader.on("uploadStart", function(file){
-                $("#file_row_" + file.id+" a").attr("onclick","").text("-");
+            multiUploader.on("uploadStart", function (file) {
+                $("#file_row_" + file.id + " a").attr("onclick", "").text("-");
             });
-            multiUploader.on("uploadFinished", function(){
+            multiUploader.on("uploadFinished", function () {
                 multiUploader.reset();
             });
-            multiUploader.on("uploadProgress", function(file, percentage){
-                $("#file_row_" + file.id+" td:eq(1)").html(parseInt(percentage * 100) + "%");
+            multiUploader.on("uploadProgress", function (file, percentage) {
+                $("#file_row_" + file.id + " td:eq(1)").html(parseInt(percentage * 100) + "%");
             });
-            multiUploader.on("uploadError", function(file, reason){
-                $("#file_row_" + file.id+" td:eq(2)").html("<span style='color:red'>错误：" + reason + "</span> ");
+            multiUploader.on("uploadError", function (file, reason) {
+                $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>错误：" + reason + "</span> ");
             });
-            $("#uploadBtn").click(function(){
+            $("#uploadBtn").click(function () {
                 //alert("upload");
                 multiUploader.upload();
             });
-
-
 
 
             // $("#detectionFile").uploadify({
@@ -157,89 +167,117 @@
             // });
 
         });
-	</script>
-	<style type="text/css">
-		*{
-			font-size:12px;
-		}
-		tr {
-			height:40px;
-		}
+    </script>
+    <style type="text/css">
+        * {
+            font-size: 12px;
+        }
 
-		input {
-			height:25px;
-			width:300px;
-		}
+        tr {
+            height: 40px;
+        }
 
-		.error {
-			color:red;
-		}
+        input {
+            height: 25px;
+            width: 300px;
+        }
 
-		.uploadBtn {
-			display: inline-block;
-			padding: 4px 12px;
-			margin-bottom: 0;
-			margin-left: .3em;
-			font-size: 14px;
-			line-height: 20px;
-			color: #333333;
-			text-align: center;
-			text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-			vertical-align: middle;
-			cursor: pointer;
-			background-color: #f5f5f5;
-			background-color: #e6e6e6;
-			background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-			background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff),
-			to(#e6e6e6));
-			background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-			background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-			background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-			background-repeat: repeat-x;
-			border: 1px solid #cccccc;
-			border: 0;
-			border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-			border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-			border-bottom-color: #b3b3b3;
-			-webkit-border-radius: 4px;
-			-moz-border-radius: 4px;
-			border-radius: 4px;
-			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',
-			endColorstr='#ffe6e6e6', GradientType=0);
-			filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-			zoom: 1;
-			-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-			-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
-			rgba(0, 0, 0, 0.05);
-			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-		}
-	</style>
+        .error {
+            color: red;
+        }
+
+        .uploadBtn {
+            display: inline-block;
+            padding: 4px 12px;
+            margin-bottom: 0;
+            margin-left: .3em;
+            font-size: 14px;
+            line-height: 20px;
+            color: #333333;
+            text-align: center;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+            vertical-align: middle;
+            cursor: pointer;
+            background-color: #f5f5f5;
+            background-color: #e6e6e6;
+            background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff),
+            to(#e6e6e6));
+            background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+            background-repeat: repeat-x;
+            border: 1px solid #cccccc;
+            border: 0;
+            border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            border-bottom-color: #b3b3b3;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',
+            endColorstr='#ffe6e6e6', GradientType=0);
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+            zoom: 1;
+            -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
 </head>
 <body>
 <form method="post" id="detectionForm">
     {% csrf_token %}
-	<table align="center" style="margin-left:10px;">
-		<tbody><tr>
-			<td><span class="error" id="uploadError"></span></td>
-		</tr>
-		<tr>
-			<td><span style="color:#428bca;">文件命名规则：订单号_作者_标题_类型简称.doc，如：20198648532557832644_李琪_浅谈RMB国际化的新渠道_A.doc；否则，将不能正确识别作者。</span></td>
-		</tr>
-		<tr>
-		  <td><div id="detectionFile" class="uploadBtn webuploader-container"><div class="webuploader-pick">选择文件</div><div id="rt_rt_1dsn7f4iip8faur18471d001h651" style="position: absolute; top: 4px; left: 12px; width: 116px; height: 30px; overflow: hidden; bottom: auto; right: auto;"><input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label></div></div>		</td></tr>
+    <table align="center" style="margin-left:10px;">
+        <tbody>
+        <tr>
+            <td><span class="error" id="uploadError"></span></td>
+        </tr>
+        <tr>
+            <td><span style="color:#428bca;">文件命名规则：订单号(或类型简称)_作者_标题.doc，如：20198648532557832644(A)_李琪_浅谈RMB国际化的新渠道.doc；否则，将不能正确识别。</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="detectionFile" class="uploadBtn webuploader-container">
+                    <div class="webuploader-pick">选择文件</div>
+                    <div id="rt_rt_1dsn7f4iip8faur18471d001h651"
+                         style="position: absolute; top: 4px; left: 12px; width: 116px; height: 30px; overflow: hidden; bottom: auto; right: auto;">
+                        <input id="file" type="file" name="file" class="webuploader-element-invisible" multiple="multiple"
+                               accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,.txt"
+                        onchange="editType();"><label
+                            style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
+                    </div>
+                </div>
+            </td>
+        </tr>
 
-		<tr>
-			<td style="text-align:center;"><button type="button" id="uploadBtn" value="上传" height="50" style="width:100px;height:30px;cursor:pointer;">上传</button></td>
-		</tr>
-		<tr>
-			<td>
-				<table id="multiFileResult">
-					<thead><tr><th width="300">文件名</th><th width="100" align="center" style="text-align:center">上传进度</th><th width="250">错误</th><th width="80">操作</th></tr></thead>
-					<tbody>
-					</tbody>
-				</table>			</td>
-		</tr>
-	</tbody></table>
+        <tr>
+            <td style="text-align:center;">
+                <button type="button" id="uploadBtn" value="上传" height="50"
+                        style="width:100px;height:30px;cursor:pointer;">上传
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table id="multiFileResult">
+                    <thead>
+                    <tr>
+                        <th width="300">文件名</th>
+                        <th width="100" align="center" style="text-align:center">上传进度</th>
+                        <th width="250">错误</th>
+                        <th width="80">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </form>
 
-</body></html>
+</body>
+</html>

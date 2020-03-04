@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse,FileResponse
 from django.contrib.auth import authenticate
 import json
 import time
@@ -7,8 +7,8 @@ import os
 from . import modelsmiddleware as MDW
 from django.conf import settings
 import requests
-
-
+import urllib.parse as up
+import zipfile
 # Create your views here.
 
 def index_views(request):
@@ -89,12 +89,21 @@ def index_views(request):
 # 手工检测
 def detection(request):
     if 'sname' in request.session:
-        accobj = MDW.account_result(request.session['sname'],request.session['spwd'])
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
         if not accobj:
             return render(request,'login.html')
         if request.method == 'GET':
             return render(request, 'detection.html', locals())
         else:
+            if 'select' not in request.POST:
+                #　未选择系统类型
+                jsonStr = {
+                    'result': 0,
+                    'message': 'NUMBER_OF_WOEDS_NOT'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             types = request.POST['select']
             title = request.POST['title']
             fulltext = request.POST['fulltext']
@@ -114,16 +123,16 @@ def detection(request):
                     'message': 'AGENT_BALANCE_NOT_ENOUGH'
                 }
             else:
-                url = 'http://2935q843e4.goho.co:48269/post'
-                data = {
-                    'appid': request.session['sname'],
-                    'author': author,
-                    'title': title,
-                    'content': fulltext,
-                }
-                res = requests.post(url, data=data).text
-                print(res)
+                timestr = str(time.time()).replace('.', '')
+                filename = str(types)+'_'+str(author)+'_'+str(title)+'.txt'
+                path = os.path.join(settings.BASE_DIR, 'static/file/{0}{1}'.format(timestr, filename))
+                # 根据路径打开指定的文件
+                with open(path, 'a',encoding='utf-8') as f:
+                    f.write(fulltext)
+                taskid,iscode = MDW.post_jiance(name,author,title,fulltext)
+                MDW.addDetection(accobj, types, title, author, taskid, iscode,path)
                 jsonStr = {"result": 1, "msg": ''}
+
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
 
@@ -131,7 +140,9 @@ def detection(request):
 # 批量检测
 def upload(request):
     if 'sname' in request.session:
-        accobj = MDW.account_result(request.session['sname'], request.session['spwd'])
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
         if not accobj:
             return render(request, 'login.html')
         if request.method == 'GET':
@@ -139,75 +150,174 @@ def upload(request):
         else:
             # 获取前端传输的文件对象
             file_obj = request.FILES.get('file')
-            # 获取文件类型
-            file_type = file_obj.name.split('.')[-1]
-            # 将文件类型中的数据大写全部转换成小写
-            file_type = file_type.lower()
-            # 将文件存到指定目录
+
+            try:
+                order, author, title = file_obj.name.split('_')
+            except:
+                jsonStr = {
+                    'result': 0,
+                    'message': '文件命名规则错误'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            if len(order)==1:
+                if not MDW.surplus_minus(accobj, order):
+                    jsonStr = {
+                        'result': 0,
+                        'message': '此系统类型剩余次数不足'
+                    }
+                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            elif not MDW.orderisactivate(order):
+                jsonStr = {
+                    'result': 0,
+                    'message': '检测卡错误或已激活'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取当前时间的时间戳
             timestr = str(time.time()).replace('.', '')
             # 获取程序需要写入的文件路径
             path = os.path.join(settings.BASE_DIR, 'static/file/{0}{1}'.format(timestr, file_obj.name))
-            # 根据路径打开指定的文件(以二进制读写方式打开)
+            # 根据路径打开指定的文件(二进制形式打开)
             f = open(path, 'wb+')
             # chunks将对应的文件数据转换成若干片段, 分段写入, 可以有效提
             for chunk in file_obj.chunks():
                 f.write(chunk)
             f.close()
-            order, author, title, select, types = file_obj.name.split('_')
-            text = MDW.docxfile(path)
-            if not MDW.textLenOrder(len(text), order):
+            try:
+                text = MDW.docxfile(path)
+            except:
                 jsonStr = {
                     'result': 0,
-                    'message': 'AGENT_BALANCE_NOT_ENOUGH'
+                    'message': '论文文件内容格式错误'
                 }
-            if not MDW.surplus_minus(accobj, types):
-                jsonStr = {
-                    'result': 0,
-                    'message': 'AGENT_BALANCE_NOT_ENOUGH'
-                }
-            else:
-                if False:
-                    url = 'http://182.92.117.192:8811/swagger-ui.html#!/apply-web/postCheckUsingPOST'
-                    data = {
-                        'appid': request.session['sname'],
-                        'author': author,
-                        'title': title,
-                        'content': fulltext
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            try:
+                int(order)
+            except ValueError:
+                if not MDW.textLenOrder(len(text), order[0]):
+                    jsonStr = {
+                        'result': 0,
+                        'message': '文章字符数过多,请选择其他激活卡或系统类型'
                     }
-                    res = requests.post(url, data=data).text
-                    print(res)
-                jsonStr = {"result": 1, "msg": ''}
+                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            taskid,iscode = MDW.post_jiance(name,author,title,text)
+            MDW.addDetection(accobj,order, title, author, taskid, iscode,path)
+            jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
 
 # 检测列表
 def detectionlist(request):
     if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
         if request.method == 'GET':
-            message = {
-                'id': 0,  # 文件ID
-                'taskid': '',  # 操作需要的随机编号
-                'orderid': 1234651324651564, # 订单编号
-                'title': '测试标题',
-                'author': '测试作者',
-                'state': -2,    # 状态  -2:文件解析出错, -1:待提交 0:待检测,1:正在检测,2;等待获取报告,3正在生成报告,4:检测完成,其他:未知
-                'postTime': '123465465156456',  # 表示自UTC 1970年1月1日午夜之后经过的毫秒数
-                'similarity': 50,  # 相似度
-            }
+            message = MDW.selectDetection(accobj)
             return render(request, 'list.html', locals())
         else:
-            message = {'serverAndDomain_fmt': {'value': '', 'row': {'serverName': 'www', 'domain': 'zzz'}, 'index': ''},
-                       'fmt_matchNo': {'value': 0, 'row': '', 'rowIndex': ''},
-                       }
+            page = request.POST['page']
+            rows = request.POST['rows']
+            if 'title' in request.POST:
+                title = request.POST['title']
+            else:
+                title = ''
+            message = MDW.selectDetection(accobj,page,rows,title)
             return HttpResponse(json.dumps(message), content_type="application/json")
     return render(request, 'login.html')
 
+# 重新检测检测失败并扣分的文章
+def resubmit(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        if request.method == 'GET':
+            ids = request.GET.get('id')
+            MDW.resubmit(accobj,ids)
+            return HttpResponse('<h1>提交成功</h1>')
+        else:
+            jsonStr = {"result": 1, "msg": ''}
+            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+    return render(request, 'login.html')
+# # 删除超过 15天的数据
+def deletedata(request):
+    if request.method == 'GET':
+        name = request.GET.get('name')
+        pwd = request.GET.get('pwd')
+        id = request.GET.get('id')
+        if name=='admin' and pwd == 'zz141242':
+            MDW.deletedata15day(id)
+        return True
+#下载原文
+def textdownload(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        id = request.GET.get('id')
+        filepath = MDW.selectfilepath(id)
+        filename = up.quote("_".join(filepath.split('/')[-1].split('_')[1:]))
+        file = open(filepath, 'rb')
+        response = FileResponse(file)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="{}"'.format(filename)
+        return response
+
+# 批量下载前压缩
+def zipDir(dirpath_list,outFullName):
+    """
+    压缩指定文件夹
+    :param dirpath: 目标文件夹路径
+    :param outFullName: 压缩文件保存路径+xxxx.zip
+    :return: 无
+    """
+    zips = zipfile.ZipFile(outFullName, "w", zipfile.ZIP_DEFLATED)
+    filenamelist=[]
+    for filepath in dirpath_list:
+        filenamelist.append(filepath.split('/')[-1])
+    dpath = os.path.join(settings.BASE_DIR, 'static/file/')
+    for filename in filenamelist:
+        zips.write(os.path.join(dpath,filename),os.path.join('',filename))
+    zips.close()
+
+# 批量下载文件
+def batchDownload(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        ids = request.GET.get('ids')
+        idls = ids.split(',')
+        filepathlist =[]
+        for id in idls:
+            if id:
+                filepathlist.append(MDW.selectfilepath(id))
+        timestr = str(time.time()).replace('.', '')
+        zippath = os.path.join(settings.BASE_DIR, 'static/zipfiles/{0}{1}'.format(timestr, '.zip'))
+        zipDir(filepathlist,zippath)
+        filename = zippath.split('/')[-1]
+        file = open(zippath, 'rb')
+        response = FileResponse(file)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="{}"'.format(filename)
+        return response
 
 # 错误列表
 def errorlist(request):
     if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
         if request.method == 'GET':
             return render(request, 'error.html', locals())
         else:
@@ -219,6 +329,11 @@ def errorlist(request):
 # 打包文档
 def docpack(request):
     if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
         if request.method == 'GET':
             return render(request, 'doc.html', locals())
         else:
@@ -230,6 +345,11 @@ def docpack(request):
 # 订单管理
 def order(request):
     if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
         if request.method == 'GET':
             return render(request, 'order.html', locals())
         else:
@@ -241,6 +361,11 @@ def order(request):
 # 宝贝管理
 def product(request):
     if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
         if request.method == 'GET':
             return render(request, 'product.html', locals())
         else:
@@ -252,6 +377,11 @@ def product(request):
 # 个人资料
 def user_info(request):
     if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
         if request.method == 'GET':
             return render(request, 'user_info.htm', locals())
         else:
@@ -263,6 +393,11 @@ def user_info(request):
 # 修改密码
 def user_chpwd(request):
     if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
         if request.method == 'GET':
             return render(request, 'user_chpwd.htm', locals())
         else:
