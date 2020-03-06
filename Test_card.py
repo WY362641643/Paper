@@ -39,19 +39,19 @@ POOL = PooledDB(
     # 2 = when a cursor is created, 4 = when a query is executed, 7 = always
     ping=0,
     # # 主机地址
-    # host='ymhack.wicp.net',
+    host='47.244.144.152',
     # # 端口
     # port=13306,
     # 主机地址
-    host='localhost',
+    # host='localhost',
     # 端口
     port=3306,
     # 数据库用户名
-    user="root",
+    user="www_cnkidata_com",
     # 数据库密码
-    password="root",
+    password="yzdeY64CDDXYBf6w",
     # 数据库名
-    database="paper",
+    database="www_cnkidata_com",
     # 字符编码
     charset='utf8'
 )

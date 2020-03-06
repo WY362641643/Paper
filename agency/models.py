@@ -17,7 +17,7 @@ class Users(models.Model):
 
     class Meta:
         db_table = "users"
-        verbose_name = '代理商账户管理表'
+        verbose_name = '代理列表'
         verbose_name_plural = verbose_name
 
     def dic(self):
@@ -44,7 +44,7 @@ class Surplus(models.Model):
 
     class Meta:
         db_table = "surplus"
-        verbose_name = '用户剩余量表'
+        verbose_name = '代理充值'
         verbose_name_plural = verbose_name
 
     def dic(self):
@@ -65,7 +65,7 @@ class IsActivateCode(models.Model):
 
     class Meta:
         db_table = "isactivatecode"
-        verbose_name = '检测卡余量表'
+        verbose_name = '检测卡'
         verbose_name_plural = verbose_name
 # 检测列表
 class DetectionList(models.Model):

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0039)http://www.cnkiki.net/user/product/list -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" type="text/css" href="./cnki2/easyui.css">
+<link rel="stylesheet" type="text/css" href="./cnki2/icon.css">
+<script type="text/javascript" src="./cnki2/jquery.min.js"></script>
+<script type="text/javascript" src="./cnki2/jquery.easyui.min.js"></script><style type="text/css"></style>
+<script type="text/javascript" src="./cnki2/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" href="./cnki2/base.css">
+<title>我的宝贝列表</title>
+<script type="text/javascript">
+	function fmt_authorized_action(value, row, index) {
+		return value ? "<span style='color:green;'>已授权</span>" : "<span style='color:red;'>未授权</span>";
+	}
+	
+	function fmt_date(value, row, rowIndex) {
+		if (value == undefined) {
+			return "";
+		}
+		var date = new Date();
+		try {
+			date.setTime(value);
+			return date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
+					+ date.getDate() + " " + date.getHours() + ":"
+					+ date.getMinutes() + ":" + date.getSeconds();
+		} catch (e) {
+			return value;
+		}
+	}
+	
+	function fmt_action(value, row ,index) {
+		var action = "";
+		if(!row["authorized"]) {
+			action += "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:openAuthorizedWin('" + row.authorizedUrl + "')\">授权</a>";
+		} else {
+			action += "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:openAuthorizedWin('" + row.authorizedUrl + "')\">重新授权</a>";
+		}
+		return action;
+	}
+	
+	function openAuthorizedWin(url) {
+		$.messager.confirm("授权结果", "授权是否成功？", function(r){
+			$("#userProductId").datagrid("reload");
+		});
+		window.open(url);
+	}
+
+</script>
+</head>
+<body>
+	<div class="panel datagrid"><div class="datagrid-wrap panel-body panel-body-noheader" title="" style="width: 1677px;">
+	  <div class="datagrid-view" style="width: 1677px; height: 50px;">
+	  <div class="datagrid-view1" style="width: 26px;">
+	  <div class="datagrid-header" style="width: 26px; height: 24px;">
+	  <div class="datagrid-header-inner" style="display: block;"><table class="datagrid-htable" border="0" cellspacing="0" cellpadding="0" style="height: 25px;"><tbody><tr class="datagrid-header-row"><td rowspan="0">
+	  <div class="datagrid-header-rownumber"></div></td></tr></tbody></table></div></div>
+	  <div class="datagrid-body" style="width: 26px; margin-top: 0px; height: 25px;">
+	  <div class="datagrid-body-inner"><table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0"><tbody><tr id="datagrid-row-r1-1-0" datagrid-row-index="0" class="datagrid-row" style="height: 25px;"><td class="datagrid-td-rownumber">
+	  <div class="datagrid-cell-rownumber">1</div></td></tr></tbody></table></div></div><div class="datagrid-footer" style="width: 26px;"><div class="datagrid-footer-inner" style="display: none;"></div></div></div><div class="datagrid-view2" style="width: 1650px;"><div class="datagrid-header" style="width: 1650px; height: 24px;"><div class="datagrid-header-inner" style="display: block;"><table class="datagrid-htable" border="0" cellspacing="0" cellpadding="0" style="height: 25px;"><tbody><tr class="datagrid-header-row"><td field="serverName"><div class="datagrid-cell datagrid-cell-c1-serverName" style=""><span>域名</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="domain" class=""><div class="datagrid-cell datagrid-cell-c1-domain" style=""><span>个性化</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="productid"><div class="datagrid-cell datagrid-cell-c1-productid" style="text-align: right;"><span>宝贝ID</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="wangwang"><div class="datagrid-cell datagrid-cell-c1-wangwang" style=""><span>旺旺</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="qq"><div class="datagrid-cell datagrid-cell-c1-qq" style=""><span>qq</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="phone"><div class="datagrid-cell datagrid-cell-c1-phone" style=""><span>电话</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="authorized"><div class="datagrid-cell datagrid-cell-c1-authorized" style=""><span>授权状态</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="lastAuthTime"><div class="datagrid-cell datagrid-cell-c1-lastAuthTime" style="text-align: right;"><span>授权时间</span><span class="datagrid-sort-icon">&nbsp;</span></div></td><td field="action"><div class="datagrid-cell datagrid-cell-c1-action" style="text-align: right;"><span>操作</span><span class="datagrid-sort-icon">&nbsp;</span></div></td></tr></tbody></table></div></div><div class="datagrid-body" style="width: 1650px; margin-top: 0px; overflow-x: hidden; height: 25px;"><table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0"><tbody><tr id="datagrid-row-r1-2-0" datagrid-row-index="0" class="datagrid-row" style="height: 25px;"><td field="serverName"><div style="height:auto;" class="datagrid-cell datagrid-cell-c1-serverName">www.cnkiki.net</div></td><td field="domain"><div style="height:auto;" class="datagrid-cell datagrid-cell-c1-domain">cnkicn</div></td><td field="productid"><div style="text-align:right;height:auto;" class="datagrid-cell datagrid-cell-c1-productid">570904158813</div></td><td field="wangwang"><div style="height:auto;" class="datagrid-cell datagrid-cell-c1-wangwang">知网学术不端查重</div></td><td field="qq"><div style="height:auto;" class="datagrid-cell datagrid-cell-c1-qq"></div></td><td field="phone"><div style="height:auto;" class="datagrid-cell datagrid-cell-c1-phone"></div></td><td field="authorized"><div style="height:auto;" class="datagrid-cell datagrid-cell-c1-authorized"><span style="color:green;">已授权</span></div></td><td field="lastAuthTime"><div style="text-align:right;height:auto;" class="datagrid-cell datagrid-cell-c1-lastAuthTime">2018-10-4 18:43:51</div></td><td field="action"><div style="text-align:right;height:auto;" class="datagrid-cell datagrid-cell-c1-action">&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:openAuthorizedWin(&#39;http://taobaoapi.laibokeji.com/app/taobao/container3.aspx?appid=10007&amp;userid=361&#39;)">重新授权</a></div></td></tr></tbody></table></div><div class="datagrid-footer" style="width: 1650px;"><div class="datagrid-footer-inner" style="display: none;"></div></div></div><table id="userProductId" class="easyui-datagrid" data-options="url:&#39;/user/product/list&#39;,pagination:false,rownumbers:true,pageSize:20,fitColumns:true,singleSelect:true,checkbox:true" style="display: none;">
+		<thead>
+			<tr>
+				<th data-options="field:&#39;serverName&#39;,width:200">域名</th>
+				<th data-options="field:&#39;domain&#39;,width:200">个性化</th>
+				<th data-options="field:&#39;productid&#39;,width:200,align:&#39;right&#39;">宝贝ID</th>
+				<th data-options="field:&#39;wangwang&#39;,width:200">旺旺</th>
+				<th data-options="field:&#39;qq&#39;,width:200">qq</th>
+				<th data-options="field:&#39;phone&#39;,width:200">电话</th>
+				<th data-options="field:&#39;authorized&#39;,width:200,formatter:fmt_authorized_action">授权状态</th>
+				<th data-options="field:&#39;lastAuthTime&#39;,width:200,align:&#39;right&#39;,formatter:fmt_date">授权时间</th>
+				<th data-options="field:&#39;action&#39;,width:200,align:&#39;right&#39;,formatter:fmt_action">操作</th>
+			</tr>
+		</thead>
+	</table><style type="text/css" easyui="true">
+.datagrid-cell-c1-serverName{width:191px}
+.datagrid-cell-c1-domain{width:191px}
+.datagrid-cell-c1-productid{width:191px}
+.datagrid-cell-c1-wangwang{width:191px}
+.datagrid-cell-c1-qq{width:191px}
+.datagrid-cell-c1-phone{width:191px}
+.datagrid-cell-c1-authorized{width:191px}
+.datagrid-cell-c1-lastAuthTime{width:191px}
+.datagrid-cell-c1-action{width:191px}
+</style></div></div></div>
+
+</body></html>

@@ -1,0 +1,146 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4/themes/gray/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4/themes/icon.css">
+	<script type="text/javascript" src="/static/jquery-easyui-1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+	<link rel="stylesheet" href="/static/css/base.css">
+	<script type="text/javascript" src="/static/js/common.js"></script>
+	<script type="text/javascript">
+        $(function(){
+            $.get("/user/balance",function(data,status) {
+                $("#balance").text(data.balance);
+            });
+            setInterval(function(){
+                $.get("/user/balance",function(data,status) {
+                    $("#balance").text(data.balance);
+                });
+
+            }, 1000 * 5);
+        });
+
+        function updatePass(){
+            var currentPass = $("#updatePassWin_current").textbox("getValue");
+            var newPass = $("#updatePassWin_new").textbox("getValue");
+            var confirmPass = $("#updatePassWin_confirm").textbox("getValue");
+            var valid = $("#updatePassForm").form("validate");
+            if (!valid) {
+                return;
+            }
+            $.post("/user/updatePass",{currentPass:currentPass, newPass:newPass, confirmPass:confirmPass}, function(data,status) {
+                $('#updatePassWin').window('close');
+                if (data.result) {
+                    $.messager.alert("Message","密码更新成功");
+                } else {
+                    $.messager.alert("Message", data.message, "error");
+                }
+            });
+        }
+	</script>
+	<style type="text/css">
+		ul{
+			margin:0px;
+			margin-left:10px;
+			width:150px;
+			padding:0px;
+			font-size:14px;
+		}
+		ul li{
+			list-style: none;
+			margin:10px 0px;
+			padding-left:5px;
+			height:30px;
+			line-height:30px;
+			border: 1px solid gray;
+			cursor:pointer;
+			background:#eee;
+		}
+		.nav{
+			font-size:14px;
+			line-height:40px;
+			padding-right:20px;
+			text-align:right;
+		}
+		.nav .user {
+			font-weight:bold;
+		}
+	</style>
+	<title></title>
+</head>
+<!-- Current Type:fenjie -->
+<body class="easyui-layout">
+<div data-options="region:'north'" style="height:45px">
+	<div class="nav">
+		<div style="display:inline-block;float:left;padding-left:15px;"><!--通知：1.抱歉，由于本人休假，<span style="color:red">6月26日至7月7日暂停充值服务（共计12天）</span>。请大家提前预估使用量，提前预存足够的量。2. 手动平台功能已经合并到自动平台，以后统一为一个查重平台。--></div>
+		<div style="display:inline-block;float:right;">
+			<span class="user"><a href="javascript:$('#updatePassWin').window('open');" title="修改密码">21537</a></span>&nbsp;&nbsp;可用篇数:<span id="balance" class="user"></span>&nbsp;&nbsp;<a href="/user/logout">退出</a>
+		</div>
+
+
+	</div>
+</div>
+<div data-options="region:'west',split:true" title="Menu" style="width:200px;">
+	<ul>
+		
+			<li onclick="addTab('文本检测','/user/detection/')">
+				文本检测
+			</li>
+			<li onclick="addTab('批量上传','/user/detection/upload')">
+				批量上传
+			</li>
+		
+
+		<li onclick="addTab('检测列表','/user/detection/list')">
+			检测列表
+		</li>
+		
+			<li onclick="addTab('错误列表','/user/detection/list/error')">
+				错误列表
+			</li>
+		
+		<li onclick="addTab('打包文档','/user/doc')">
+			打包文档
+		</li>
+		<li onclick="addTab('订单管理','/user/order')">
+			订单管理
+		</li>
+		<li onclick="addTab('宝贝管理','/user/product/list')">
+			宝贝管理
+		</li>
+		
+
+	</ul>
+	<span>充值请联系：453749696
+		</span>
+</div>
+<div data-options="region:'center',iconCls:'icon-ok'">
+	<div class="easyui-tabs" id="workCenter"></div>
+</div>
+
+<div id="updatePassWin" class="easyui-window" data-options="title:'修改密码',collapsible:false,minimizable:false,maximizable:false,resizable:false,modal:true,width:350,height:170,closed:true">
+	<form id="updatePassForm">
+		<table align="center" style="margin-left:50px;">
+			<tr>
+				<td style="width:75px;">当前密码</td>
+				<td><input class="easyui-textbox" type="password" id="updatePassWin_current" data-options="required:true,height:30,width:150"/></td>
+			</tr>
+			<tr>
+				<td style="width:75px;">新密码</td>
+				<td><input class="easyui-textbox" type="password" id="updatePassWin_new" data-options="required:true,height:30,width:150"/></td>
+			</tr>
+			<tr>
+				<td style="width:75px;">确认密码</td>
+				<td><input class="easyui-textbox" type="password" id="updatePassWin_confirm" data-options="required:true,height:30,width:150"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;"><a href="javascript:updatePass();" class="easyui-linkbutton" >修改密码</a></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</body>
+</html>

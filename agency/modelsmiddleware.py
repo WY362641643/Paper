@@ -20,7 +20,7 @@ def post_jiance(name,author,title,fulltext):
     :param fulltext:
     :return:
     '''
-    url = 'http://check.vipgz6.idcfengye.com/post/'
+    url = 'http://data.cnkidata.com/post/'
     data = {
         'appid': name,
         'author': author,
