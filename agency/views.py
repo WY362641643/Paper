@@ -183,10 +183,27 @@ def upload(request):
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取文章字符数
             word_number_text = len(text)
-            if not MDW.textLenOrder(word_number_text,order):
+            if len(order) == 1:
+                if not MDW.textLenOrder(word_number_text,order):
+                    jsonStr = {
+                        'result': 0,
+                        'message': '文章字符数过多,请选择其他系统类型'
+                    }
+                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            elif len(order) == 18:
+                try:
+                    int(order)
+                except:
+                    jsonStr = {
+                        'result': 0,
+                        'message': '订单号错误'
+                    }
+                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+                print('此处对接订单管理数据库, 查询淘宝交易ID')
+            else:
                 jsonStr = {
                     'result': 0,
-                    'message': '文章字符数过多,请选择其他激活卡或系统类型'
+                    'message': '订单号错误'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             if not MDW.surplus_shengyu(accobj, order):
