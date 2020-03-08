@@ -218,6 +218,24 @@ def accobj_surplus(accobj):
         return obj.dic()
     except:
         pass
+# 查询账户剩余积分是否够用
+def surplus_shengyu(accobj, surp):
+    '''
+    :param account:
+    :param surp:
+    :return:
+    '''
+    accountSurplus_obj = Surplus.objects.get(account=accobj)
+    if "A" in surp:
+        if accountSurplus_obj.a <= 0:
+            return False
+    elif 'P' in surp:
+        if accountSurplus_obj.p <= 0:
+            return False
+    elif 'V' in surp:
+        if accountSurplus_obj.v <= 0:
+            return False
+    return True
 # 修改账户剩余次数
 def surplus_minus(accobj, surp):
     '''
@@ -330,13 +348,13 @@ def textLenOrder(numbtext, order):
     :return: True/False
     '''
     flag = False
-    if order[0] == 'A':
+    if  'A' in order:
         if numbtext <= 50000:
             flag = True
-    elif order[0] == 'P':
+    elif 'P' in order:
         if numbtext <= 150000:
             flag = True
-    elif order[0] == 'V':
+    elif 'V' in order:
         if numbtext <= 250000:
             flag = True
     return flag

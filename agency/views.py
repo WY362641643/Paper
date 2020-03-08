@@ -112,7 +112,7 @@ def detection(request):
             if 'author' in request.POST:
                 author = request.POST['author']
             else:
-                author = ''
+                author = name
             if not MDW.surplus_minus(accobj, types):
                 jsonStr = {
                     'result': 0,
@@ -127,9 +127,8 @@ def detection(request):
                     f.write(fulltext)
                 taskid,iscode = MDW.post_jiance(name,author,title,fulltext)
                 word_number_text = len(fulltext)
-                MDW.addDetection(accobj, types, title, author, taskid, iscode,path)
+                MDW.addDetection(accobj, types, title, author, taskid, iscode,path,len(fulltext))
                 jsonStr = {"result": 1, "msg": ''}
-
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
 # 批量检测
@@ -145,37 +144,18 @@ def upload(request):
         else:
             # 获取前端传输的文件对象
             file_obj = request.FILES.get('file')
-            title_package = file_obj.name.split('_')
-            if len(title_package) ==2:
-                author, title = title_package
-            elif len(title_package) ==1:
-                title = title_package
-                author =''
-            else:
+            try:
+                order, author, title = file_obj.name.split('_')
+            except:
                 jsonStr = {
                     'result': 0,
-                    'message': '未识别文件名'
+                    'message': '未识别文件名或文件名错误'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            # if order and len(order)==1:
-            #     if not MDW.surplus_minus(accobj, order):
-            #         jsonStr = {
-            #             'result': 0,
-            #             'message': '此系统类型剩余次数不足'
-            #         }
-            #         return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            # elif len(str(order)) == 18:
-            #     print('这里请求淘宝')
-            # elif not MDW.orderisactivate(order):
-            #     jsonStr = {
-            #         'result': 0,
-            #         'message': '检测卡错误或已激活'
-            #     }
-            #     return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取当前时间的时间戳
             timestr = str(time.time()).replace('.', '')
             # 获取后缀
-            suffix = file_obj.name.split['.'][-1]
+            suffix = file_obj.name.split(".")[-1]
             # 获取程序需要写入的文件路径
             path = os.path.join(settings.BASE_DIR, 'static/file/{0}{1}'.format(timestr, file_obj.name))
             # 根据路径打开指定的文件(二进制形式打开)
@@ -201,20 +181,23 @@ def upload(request):
                     'message': '论文文件内容格式错误'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-
             # 获取文章字符数
             word_number_text = len(text)
-            # try:
-            #     int(order)
-            # except ValueError:
-            #     if not MDW.textLenOrder(len(text), order[0]):
-            #         jsonStr = {
-            #             'result': 0,
-            #             'message': '文章字符数过多,请选择其他激活卡或系统类型'
-            #         }
-            #         return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            if not MDW.textLenOrder(word_number_text,order):
+                jsonStr = {
+                    'result': 0,
+                    'message': '文章字符数过多,请选择其他激活卡或系统类型'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            if not MDW.surplus_shengyu(accobj, order):
+                jsonStr = {
+                    'result': 0,
+                    'message': '该系统剩余积分不足, 请充值'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             taskid,iscode = MDW.post_jiance(name,author,title,text)
             MDW.addDetection(accobj,order, title, author, taskid, iscode,path,word_number_text)
+            MDW.surplus_minus(accobj, order)
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
@@ -468,8 +451,6 @@ def order(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
-
 # 宝贝管理
 def product(request):
     if 'sname' in request.session:
@@ -484,8 +465,6 @@ def product(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
-
 # 个人资料
 def user_info(request):
     if 'sname' in request.session:
@@ -500,8 +479,6 @@ def user_info(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
-
 # 修改密码
 def user_chpwd(request):
     if 'sname' in request.session:
@@ -516,8 +493,6 @@ def user_chpwd(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
-
 # 用户退出登录
 def logout(request):
     if request.method == "GET":

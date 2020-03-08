@@ -38,24 +38,24 @@ POOL = PooledDB(
     ping=0,
     # 端口
     # 主机地址
-    host='47.244.144.152',
-    port=3306,
-    # 数据库用户名
-    user="www_cnkidata_com",
-    # 数据库密码
-    password="yzdeY64CDDXYBf6w",
-    # 数据库名
-    database="www_cnkidata_com",
-    # # 主机地址
-    # host='localhost',
-    # # 端口
+    # host='47.244.144.152',
     # port=3306,
     # # 数据库用户名
-    # user="root",
+    # user="www_cnkidata_com",
     # # 数据库密码
-    # password="root",
+    # password="yzdeY64CDDXYBf6w",
     # # 数据库名
-    # database="paper",
+    # database="www_cnkidata_com",
+    # # 主机地址
+    host='localhost',
+    # 端口
+    port=3306,
+    # 数据库用户名
+    user="root",
+    # 数据库密码
+    password="root",
+    # 数据库名
+    database="paper",
     # 字符编码
     charset='utf8'
 )
