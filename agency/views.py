@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse,FileResponse
-from django.contrib.auth import authenticate
 import json
 import time
 import os
 from . import modelsmiddleware as MDW
 from django.conf import settings
-import requests
 import urllib.parse as up
-import zipfile
 # Create your views here.
 
 def index_views(request):
@@ -84,8 +81,6 @@ def index_views(request):
                 return resp
         else:
             return render(request, 'login.html')  # 返回登录页面
-
-
 # 手工检测
 def detection(request):
     if 'sname' in request.session:
@@ -107,6 +102,7 @@ def detection(request):
             types = request.POST['select']
             title = request.POST['title']
             fulltext = request.POST['fulltext']
+            # 判断 字符数 是否符合 系统类型
             if not MDW.textLenOrder(len(fulltext),types):
                 jsonStr = {
                     'result': 0,
@@ -130,13 +126,12 @@ def detection(request):
                 with open(path, 'a',encoding='utf-8') as f:
                     f.write(fulltext)
                 taskid,iscode = MDW.post_jiance(name,author,title,fulltext)
+                word_number_text = len(fulltext)
                 MDW.addDetection(accobj, types, title, author, taskid, iscode,path)
                 jsonStr = {"result": 1, "msg": ''}
 
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
-
 # 批量检测
 def upload(request):
     if 'sname' in request.session:
@@ -150,30 +145,37 @@ def upload(request):
         else:
             # 获取前端传输的文件对象
             file_obj = request.FILES.get('file')
-
-            try:
-                order, author, title = file_obj.name.split('_')
-            except:
+            title_package = file_obj.name.split('_')
+            if len(title_package) ==2:
+                author, title = title_package
+            elif len(title_package) ==1:
+                title = title_package
+                author =''
+            else:
                 jsonStr = {
                     'result': 0,
-                    'message': '文件命名规则错误'
+                    'message': '未识别文件名'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            if len(order)==1:
-                if not MDW.surplus_minus(accobj, order):
-                    jsonStr = {
-                        'result': 0,
-                        'message': '此系统类型剩余次数不足'
-                    }
-                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            elif not MDW.orderisactivate(order):
-                jsonStr = {
-                    'result': 0,
-                    'message': '检测卡错误或已激活'
-                }
-                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            # if order and len(order)==1:
+            #     if not MDW.surplus_minus(accobj, order):
+            #         jsonStr = {
+            #             'result': 0,
+            #             'message': '此系统类型剩余次数不足'
+            #         }
+            #         return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            # elif len(str(order)) == 18:
+            #     print('这里请求淘宝')
+            # elif not MDW.orderisactivate(order):
+            #     jsonStr = {
+            #         'result': 0,
+            #         'message': '检测卡错误或已激活'
+            #     }
+            #     return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取当前时间的时间戳
             timestr = str(time.time()).replace('.', '')
+            # 获取后缀
+            suffix = file_obj.name.split['.'][-1]
             # 获取程序需要写入的文件路径
             path = os.path.join(settings.BASE_DIR, 'static/file/{0}{1}'.format(timestr, file_obj.name))
             # 根据路径打开指定的文件(二进制形式打开)
@@ -183,13 +185,108 @@ def upload(request):
                 f.write(chunk)
             f.close()
             try:
-                text = MDW.docxfile(path)
+                if suffix == 'docx':
+                    text = MDW.filedocx(path)
+                elif suffix == 'txt':
+                    text = MDW.filetxt(path)
+                elif suffix == 'doc':
+                    text = MDW.filedoc(path)
+                # elif suffix == 'wps':
+                #     text = MDW.filewps(path)
+                else:
+                    raise ValueError
             except:
                 jsonStr = {
                     'result': 0,
                     'message': '论文文件内容格式错误'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+
+            # 获取文章字符数
+            word_number_text = len(text)
+            # try:
+            #     int(order)
+            # except ValueError:
+            #     if not MDW.textLenOrder(len(text), order[0]):
+            #         jsonStr = {
+            #             'result': 0,
+            #             'message': '文章字符数过多,请选择其他激活卡或系统类型'
+            #         }
+            #         return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            taskid,iscode = MDW.post_jiance(name,author,title,text)
+            MDW.addDetection(accobj,order, title, author, taskid, iscode,path,word_number_text)
+            jsonStr = {"result": 1, "msg": ''}
+            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+    return render(request, 'login.html')
+# 用户前端检测
+def upload_user(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        if request.method == 'GET':
+            return render(request, 'upload.html', locals())
+        else:
+            # 获取前端传输的文件对象
+            file_obj = request.FILES.get('file')
+            try:
+                title_package = file_obj.name.split('_')
+                if len(title_package) ==3:
+                    order, author, title = title_package
+                elif len(title_package) ==2:
+                    author, title = title_package
+                elif len(title_package) ==1:
+                    title = title_package
+                else:
+                    jsonStr = {
+                        'result': 0,
+                        'message': '未识别文件名'
+                    }
+                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            except:
+                jsonStr = {
+                    'result': 0,
+                    'message': '文件命名规则错误'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            if order and len(order)==1:
+                if not MDW.surplus_minus(accobj, order):
+                    jsonStr = {
+                        'result': 0,
+                        'message': '此系统类型剩余次数不足'
+                    }
+                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            elif len(str(order)) == 18:
+                print('这里请求淘宝')
+            elif not MDW.orderisactivate(order):
+                jsonStr = {
+                    'result': 0,
+                    'message': '检测卡错误或已激活'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            # 获取当前时间的时间戳
+            timestr = str(time.time()).replace('.', '')
+            # 获取后缀
+            suffix = file_obj.name.split['.'][-1]
+            # 获取程序需要写入的文件路径
+            path = os.path.join(settings.BASE_DIR, 'static/file/{0}{1}'.format(timestr, file_obj.name))
+            # 根据路径打开指定的文件(二进制形式打开)
+            f = open(path, 'wb+')
+            # chunks将对应的文件数据转换成若干片段, 分段写入, 可以有效提
+            for chunk in file_obj.chunks():
+                f.write(chunk)
+            f.close()
+            if suffix == 'docx':
+                try:
+                    text = MDW.docxfile(path)
+                except:
+                    jsonStr = {
+                        'result': 0,
+                        'message': '论文文件内容格式错误'
+                    }
+                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             try:
                 int(order)
             except ValueError:
@@ -204,7 +301,6 @@ def upload(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
 # 检测列表
 def detectionlist(request):
     if 'sname' in request.session:
@@ -226,7 +322,6 @@ def detectionlist(request):
             message = MDW.selectDetection(accobj,page,rows,title)
             return HttpResponse(json.dumps(message), content_type="application/json")
     return render(request, 'login.html')
-
 # 重新检测检测失败并扣分的文章
 def resubmit(request):
     if 'sname' in request.session:
@@ -238,7 +333,7 @@ def resubmit(request):
         if request.method == 'GET':
             ids = request.GET.get('id')
             MDW.resubmit(accobj,ids)
-            return HttpResponse('<h1>提交成功</h1>')
+            return HttpResponse('<h1>提交成功</h>')
         else:
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
@@ -268,24 +363,6 @@ def textdownload(request):
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename="{}"'.format(filename)
         return response
-
-# 批量下载前压缩
-def zipDir(dirpath_list,outFullName):
-    """
-    压缩指定文件夹
-    :param dirpath: 目标文件夹路径
-    :param outFullName: 压缩文件保存路径+xxxx.zip
-    :return: 无
-    """
-    zips = zipfile.ZipFile(outFullName, "w", zipfile.ZIP_DEFLATED)
-    filenamelist=[]
-    for filepath in dirpath_list:
-        filenamelist.append(filepath.split('/')[-1])
-    dpath = os.path.join(settings.BASE_DIR, 'static/file/')
-    for filename in filenamelist:
-        zips.write(os.path.join(dpath,filename),os.path.join('',filename))
-    zips.close()
-
 # 批量下载文件
 def batchDownload(request):
     if 'sname' in request.session:
@@ -302,14 +379,13 @@ def batchDownload(request):
                 filepathlist.append(MDW.selectfilepath(id))
         timestr = str(time.time()).replace('.', '')
         zippath = os.path.join(settings.BASE_DIR, 'static/zipfiles/{0}{1}'.format(timestr, '.zip'))
-        zipDir(filepathlist,zippath)
+        MDW.zipDir(filepathlist,'static/file/',zippath)
         filename = zippath.split('/')[-1]
         file = open(zippath, 'rb')
         response = FileResponse(file)
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename="{}"'.format(filename)
         return response
-
 # 错误列表
 def errorlist(request):
     if 'sname' in request.session:
@@ -324,8 +400,46 @@ def errorlist(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
-
+# 打包检测文档
+def file_package(request):
+    if request.method == 'GET':
+        name = request.GET.get('name')
+        pwd = request.GET.get('pwd')
+        id = request.GET.get('id')
+        jsonStr = {"result": 0, "message": ''}
+        if name=='admin' and pwd == 'zz141242':
+            if MDW.post_examiningz_report(id):
+                jsonStr = {"result": 1,  "message": '请求接口错误'}
+        return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+# 下载检测报告
+def examining_report(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        if request.method == 'GET':
+            id = request.GET.get('id')
+            zippath = MDW.post_examiningz_report(id)
+            if not zippath:
+                return HttpResponse('<h1>下载失败: 请求接口错误</h1>')
+            filename = zippath.split('/')[-1]
+            file = open(zippath, 'rb')
+            response = FileResponse(file)
+            response['Content-Type'] = 'application/octet-stream'
+            response['Content-Disposition'] = 'attachment;filename="{}"'.format(filename)
+            return response
+        else:
+            id = request.GET.get('id')
+            zippath = MDW.post_examiningz_report(id, True)
+            if zippath:
+                jsonStr = {"result": 1, "message": '打包成功'}
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            else:
+                jsonStr = {"result": 0, "message": '打包失败,请求接口错误'}
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+    return render(request, 'login.html')
 # 打包文档
 def docpack(request):
     if 'sname' in request.session:
@@ -340,8 +454,6 @@ def docpack(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-
-
 # 订单管理
 def order(request):
     if 'sname' in request.session:

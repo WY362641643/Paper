@@ -5,6 +5,8 @@
 # @File    : 22.py
 # @Email   : 362641643@qq.com
 # @Software: win10 python3.7.2
-s = '0.044'
-f = float('%.4f' % (float(s)*100))
-print(f)
+import requests
+import json
+import time
+print(round(time.time() * 1000))
+print(round(time.time() * 1000) - 3600000)

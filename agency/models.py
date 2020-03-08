@@ -79,7 +79,6 @@ class DetectionList(models.Model):
     similarity = models.FloatField(null=True,blank=True,default=0,verbose_name='相似度') # --相似度，值区间0~1
     taskid = models.CharField(max_length=38,blank=True,verbose_name='taskid')
     filepath = models.CharField(max_length=254,default='',verbose_name='文本路径')
-    htmlurl = models.URLField(blank=True,null=True,verbose_name='在线报告地址')
     zipurl = models.URLField(blank=True,null=True,verbose_name='报告压缩包地址')
 
     # 重写__str__函数3
@@ -100,7 +99,6 @@ class DetectionList(models.Model):
             'state':self.iscode,
             'similarity':self.similarity,
             'taskid':self.taskid,
-            'htmlurl':self.htmlurl,
             'zipurl':self.zipurl,
         }
         return d
@@ -120,7 +118,6 @@ class ErrotList(models.Model):
         db_table = "errorlist"
         verbose_name = '错误列表'
         verbose_name_plural = verbose_name
-
 # 打包文档
 class order(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
@@ -157,4 +154,17 @@ class Treasure(models.Model):
     class Meta:
         db_table = "treasure"
         verbose_name = '宝贝管理'
+        verbose_name_plural = verbose_name
+
+class Globo(models.Model):
+    name = models.CharField(max_length=8,verbose_name='名称')
+    info = models.CharField(max_length=128,verbose_name='信息')
+
+    # 重写__str__函数3
+    def __str__(self):
+        return str(self.name)
+
+    class Meta:
+        db_table = "globo"
+        verbose_name = '全局管理'
         verbose_name_plural = verbose_name

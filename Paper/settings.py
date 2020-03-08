@@ -78,11 +78,13 @@ WSGI_APPLICATION = 'Paper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'www_cnkidata_com',
+        # 'USER': 'www_cnkidata_com',
+        # 'PASSWORD': 'yzdeY64CDDXYBf6w',
+        # 'HOST': '127.0.0.1',
         'NAME': 'paper',
         'USER': 'root',
-        # 'PASSWORD': 'your_password',
         'PASSWORD': 'root',
-        # 'HOST': '118.24.207.229',
         'HOST': 'localhost',
         'PORT': 3306,
         'OPTIONS': {

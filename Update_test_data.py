@@ -11,7 +11,8 @@ from DBUtils.PooledDB import PooledDB
 import time
 import json
 from multiprocessing import Queue
-
+url = 'http://api.cnkin.net/'
+loaclurl =  '127.0.0.1:8001'
 POOL = PooledDB(
     # 使用链接数据库的模块
     creator=pymysql,
@@ -35,16 +36,26 @@ POOL = PooledDB(
     #  如：0 = None = never, 1 = default = whenever it is requested,
     # 2 = when a cursor is created, 4 = when a query is executed, 7 = always
     ping=0,
-    # 主机地址
-    host='localhost',
     # 端口
+    # 主机地址
+    host='47.244.144.152',
     port=3306,
     # 数据库用户名
-    user="root",
+    user="www_cnkidata_com",
     # 数据库密码
-    password="root",
+    password="yzdeY64CDDXYBf6w",
     # 数据库名
-    database="paper",
+    database="www_cnkidata_com",
+    # # 主机地址
+    # host='localhost',
+    # # 端口
+    # port=3306,
+    # # 数据库用户名
+    # user="root",
+    # # 数据库密码
+    # password="root",
+    # # 数据库名
+    # database="paper",
     # 字符编码
     charset='utf8'
 )
@@ -62,7 +73,7 @@ DayOutSearchResultQuery = Queue()  # 查询 超过15天的数据
 SearchResultQuery = Queue()  # 查询状态为检测中的结果数据
 
 def selectDetection():
-    current_time = round(time.time() * 1000) - 3600000
+    current_time = round(time.time() * 1000) - 1800000
     # 查询检测时间 超过1小时 并且状态为1 的数据
     sql = 'select id from detectionlist where iscode=1 and `date`<%d'%current_time
     SQLcursor.execute(sql)
@@ -102,17 +113,22 @@ def searchResult():
     while True:
         if not SearchResultQuery.empty():
             info = SearchResultQuery.get()
-            url = 'http://check.vipgz6.idcfengye.com/query/'
             data ={
                 'appid':info[1],
                 'taskid':info[2]
             }
-            res = requests.post(url=url,data=data).text
-            data = json.loads(res)['table']
+            res = requests.post(url=url+'/query/',data=data).text
+            if isinstance(res,str):
+                res = json.loads(res)
+            if res['result'] =='0':
+                continue
+            data = res['table']
             if data['state'] =='2':
-                sql = 'update detectionlist set iscode=2 where id=%d'%info[0]
+                sql = 'update detectionlist set iscode=4,similarity={} where id={}'.format(res['checkResult']['similarity'],info[0])
                 SQLcursor.execute(sql)
                 SQLconn.commit()
+                pathurl = loaclurl + '/file/package?name=admin&pwd=zz141242&id={}'.format(info[0])
+                requests.get(url=pathurl)
         else:
             break
             time.sleep(60)
@@ -120,6 +136,7 @@ def searchResult():
     print('查询中的数据检测完成')
 
 def dayOutSearchResultQuery():
+    '''超过15天的数据, 删除'''
     idstr =''
     while True:
         if not DayOutSearchResultQuery.empty():
@@ -128,17 +145,17 @@ def dayOutSearchResultQuery():
         else:
             if idstr:
                 idstr = idstr.replace(',','')
-                url = '127.0.0.1:8001/delete/data?name=admin&pwd=zz141242&id={}'.format(idstr)
-                requests.post(url=url,data=data)
-                idstr =''
+                pathurl = loaclurl + '/delete/data?name=admin&pwd=zz141242&id={}'.format(idstr)
+                requests.post(url=pathurl)
             break
-            time.sleep(60)
         time.sleep(1)
     print('清除超过15天的数据完成')
 
 
 if __name__ == '__main__':
-    selectDetection()
-    timeoutSearchResult()
-    searchResult()
-    print('检测完成')
+    while True:
+        selectDetection()
+        timeoutSearchResult()
+        searchResult()
+        print('检测完成')
+        time.sleep(30)

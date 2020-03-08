@@ -41,11 +41,11 @@
                 case 2:
                     return "等待获取报告...";
                 case 3:
-                    return "正在生成报告..."
+                    return "正在生成报告...";
                 case 4:
-                    return "检测完成...";
+                    return "检测完成";
                 default:
-                    return "未知...";
+                    return "未知";
             }
         }
 
@@ -207,11 +207,9 @@
     <tr>
         <th data-options="field:'taskid',width:100,checkbox:true"></th>
 
-        {#				<th data-options="field:'domain',width:200,formatter:serverAndDomain_fmt">别名(域名)</th>#}
         <th data-options="field:'orderid',width:200">订单编号</th>
         <th data-options="field:'title',width:200">标题</th>
         <th data-options="field:'author',width:100">作者</th>
-        {#                <th data-options="field:'matchNo',width:100,formatter:fmt_matchNo">编号规则</th>#}
         <th data-options="field:'postTime',width:150,align:'right',formatter:fmt_date">提交时间</th>
         <th data-options="field:'state',width:80,align:'right',formatter:fmt_state">状态</th>
         <th data-options="field:'similarity',width:80,align:'right',formatter:fmt_similarity">相似度</th>
