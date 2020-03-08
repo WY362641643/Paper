@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'product/',views.product),
     url(r'user_info/',views.user_info),
     url(r'user_chpwd/',views.user_chpwd),
+
     ]
