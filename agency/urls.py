@@ -14,6 +14,9 @@ urlpatterns = [
     url(r'detection/$',views.detection),
     url(r'upload/',views.upload),
     url(r'detection/doc/download', views.textdownload),
+    url(r'fenjie/common/download',views.examining_report),
+    url(r'file/package',views.file_package),
+    url(r'retry', views.examining_report),
     url(r'detection/batchDownload',views.batchDownload),
     url(r'detectionlist/$',views.detectionlist),
     url(r'user/detection/list$',views.detectionlist),
@@ -25,4 +28,5 @@ urlpatterns = [
     url(r'product/',views.product),
     url(r'user_info/',views.user_info),
     url(r'user_chpwd/',views.user_chpwd),
+
     ]
