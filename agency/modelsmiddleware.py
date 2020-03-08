@@ -335,7 +335,7 @@ def textLenOrder(numbtext, order):
             flag = True
     return flag
 # 增加检测列表
-def addDetection(accobj,order,title,author,taskid,iscode,path,number_text):
+def addDetection(accobj,order,title,author,taskid,iscode,path,number_text:int):
     '''
     增加检测列表
     :param accobj:
@@ -355,6 +355,7 @@ def addDetection(accobj,order,title,author,taskid,iscode,path,number_text):
         obj.taskid = taskid
         obj.filepath = path
         obj.iscode = iscode
+        obj.textnumber = number_text
         obj.save()
         return True
     except:
@@ -553,8 +554,6 @@ def Areport(resDict):
     no_problem = 100 - similarity
     article_copy = 100 - no_problem
     message = {
-        'article_copy': article_copy,  # 文章复制部分
-        'no_problem': no_problem,  # 无问题部分
         'n_table_a': n_table_a,  # 论文各部分数据总汇
         'Detection_of_the_literature': resDict['source_max_similar_title'],  # 检测文献标题
          'title_type':'全文对照',
@@ -577,13 +576,13 @@ def Areport(resDict):
         'report_annotation_ref_chapter_min_similar_word_count': resDict['report_annotation_ref'][
             'chapter_min_similar_word_count'],  # 疑似段落最小重复字数
         'author': resDict['author'],  # 作者
-        'number_date': datetime.datetime.now().strftime('%Y%m%d'),  # 编号上的时间
+        'number_date': datetime.datetime.now().strftime('%Y%m%d%H%M%S'),  # 编号上的时间
         'test_time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # 检测时间
         'number_random': ''.join(random.sample(source, 12)),  # 编号上的随机数
         'range_time': datetime.datetime.now().strftime('%Y-%m-%d'),
         'paragraphtd': quanwenduizhao,  # 文章对比数据
     }
-    with open('templates/reprot/A1.html', 'r', encoding='utf-8')as f:
+    with open('templates/reprot/A.html', 'r', encoding='utf-8')as f:
         html = f.read()
     html = re.sub('{', '￥$', html, flags=re.S)
     html = re.sub('}', '￥', html, flags=re.S)

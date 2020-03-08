@@ -77,6 +77,7 @@ class DetectionList(models.Model):
     iscode = models.IntegerField(null=True,blank=True,default=-2,verbose_name='状态')
         # --状态 -2文件解析出错 ,-1待提交： 0待检测， 1检测中， 2等待获取报告, 3正在生产报告, 4检测完成
     similarity = models.FloatField(null=True,blank=True,default=0,verbose_name='相似度') # --相似度，值区间0~1
+    textnumber = models.IntegerField(default=0,verbose_name='文章字符数')
     taskid = models.CharField(max_length=38,blank=True,verbose_name='taskid')
     filepath = models.CharField(max_length=254,default='',verbose_name='文本路径')
     zipurl = models.URLField(blank=True,null=True,verbose_name='报告压缩包地址')
