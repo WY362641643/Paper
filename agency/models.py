@@ -101,6 +101,7 @@ class DetectionList(models.Model):
             'similarity':self.similarity,
             'taskid':self.taskid,
             'zipurl':self.zipurl,
+            'matchNo':self.textnumber,
         }
         return d
 # 错误列表

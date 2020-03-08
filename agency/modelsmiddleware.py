@@ -171,13 +171,17 @@ def post_examiningz_report(id,state=False):
     :param state:  是否重新打包
     :return:
     '''
-    obj = DetectionList.objects.values('account','taskid','zipurl').get(id=id)
-    if obj['zipurl'] and not state:
-        return obj['zipurl']
+    obj = DetectionList.objects.get(id=id)
+    if obj.zipurl and not state:
+        return obj.zipurl
     else:
+        if obj.zipurl:
+            original_path = obj.zipurl
+            if os.path.exists(original_path):
+                os.remove(original_path)
         data ={
-            'appid':obj['account'],
-            'taskid':obj['taskid']
+            'appid':obj.account,
+            'taskid':obj.taskid,
         }
         headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'}
         res = requests.post(url + '/query/',headers=headers,data=data)
@@ -186,6 +190,8 @@ def post_examiningz_report(id,state=False):
             return False
         data = json.loads(res.text)['checkResult']
         zippath = Areport(data)
+        obj.zipurl=zippath
+        obj.save()
         return zippath
 # 判断账户密码是否存在
 def account_result(account, pwd):
@@ -459,7 +465,7 @@ def zipDir(dirpath_list,path,outFullName):
     zips.close()
 # 生成 A系统的检测报告
 def Areport(resDict):
-    timestr = str(time.time()).replace('.', '')+ '_' + ''.join(random.sample(source, 12))
+    timestr = str(resDict['source_max_similar_title']) + '_' + ''.join(random.sample(source, 12))
     path = os.path.join(settings.BASE_DIR, 'static/report/{0}'.format(timestr))
     def reference(ruselt):
         if ruselt:

@@ -100,6 +100,7 @@
         }
 
         function fmt_matchNo(value, row, rowIndex) {
+            return value;
             switch (value) {
                 case -1:
                     return "无编号";
@@ -210,6 +211,7 @@
         <th data-options="field:'orderid',width:200">订单编号</th>
         <th data-options="field:'title',width:200">标题</th>
         <th data-options="field:'author',width:100">作者</th>
+        <th data-options="field:'matchNo',width:100,formatter:fmt_matchNo">字符数</th>
         <th data-options="field:'postTime',width:150,align:'right',formatter:fmt_date">提交时间</th>
         <th data-options="field:'state',width:80,align:'right',formatter:fmt_state">状态</th>
         <th data-options="field:'similarity',width:80,align:'right',formatter:fmt_similarity">相似度</th>
