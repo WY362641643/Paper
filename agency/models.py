@@ -70,7 +70,7 @@ class IsActivateCode(models.Model):
 # 检测列表
 class DetectionList(models.Model):
     account = models.ForeignKey(Users,on_delete=models.CASCADE,verbose_name='用户')
-    orderacc = models.CharField(max_length=16,null=True,blank=True,verbose_name='订单编号')
+    orderacc = models.CharField(max_length=19,null=True,blank=True,verbose_name='订单编号')
     title = models.CharField(max_length=64,null=True,blank=True,verbose_name='标题')
     author = models.CharField(max_length=16,null=True,blank=True,verbose_name='作者')
     date = models.CharField(max_length=14,null=True,blank=True,verbose_name='提交时间')
@@ -121,12 +121,9 @@ class ErrotList(models.Model):
         verbose_name = '错误列表'
         verbose_name_plural = verbose_name
 # 打包文档
-class order(models.Model):
+class Order(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
-    orderacc = models.CharField(max_length=20,null=True,blank=True,verbose_name='订单号')
-    date = models.CharField(max_length=14, null=True, blank=True, verbose_name='时间')
-    number = models.IntegerField(null=True,blank=True,verbose_name='可用件数')
-    operation = models.CharField(null=True,blank=True,max_length=8,verbose_name='操作')
+    filename= models.CharField(null=True,blank=True,max_length=128,verbose_name='文档名称')
 
     # 重写__str__函数3
     def __str__(self):
@@ -136,6 +133,12 @@ class order(models.Model):
         db_table = "order"
         verbose_name = '订单管理列表'
         verbose_name_plural = verbose_name
+    def dic(self):
+        d = {
+            'id':self.id,
+            'filename':self.filename,
+        }
+        return d
 # 订单管理
 class Treasure(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')

@@ -8,7 +8,6 @@
 
 from django.conf import settings
 from .models import *
-
 from win32com import client as wc
 import time
 import docx
@@ -19,7 +18,7 @@ import random
 import re
 import os
 import zipfile
-
+from urllib import parse as up
 source = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
 ]
@@ -189,7 +188,12 @@ def post_examiningz_report(id,state=False):
             print('接口错误')
             return False
         data = json.loads(res.text)['checkResult']
-        zippath = Areport(data)
+        accobj = obj.account
+        advertpathobjlist = accobj.order_set.all()
+        advertpath_list = []
+        for advert_path_obj in advertpathobjlist:
+            advertpath_list.append(advert_path_obj.filename)
+        zippath = Areport(data,advertpath_list)
         obj.zipurl=zippath
         obj.save()
         return zippath
@@ -221,6 +225,7 @@ def accobj_surplus(accobj):
 # 查询账户剩余积分是否够用
 def surplus_shengyu(accobj, surp):
     '''
+    查询账户剩余积分是否够用
     :param account:
     :param surp:
     :return:
@@ -466,7 +471,7 @@ def deletedata15day(id):
     except:
         pass
 # 批量下载前压缩
-def zipDir(dirpath_list,path,outFullName):
+def zipDir(dirpath_list,path,outFullName,advertpath_list=''):
     """
     压缩指定文件夹
     :param dirpath: 目标文件夹路径
@@ -480,10 +485,19 @@ def zipDir(dirpath_list,path,outFullName):
     dpath = os.path.join(settings.BASE_DIR, path)
     for filename in filenamelist:
         zips.write(os.path.join(dpath,filename),os.path.join('',filename))
+    # 添加广告
+    if advertpath_list:
+        path = 'static/advertfile'
+        filenamelist = []
+        for filepath in advertpath_list:
+            filenamelist.append(filepath.split('/')[-1])
+        dpath = os.path.join(settings.BASE_DIR, path)
+        for filename in filenamelist:
+            zips.write(os.path.join(dpath, filename), os.path.join('', filename))
     zips.close()
 # 生成 A系统的检测报告
-def Areport(resDict):
-    timestr = str(resDict['source_max_similar_title']) + '_' + ''.join(random.sample(source, 12))
+def Areport(resDict,advertpath_list=''):
+    timestr = str(resDict['title'].split('.')[0]) + '_' + ''.join(random.sample(source, 2))
     path = os.path.join(settings.BASE_DIR, 'static/report/{0}'.format(timestr))
     def reference(ruselt):
         if ruselt:
@@ -492,6 +506,8 @@ def Areport(resDict):
     # 检测报告 与 相似文献列表
     paragraph_list = []  # 存放各个部分的数据
     quanwenbiaominyinyong = ''  # 全文标明引用
+    source_max_similar_title = ''  # 单片最大复制文章名称
+    source_max = 0  # 单片最大复制文章分数
     for paragraph in resDict['report_annotation_ref']['chapters']:
         paragraph_head = {
             'paragraph_chapter': paragraph['chapter'],
@@ -502,6 +518,9 @@ def Areport(resDict):
         body_list = paragraph['sources']
         for index in range(int(len(body_list) / 3)):
             body = body_list[index]
+            if body["similarity"] > source_max:
+                source_max = body["similarity"]
+                source_max_similar_title = body['title']
             try:
                 paragraph_body = {
                     'paragraph_reference': reference(body['reference']),
@@ -588,6 +607,7 @@ def Areport(resDict):
     # 重复字数
         'word_count': resDict['word_count'],  # 总字数
         'source_max_similar_count': resDict['source_max_similar_count'],  # 单篇最大重复字数
+        'source_max_similar_title': source_max_similar_title,  # 单篇最大文字复制比标题
         'chapter_count': resDict['chapter_count'],  # 总段落数
         'report_annotation_ref_front_part_similar_count': resDict['report_annotation_ref']['front_part_similar_count'],
     # 前部重合字数
@@ -627,15 +647,51 @@ def Areport(resDict):
     with open(qwbmyy, 'w', encoding='utf-8')as f:
         f.write(htmlqwbmyy)
     zippath = os.path.join(settings.BASE_DIR, 'static/zipfiles/{0}{1}'.format(timestr, '.zip'))
-    zipDir([qwbmyy,qwdz],'static/report/', zippath)
+    zipDir([qwbmyy,qwdz],'static/report/', zippath,advertpath_list)
     if os.path.exists(qwdz):
         os.remove(qwdz)
     if os.path.exists(qwbmyy):
         os.remove(qwbmyy)
     return zippath
-
-
-
+# 增加 广告 文档
+def addOrder(filename,accobj):
+    try:
+        obj = Order()
+        obj.account = accobj
+        obj.filename = filename
+        obj.save()
+        return True
+    except:
+        return False
+# 查看 广告 文档
+def create(accobj):
+    obj = Order.objects.filter(account=accobj)
+    msg = []
+    for info in obj:
+        msg.append(info.dic())
+    return msg
+# 删除广告文档
+def deletdoc(accobj,ids):
+    try:
+        if isinstance(ids,list):
+            for id in ids:
+                if id:
+                    obj = Order.objects.get(account=accobj,id=id)
+                    filename = obj.filename
+                    filepath = os.path.join(settings.BASE_DIR, 'static/advertfile/{}'.format(filename))
+                    if os.path.exists(filepath):
+                        os.remove(filepath)
+                    obj.delete()
+        else:
+            obj = Order.objects.get(account=accobj, id=ids)
+            filename = obj.filename
+            filepath = os.path.join(settings.BASE_DIR, 'static/file/'.format(filename))
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            obj.delete()
+        return True
+    except:
+        return False
 if __name__ == '__main__':
     filepath = 'C:\\Users\\Administrator\\Desktop\\project\\individual_event\\pdf_collect_porject\\Paper\\static\\file\A.doc'
     text = filedoc(filepath)

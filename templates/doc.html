@@ -1,159 +1,188 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="/static/cnki2/easyui.css">
-<link rel="stylesheet" type="text/css" href="/static/cnki2/icon.css">
-<script type="text/javascript" src="/static/cnki2/jquery.min.js"></script>
-<script type="text/javascript" src="/static/cnki2/jquery.easyui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/cnki2/uploadify.css"/>
-<script type="text/javascript" src="/static/cnki2/jquery.uploadify.min.js"></script>
-<link rel="stylesheet" href="/static/cnki2/base.css">
-<style type="text/css">
-.uploadify-queue-item {
-	width:400px;
-}
-</style>
-<title>Detection</title>
-<script type="text/javascript">
-
-$(function(){
-	
-	$("#uploadFile").uploadify({
-		auto:false,
-		multi:false,
-		removeCompleted:true,
-        height: 26,
-        fileObjName:"file",
-        swf:"/static/cnki2/uploadify.swf",
-        width: 52,
-        removeTimeout:2,
-        uploader:"/user/doc/upload",
-        queueID:"fileQueue",
-        formData:{JSESSIONID:'72F8FB9229EB3D0EBBF87E076FDCAE71'},
-        buttonImage:"/static/cnki2/upload.png",
-        fileTypeExts:"*.doc;*.docx;",
-        fileTypeDesc:"Doc(*.doc;*.docx;)",
-        onDialogOpen:function(){
-        	$("#detectionFile").uploadify("cancel");
-        	$("#uploadMsg").text("");
-        },
-        onUploadStart : function(file) {
-        	$("#detectionFile").uploadify("settings", "formData", {JSESSIONID:'72F8FB9229EB3D0EBBF87E076FDCAE71',matchNo:$("input[name='matchNo']:checked").val()});   
-        	$("#uploadBtn").attr("disabled","disabled");
-        },
-        onUploadSuccess:function(file,data,response){
-        	var msg = "";
-        	 try{
-        	 	var json = eval("("+data+")");
-        	 	var filename = file.name;
-        	 	if (filename.length > 50) {
-        	 		filename = filename.substring(0,30)+"...";
-        	 	}
-        	 	if (json.result==true){
-        	 		msg = "<div style='color:green;'>"+filename+" 上传成功.</div>";
-        	 		$("#docGrid").datagrid("reload");
-        	 	}else{
-        	 		msg = "<div style='color:red;'>"+filename+" 上传失败.<br/>错误:"+json.message+"</div>";
-        	 	}
-        	 }catch(e){
-        	 	
-        	 }
-        	 $("#uploadMsg").append(msg);
-        },
-        onUploadError:function(file,errorCode,errorMsg,errorString){
-        	$("#uploadError").show();
-        	$("#uploadError").text(errorMsg);
-        },
-        onQueueComplete : function(queueData){
-        	$("#uploadBtn").removeAttr("disabled");
-        	//$("#uploadMsg").html("");
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/icon.css">
+    <script type="text/javascript" src="/static/cnki2/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/cnki2/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/cnki2/uploadify.css"/>
+    <script type="text/javascript" src="/static/cnki2/jquery.uploadify.min.js"></script>
+    <link rel="stylesheet" href="/static/cnki2/base.css">
+    <style type="text/css">
+        .uploadify-queue-item {
+            width: 400px;
         }
-    });
-	
-	$("#uploadBtn").click(function(){
-		$("#uploadFile").uploadify("upload","*");
-	});
+    </style>
+    <title>Detection</title>
+    <script type="text/javascript">
+        function uploadBtn() {
+            var questionFile = new FormData();
+            var fileObj = document.getElementById("uploadFile").files[0];
+            // js 获取文件对象，questionFile为文件选择框的Id
+            questionFile.append("file", fileObj);
+            var teacherId = localStorage.getItem("teacherId");
+            questionFile.append("teacherId", teacherId);
+            var courseId = localStorage.getItem("courseId");
+            questionFile.append("courseId", courseId);
+            $.ajax({
+                async: false,
+                type: "post",
+                url: "/docpack/add",
+                data: questionFile,
+                processData: false, //必须false才会避开jQuery对 formdata 的默认处理
+                contentType: false, //必须false才会自动加上正确的Content-Type
+                success: function (data) {
+                    if (data.result) {
+                        alert('上传成功')
+                    } else {
+                        alert('上传失败, 文件名文件名重复');
+                    }
+                }
+            });
+        }
 
-});
+        // $(function () {
+        //     $("#uploadFile").uploadify({
+        //         auto: false,
+        //         multi: false,
+        //         removeCompleted: true,
+        //         height: 26,
+        //         fileObjName: "file",
+        //         swf: "/static/cnki2/uploadify.swf",
+        //         width: 52,
+        //         removeTimeout: 2,
+        //         uploader: "/user/doc/upload",
+        //         queueID: "fileQueue",
+        //         formData: {JSESSIONID: '72F8FB9229EB3D0EBBF87E076FDCAE71'},
+        //         buttonImage: "/static/cnki2/upload.png",
+        //         fileTypeExts: "*.doc;*.docx;",
+        //         fileTypeDesc: "Doc(*.doc;*.docx;)",
+        //         onDialogOpen: function () {
+        //             $("#detectionFile").uploadify("cancel");
+        //             $("#uploadMsg").text("");
+        //         },
+        //         onUploadStart: function (file) {
+        //             $("#detectionFile").uploadify("settings", "formData", {
+        //                 JSESSIONID: '72F8FB9229EB3D0EBBF87E076FDCAE71',
+        //                 matchNo: $("input[name='matchNo']:checked").val()
+        //             });
+        //             $("#uploadBtn").attr("disabled", "disabled");
+        //         },
+        //         onUploadSuccess: function (file, data, response) {
+        //             var
+        //                 msg = "";
+        //             try {
+        //                 var json = eval("(" + data + ")");
+        //                 var filename = file.name;
+        //                 if (filename.length > 50) {
+        //                     filename = filename.substring(0, 30) + "...";
+        //                 }
+        //                 if (json.result == true) {
+        //                     msg = "<div style='color:green;'>" + filename + " 上传成功.</div>";
+        //                     $("#docGrid").datagrid("reload");
+        //                 } else {
+        //                     msg = "<div style='color:red;'>" + filename + " 上传失败.<br/>错误:" + json.message + "</div>";
+        //                 }
+        //             } catch (e) {
+        //
+        //             }
+        //             $("#uploadMsg").append(msg);
+        //         },
+        //         onUploadError: function (file, errorCode, errorMsg, errorString) {
+        //             $("#uploadError").show();
+        //             $("#uploadError").text(errorMsg);
+        //         },
+        //         onQueueComplete: function (queueData) {
+        //             $("#uploadBtn").removeAttr("disabled");
+        //             $("#uploadMsg").html("");
+        //         }
+        //     });
+        //     $("#uploadBtn").click(function () {
+        //         $("#uploadFile").uploadify("upload", "*");
+        //     });
+        // });
+        function deleteDoc() {
+            var rows = $("#docGrid").datagrid("getSelections");
+            if (rows.length == 0) {
+                $.messager.alert("Message", "请至少选择一条需要删除的记录.");
+                return;
+            }
+            $.messager.confirm("确认", "确认删除选中记录?", function (c) {
+                if (c) {
+                    var ids = "";
+                    for (var i = 0; i < rows.length; i++) {
+                        ids += rows[i].id + ",";
+                    }
+                    $.get("/user/doc/delete?ids=" + ids, function (data, status) {
+                        if (data.result == true) {
+                            $.messager.alert("Message", "删除成功.");
+                        } else {
+                            $.messager.alert("Message", "删除失败.", "error");
+                        }
+                        $("#docGrid").datagrid("reload");
+                    })
+                }
+            });
+        }
+    </script>
+    <style type="text/css">
+        * {
+            font-size: 12px;
+        }
 
+        tr {
+            height: 40px;
+        }
 
+        input {
+            height: 25px;
+            width: 600px;
+        }
 
-function deleteDoc() {
-	var rows = $("#docGrid").datagrid("getSelections");
-	if (rows.length == 0) {
-		$.messager.alert("Message","请至少选择一条需要删除的记录.");
-		return;
-	}
-	$.messager.confirm("确认","确认删除选中记录?",function(c) {
-		if (c) {
-			var ids = "";
-			for(var i=0; i < rows.length; i++) {
-				ids += rows[i].id+",";
-			}
-			$.get("/user/doc/delete?ids="+ids,function(data,status) {
-				if(data.result == true) {
-					$.messager.alert("Message","删除成功.");
-				} else {
-					$.messager.alert("Message","删除失败.","error");
-				}
-				$("#docGrid").datagrid("reload");
-			})
-		}
-	});
-	
-}
-
-</script>
-<style type="text/css">
-*{
-	font-size:12px;
-}
-tr {
-	height:40px;
-}
-
-input {
-	height:25px;
-	width:600px;
-}
-
-.error {
-	color:red;
-}
-</style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-	<table id="docGrid" class="easyui-datagrid" data-options="url:'/user/doc/list',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,toolbar:'#userBar',checkbox:true">
-		<thead>
-			<tr>
-				<th data-options="field:'id',checkbox:true">文档</th>
-                <th data-options="field:'filename',width:200">文档</th>
-            </tr>
-		</thead>
-	</table>
-	<div id="userBar">
-		<a href="javascript:;;" class="easyui-linkbutton" data-options="plain:true" onclick="javascript:$('#uploadWindow').window('open');">上传</a>&nbsp;&nbsp;
-		<a href="javascript:deleteDoc();" class="easyui-linkbutton" data-options="plain:true">删除</a>
-	</div>
-	
-	<div id="uploadWindow" class="easyui-window" data-options="title:'上传打包文档',collapsible:false,minimizable:false,maximizable:false,resizable:false,modal:true,width:500,height:220,closed:true">
-		<table>
-			<tr>
-				<td>选择文件</td>
-				<td><input type="file" id="uploadFile"/></td>
-			</tr>
-			<tr>
-				<td>上传队列</td>
-				<td><div id="fileQueue"></div></td>
-			</tr>
-			<td colspan="2">
-					<div id="uploadMsg" style="width:450px;height:30px;overflow: auto;"></div>
-			</td>
-			<tr>
-				<td colspan="2" style="text-align: center;"><input type="button" id="uploadBtn" value="上传" style="width:100px;height:30px;cursor:pointer;"/></td>
-			</tr>
-		</table>
-	</div>
+<table id="docGrid" class="easyui-datagrid"
+       data-options="url:'/user/doc/list',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,toolbar:'#userBar',checkbox:true">
+    <thead>
+    <tr>
+        <th data-options="field:'id',checkbox:true">文档</th>
+        <th data-options="field:'filename',width:200">文档</th>
+    </tr>
+    </thead>
+
+</table>
+<div id="userBar">
+    <a href="javascript:;;" class="easyui-linkbutton" data-options="plain:true"
+       onclick="javascript:$('#uploadWindow').window('open');">上传</a>&nbsp;&nbsp;
+    <a href="javascript:deleteDoc();" class="easyui-linkbutton" data-options="plain:true">删除</a>
+</div>
+
+<div id="uploadWindow" class="easyui-window"
+     data-options="title:'上传打包文档',collapsible:false,minimizable:false,maximizable:false,resizable:false,modal:true,width:500,height:220,closed:true">
+    <table>
+        <tr>
+            <!--<td>选择文件</td>-->
+            <td><input type="file" id="uploadFile"/></td>
+        </tr>
+        <!--<tr>-->
+        <!--<td>上传队列</td>-->
+        <!--<td>-->
+        <!--<div id="fileQueue"></div>-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--<td colspan="2">-->
+        <!--<div id="uploadMsg" style="width:450px;height:30px;overflow: auto;"></div>-->
+        <!--</td>-->
+        <tr>
+            <td colspan="2" style="text-align: center;"><input type="button" onclick="uploadBtn()" value="上传"
+                                                               style="width:100px;height:30px;cursor:pointer;"/></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

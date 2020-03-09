@@ -3,6 +3,7 @@ from django.http import HttpResponse,FileResponse
 import json
 import time
 import os
+import random
 from . import modelsmiddleware as MDW
 from django.conf import settings
 import urllib.parse as up
@@ -145,7 +146,7 @@ def upload(request):
             # 获取前端传输的文件对象
             file_obj = request.FILES.get('file')
             try:
-                order, author, title = file_obj.name.split('_')
+                pattern, order, author, title = file_obj.name.split('_')
             except:
                 jsonStr = {
                     'result': 0,
@@ -183,14 +184,13 @@ def upload(request):
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取文章字符数
             word_number_text = len(text)
-            if len(order) == 1:
-                if not MDW.textLenOrder(word_number_text,order):
-                    jsonStr = {
-                        'result': 0,
-                        'message': '文章字符数过多,请选择其他系统类型'
-                    }
-                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            elif len(order) == 18:
+            if not MDW.textLenOrder(word_number_text,pattern) and len(pattern) == 1:
+                jsonStr = {
+                    'result': 0,
+                    'message': '类型错误: 文章字符数过多,请选择其他系统类型'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            if len(order) == 18:
                 try:
                     int(order)
                 except:
@@ -206,15 +206,21 @@ def upload(request):
                     'message': '订单号错误'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            if not MDW.surplus_shengyu(accobj, order):
+            # 查询账户剩余积分是否够用
+            if not MDW.surplus_shengyu(accobj, pattern):
                 jsonStr = {
                     'result': 0,
                     'message': '该系统剩余积分不足, 请充值'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             taskid,iscode = MDW.post_jiance(name,author,title,text)
-            MDW.addDetection(accobj,order, title, author, taskid, iscode,path,word_number_text)
-            MDW.surplus_minus(accobj, order)
+            if not MDW.addDetection(accobj,order, title, author, taskid, iscode,path,word_number_text):
+                jsonStr = {
+                    'result': 0,
+                    'message': '添加检测失败'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            MDW.surplus_minus(accobj, pattern)
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
@@ -338,7 +344,7 @@ def resubmit(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-# # 删除超过 15天的数据
+# 删除超过 15天的数据
 def deletedata(request):
     if request.method == 'GET':
         name = request.GET.get('name')
@@ -400,7 +406,7 @@ def errorlist(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-# 打包检测文档
+# 打包检测 成功的 文档
 def file_package(request):
     if request.method == 'GET':
         name = request.GET.get('name')
@@ -425,6 +431,7 @@ def examining_report(request):
             if not zippath:
                 return HttpResponse('<h1>下载失败: 请求接口错误</h1>')
             filename = zippath.split('/')[-1]
+            filename = up.quote(filename)
             file = open(zippath, 'rb')
             response = FileResponse(file)
             response['Content-Type'] = 'application/octet-stream'
@@ -440,7 +447,7 @@ def examining_report(request):
                 jsonStr = {"result": 0, "message": '打包失败,请求接口错误'}
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-# 打包文档
+# 查询代理商 上传的 广告文档
 def docpack(request):
     if 'sname' in request.session:
         name = request.session['sname']
@@ -449,7 +456,58 @@ def docpack(request):
         if not accobj:
             return render(request, 'login.html')
         if request.method == 'GET':
+            message = MDW.create(accobj)
+            return render(request, 'doc.html')
+        else:
+            message = MDW.create(accobj)
+            return HttpResponse(json.dumps(message), content_type="application/json")
+    return render(request, 'login.html')
+# 增加 代理商 上传的 广告文档
+def adddocpack(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        if request.method == 'GET':
             return render(request, 'doc.html', locals())
+        else:
+            file_obj = request.FILES.get('file')
+            # 获取当前时间的时间戳
+            timestr = str(random.randint(1,99999))
+            # 获取程序需要写入的文件路径
+            filename = timestr + '_'+ file_obj.name
+            path = os.path.join(settings.BASE_DIR, 'static/advertfile/{}'.format(filename))
+            if os.path.exists(path):
+                jsonStr = {"result": 0, "massage": '失败,文件名已存在'}
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            # 根据路径打开指定的文件(二进制形式打开)
+            f = open(path, 'wb+')
+            # chunks将对应的文件数据转换成若干片段, 分段写入, 可以有效提
+            for chunk in file_obj.chunks():
+                f.write(chunk)
+            f.close()
+            MDW.addOrder(filename,accobj)
+            jsonStr = {"result": 1, "massage": '上传成功'}
+            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+    return render(request, 'login.html')
+# 删除 代理商 上传的广告文档
+def deletedoc(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        if request.method == 'GET':
+            ids = request.GET.get('ids')
+            ids = ids.split(',')
+            if MDW.deletdoc(accobj,ids):
+                jsonStr = {"result": 1, "message": '删除成功'}
+            else:
+                jsonStr = {"result": 0, "message": '删除失败, 未查询到信息'}
+            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
         else:
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")

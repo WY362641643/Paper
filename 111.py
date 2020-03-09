@@ -1319,6 +1319,8 @@ def reference(ruselt):
 # 检测报告 与 相似文献列表
 paragraph_list  = []  #　存放各个部分的数据
 quanwenbiaominyinyong ='' # 全文标明引用
+source_max_similar_title =''  # 单片最大复制文章名称
+source_max = 0   # 单片最大复制文章分数
 for paragraph in resDict['report_annotation_ref']['chapters']:
     paragraph_head ={
         'paragraph_chapter':paragraph['chapter'],
@@ -1329,7 +1331,10 @@ for paragraph in resDict['report_annotation_ref']['chapters']:
     body_list = paragraph['sources']
     for index in range(int(len(body_list)/3)):
         body = body_list[index]
-    # for index,body in enumerate(paragraph['sources']):
+        if body["similarity"] > source_max:
+            source_max = body["similarity"]
+            source_max_similar_title = body['title']
+        # for index,body in enumerate(paragraph['sources']):
         try:
             paragraph_body = {
                 'paragraph_reference':reference(body['reference']),
@@ -1452,6 +1457,7 @@ message = {
     'title_type':'全文对照',
     'similarity':str(similarity) + '%',  # 总文字复制比 去除引用文献复制比 去除本人已发表文献复制比 文字复制比
     'source_max_similar_similarity':resDict['source_max_similar_similarity'],  # 单篇最大文字复制比
+    'source_max_similar_title': source_max_similar_title,  # 单篇最大文字复制比标题
     'report_fulltext_comparison_word_similar_count':resDict['report_fulltext_comparison']['word_similar_count'],  # 重复字数
     'word_count':resDict['word_count'],      # 总字数
     'source_max_similar_count':resDict['source_max_similar_count'], # 单篇最大重复字数
@@ -1468,7 +1474,7 @@ message = {
     'range_time':datetime.datetime.now().strftime('%Y-%m-%d'),
 'paragraphtd':quanwenduizhao, # 文章对比数据
 }
-with open('A.html','r',encoding='utf-8')as f:
+with open('templates/reprot/A.html','r',encoding='utf-8')as f:
     html = f.read()
 html = re.sub('{','￥$',html,flags=re.S)
 html = re.sub('}','￥',html,flags=re.S)

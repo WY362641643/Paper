@@ -91,8 +91,8 @@
         }
 
         function fmt_similarity(value, row, rowIndex) {
-            console.log('相似度');
-            console.log(value);
+            {#console.log('相似度');#}
+            {#console.log(value);#}
             if (value != undefined && row.state >= 2) {
                 return parseFloat(value * 100).toFixed(1);
             }
@@ -167,7 +167,7 @@
         }
 
         function serverAndDomain_fmt(value, row, index) {
-            console.log(row);
+            {#console.log(row);#}
             if (row["orderid"] == "-") {
                 return "-";
             }
@@ -220,16 +220,14 @@
     </thead>
 </table>
 <div id="listBar">
-    检测日期:<input id="detectionDay" type="text" class="easyui-datebox" data-options="width:150">&nbsp;&nbsp;
+{#    检测日期:<input id="detectionDay" type="text" class="easyui-datebox" data-options="width:150">&nbsp;&nbsp;#}
 
     <!--[pojo.UserProduct@19118d44]-->
 
-    <select id="domain">
-        <option value="">--所有宝贝--</option>
-
-        <option value="cnkicn">cnkicn</option>
-
-    </select>
+{#    <select id="domain">#}
+{#        <option value="">--所有宝贝--</option>#}
+{#        <option value="cnkicn">cnkicn</option>#}
+{#    </select>#}
 
     <a href="javascript:search();" class="easyui-linkbutton" data-options="plain:true">搜索</a>&nbsp;&nbsp;&nbsp;&nbsp;
     <input class="easyui-searchbox" data-options="prompt:'需要检索的标题或订单号',searcher:searchOne" style="width:200px"></input>
