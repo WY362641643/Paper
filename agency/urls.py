@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'user/detection/doc/resubmit',views.resubmit),
     url(r'delete/data',views.deletedata),
     url(r'errorlist/',views.errorlist),
-    url(r'docpack/add', views.adddocpack),
+    url(r'docpack/add', views.addDocPack),
     url(r'docpack/',views.docpack),
     url(r'user/doc/delete',views.deletedoc),
     url(r'user/doc/list', views.docpack),

@@ -463,7 +463,7 @@ def docpack(request):
             return HttpResponse(json.dumps(message), content_type="application/json")
     return render(request, 'login.html')
 # 增加 代理商 上传的 广告文档
-def adddocpack(request):
+def addDocPack(request):
     if 'sname' in request.session:
         name = request.session['sname']
         pwd = request.session['spwd']

@@ -121,9 +121,30 @@ class ErrotList(models.Model):
         verbose_name = '错误列表'
         verbose_name_plural = verbose_name
 # 打包文档
+class Packdocument(models.Model):
+    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
+    filename = models.CharField(null=True, blank=True, max_length=128, verbose_name='文档名称')
+
+    # 重写__str__函数3
+    def __str__(self):
+        return str(self.account)
+
+    class Meta:
+        db_table = "packdocument"
+        verbose_name = '打包文档'
+        verbose_name_plural = verbose_name
+    def dic(self):
+        d = {
+            'id':self.id,
+            'filename':self.filename,
+        }
+        return d
+# 订单管理
 class Order(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
-    filename= models.CharField(null=True,blank=True,max_length=128,verbose_name='文档名称')
+    ordernumber = models.CharField(max_length=20,default=0,verbose_name='订单号')
+    date = models.CharField(max_length=16,default=0,verbose_name='时间')
+    quantity_residual = models.IntegerField(default=0,verbose_name='剩余数量')
 
     # 重写__str__函数3
     def __str__(self):
@@ -133,12 +154,8 @@ class Order(models.Model):
         db_table = "order"
         verbose_name = '订单管理列表'
         verbose_name_plural = verbose_name
-    def dic(self):
-        d = {
-            'id':self.id,
-            'filename':self.filename,
-        }
-        return d
+
+
 # 订单管理
 class Treasure(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')

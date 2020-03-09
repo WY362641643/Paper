@@ -189,7 +189,7 @@ def post_examiningz_report(id,state=False):
             return False
         data = json.loads(res.text)['checkResult']
         accobj = obj.account
-        advertpathobjlist = accobj.order_set.all()
+        advertpathobjlist = accobj.packdocument_set.all()
         advertpath_list = []
         for advert_path_obj in advertpathobjlist:
             advertpath_list.append(advert_path_obj.filename)
@@ -654,9 +654,9 @@ def Areport(resDict,advertpath_list=''):
         os.remove(qwbmyy)
     return zippath
 # 增加 广告 文档
-def addOrder(filename,accobj):
+def addpack(filename,accobj):
     try:
-        obj = Order()
+        obj = Packdocument()
         obj.account = accobj
         obj.filename = filename
         obj.save()
@@ -665,7 +665,7 @@ def addOrder(filename,accobj):
         return False
 # 查看 广告 文档
 def create(accobj):
-    obj = Order.objects.filter(account=accobj)
+    obj = Packdocument.objects.filter(account=accobj)
     msg = []
     for info in obj:
         msg.append(info.dic())
@@ -676,14 +676,14 @@ def deletdoc(accobj,ids):
         if isinstance(ids,list):
             for id in ids:
                 if id:
-                    obj = Order.objects.get(account=accobj,id=id)
+                    obj = Packdocument.objects.get(account=accobj,id=id)
                     filename = obj.filename
                     filepath = os.path.join(settings.BASE_DIR, 'static/advertfile/{}'.format(filename))
                     if os.path.exists(filepath):
                         os.remove(filepath)
                     obj.delete()
         else:
-            obj = Order.objects.get(account=accobj, id=ids)
+            obj = Packdocument.objects.get(account=accobj, id=ids)
             filename = obj.filename
             filepath = os.path.join(settings.BASE_DIR, 'static/file/'.format(filename))
             if os.path.exists(filepath):
