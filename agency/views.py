@@ -18,7 +18,14 @@ def index_views(request):
             users = MDW.account_result(name, pwd)
             if users:
                 message = MDW.accobj_surplus(users)
-                message['account'] = name
+                if not message:
+                    message= {
+                        'A': 0,
+                        'P': 0,
+                        'V': 0,
+                    }
+                else:
+                    message['account'] = name
                 return render(request, 'main.html', locals())  # 从哪来,回哪去
             else:
                 del request.session['sname']
@@ -58,7 +65,7 @@ def index_views(request):
             if 'remember' in request.POST:
                 request.session['sname'] = username
                 request.session['spwd'] = password
-                resp = redirect("/login")
+                resp = redirect("/agency/login")
                 resp.set_cookie('cname', username, 60 * 60 * 24 * 365 * 5)
                 resp.set_cookie('cpwd', password, 60 * 60 * 24 * 365 * 5)
                 return resp
@@ -70,7 +77,7 @@ def index_views(request):
                 # print('用户名称%s,用户密码%s' % (username, password))
                 request.session['sname'] = username
                 request.session['spwd'] = password
-                resp = redirect("/login")
+                resp = redirect("/agency/login")
                 # print('用户名称%s == 用户密码%s' % (username, password))
                 # 添加cookie
                 # username = username.decode('utf-8')
@@ -488,7 +495,7 @@ def addDocPack(request):
             for chunk in file_obj.chunks():
                 f.write(chunk)
             f.close()
-            MDW.addOrder(filename,accobj)
+            MDW.addpack(filename,accobj)
             jsonStr = {"result": 1, "massage": '上传成功'}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')

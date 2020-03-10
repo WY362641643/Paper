@@ -51,10 +51,10 @@
 
         function fmt_action(value, row, rowIndex) {
             var action = "";
-            action += "&nbsp;<a href='/user/detection/doc/download?id=" + row.id + "' >下载原文</a>&nbsp;";
+            action += "&nbsp;<a href='/agency/user/detection/doc/download?id=" + row.id + "' >下载原文</a>&nbsp;";
             if (row.state == -2) {
                 {#action += "&nbsp;<a href='javascript:openSubmitTextWin(\"" + row.id + "\",\"" + row.title + "\");' >提交文本</a>&nbsp;";#}
-                action += "&nbsp;<a href='/user/detection/doc/resubmit?id=" + row.id + "' target=\"_blank\">重新检测</a>&nbsp;";
+                action += "&nbsp;<a href='/agency/user/detection/doc/resubmit?id=" + row.id + "' target=\"_blank\">重新检测</a>&nbsp;";
             }
             // if(row["filename"] != undefined && row["filename"].length > 0) {
             // action += "<a href='/user/detection/doc/download?id="+row.id+"' >下载原文</a>";
@@ -62,7 +62,7 @@
 
             if (row.state == 4) {
                 //http://www.cnk1.org/fenjie/ccnkii/download?id=a53649b7-3425-4b27-a2a9-ea6e56e6c28b
-                var url = "/fenjie/common/download?id=" + row.id;
+                var url = "/agency/fenjie/common/download?id=" + row.id;
                 action += "&nbsp;<a href='" + url + "' >下载报告</a>";
                 action += "&nbsp;<a href='javascript:;' onclick=\"retryPackage('" + row.id + "')\" >重新打包</a>";
             } else {
@@ -123,11 +123,11 @@
             for (var i = 0; i < rows.length; i++) {
                 ids += rows[i].id + ",";
             }
-            window.open("/user/detection/batchDownload?ids=" + ids, "downloadWindow")
+            window.open("/agency/user/detection/batchDownload?ids=" + ids, "downloadWindow")
         }
 
         function updateMatchNo(taskid, matchNo) {
-            $.post("/user/detection/matchNo", {taskid: taskid, matchNo: matchNo}, function (data, statue) {
+            $.post("/agency/user/detection/matchNo", {taskid: taskid, matchNo: matchNo}, function (data, statue) {
                 $("#detectionGrid").datagrid("reload");
             });
         }
@@ -146,7 +146,7 @@
 
         function submitText() {
             $('#submitTextForm').form({
-                url: "/user/detection/post",
+                url: "/agency/user/detection/post",
                 onSubmit: function () {
                     var length = $("#submitTextForm textarea[name='text']").val().length;
                     if (length == 0) {
@@ -177,7 +177,7 @@
         function retryPackage(id) {
             $.messager.confirm("确认", "确认重新打包？非特殊情况请勿重新打包!", function (r) {
                 if (r) {
-                    $.post("/user/detection/package/retry?id=" + id, {}, function (data, status) {
+                    $.post("/agency/user/detection/package/retry?id=" + id, {}, function (data, status) {
                         if (data.result) {
                             $.messager.alert("信息", data.message);
                             $("#detectionGrid").datagrid("reload");
@@ -203,7 +203,7 @@
 </head>
 <body>
 <table id="detectionGrid" class="easyui-datagrid"
-       data-options="url:'/user/detection/list',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true,toolbar:'#listBar'">
+       data-options="url:'/agency/user/detection/list',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true,toolbar:'#listBar'">
     <thead>
     <tr>
         <th data-options="field:'taskid',width:100,checkbox:true"></th>

@@ -26,7 +26,7 @@ $(function(){
 		});
 	$("#submitBtn").click(function(){
 		$("#detectionForm").form("submit",{
-			url:"/detection/",
+			url:"/agency/detection/",
 			onSubmit: function(){
 				if($("#detectionForm input[name='title']").val().length == 0) {
 					$.messager.alert("Message","标题不能为空.");

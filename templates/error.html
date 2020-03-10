@@ -43,7 +43,7 @@
                 case 2:
                     return "等待获取报告";
                 case 3:
-                    return "正在生成报告..."
+                    return "正在生成报告...";
                 case 4:
                     return "检测完成";
                 default:
@@ -56,7 +56,7 @@
             if (row.state == -2) {
                 action += "<a href='javascript:openSubmitTextWin(\"" + row.id + "\",\"" + row.title + "\");' target='_blank'>提交文本</a>&nbsp;";
             }
-            action += "<a href='/user/detection/doc/download?id=" + row.id + "' target='_blank'>下载原文</a>";
+            action += "<a href='/agency/user/detection/doc/download?id=" + row.id + "' target='_blank'>下载原文</a>";
             return action;
         }
 
@@ -89,7 +89,7 @@
 
         function submitText() {
             $('#submitTextForm').form({
-                url: "/user/detection/post",
+                url: "/agency/user/detection/post",
                 onSubmit: function () {
                     var length = $("#submitTextForm textarea[name='text']").val().length;
                     if (length == 0) {
@@ -198,7 +198,7 @@
                 </div>
             </div>
             <table id="detectionGrid" class="easyui-datagrid"
-                   data-options="url:&#39;/errorlist/&#39;,pagination:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true"
+                   data-options="url:&#39;/agency/errorlist/&#39;,pagination:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true"
                    style="display: none;">
                 <thead>
                 <tr>
@@ -307,7 +307,7 @@
     <div id="submitTextWin" class="easyui-window panel-body panel-body-noborder window-body"
          data-options="width:800,height:500,collapsible:false,minimizable:false,maximizable:false,closed:true,modal:true"
          title="" style="width: 786px; height: 464px;">
-        <form action="/errorlist/" id="submitTextForm" method="post">
+        <form action="/agency/errorlist/" id="submitTextForm" method="post">
             <input type="hidden" name="id">
             <textarea rows="" cols="" style="width:783px;height:420px;" name="text"></textarea>
             <div style="text-align:center;padding-top:5px;">

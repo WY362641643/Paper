@@ -1,0 +1,125 @@
+.fileinput-button {
+	position: relative;
+	overflow: hidden;
+}
+
+.fileinput-button input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	opacity: 0;
+	-ms-filter: 'alpha(opacity=0)';
+	font-size: 200px;
+	direction: ltr;
+	cursor: pointer;
+}
+
+@media screen\9 {
+	.fileinput-button input {
+		filter: alpha(opacity = 0);
+		font-size: 100%;
+		height: 100%;
+	}
+}
+
+.fileupload-buttonbar .btn, .fileupload-buttonbar .toggle {
+	margin-bottom: 5px;
+}
+
+.progress-animated .progress-bar, .progress-animated .bar {
+	background: url("images/progressbar.gif")
+		!important;
+	filter: none;
+}
+
+.fileupload-process {
+	float: right;
+	display: none;
+}
+
+.fileupload-processing .fileupload-process, .files .processing .preview
+	{
+	display: block;
+	width: 32px;
+	height: 32px;
+	background: url("../../all/themes/new_cnki_theme/img/loading.gif")
+		center no-repeat;
+	background-size: contain;
+}
+
+.files audio, .files video {
+	max-width: 300px;
+}
+
+@media ( max-width :767px) {
+	.fileupload-buttonbar .toggle, .files .toggle, .files .btn span {
+		display: none;
+	}
+	.files .name {
+		width: 80px;
+		word-wrap: break-word;
+	}
+	.files audio, .files video {
+		max-width: 80px;
+	}
+	.files img, .files canvas {
+		max-width: 100%;
+	}
+}
+
+.floor {
+	position: absolute;
+	left: -35px;
+	top: 0;
+}
+
+.floor .b1, .floor .b2, .floor .b4 {
+	background-image:
+		url("images/20130330C.png");
+	background-repeat: no-repeat;
+}
+
+.floor .b3 {
+	z-index: 3;
+	text-align: center;
+	line-height: 30px;
+	font-size: 18px;
+	color: #FFF;
+}
+
+.floor .b2 {
+	z-index: 2;
+	height: 0;
+	background-position: -40px 0;
+}
+
+.floor .b4 {
+	top: 30px;
+	left: 5px;
+	width: 18px;
+	height: 7px;
+	overflow: hidden;
+	background-position: -80px 0;
+	position: absolute;
+}
+
+.floor .b4 {
+	background-image:
+		url("images/20130330C.png");
+	background-repeat: no-repeat;
+}
+
+.floor .b {
+	top: 0;
+	left: 0;
+	width: 26px;
+	height: 34px;
+	overflow: hidden;
+	position: absolute;
+}
+
+.floor .b1 {
+	z-index: 1;
+	background-position: 0 0;
+}

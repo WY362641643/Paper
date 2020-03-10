@@ -51,7 +51,7 @@ class Surplus(models.Model):
         d = {
             'A':self.a,
             'P':self.p,
-            'V':self.v
+            'V':self.v,
         }
         return d
 # 检测卡列表
@@ -154,9 +154,7 @@ class Order(models.Model):
         db_table = "order"
         verbose_name = '订单管理列表'
         verbose_name_plural = verbose_name
-
-
-# 订单管理
+# 宝贝管理
 class Treasure(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
     website = models.CharField(max_length=128,null=True,blank=True,verbose_name='域名')
@@ -177,11 +175,11 @@ class Treasure(models.Model):
         db_table = "treasure"
         verbose_name = '宝贝管理'
         verbose_name_plural = verbose_name
-
+# 全局管理
 class Globo(models.Model):
     name = models.CharField(max_length=8,verbose_name='名称')
     info = models.CharField(max_length=128,verbose_name='信息')
-
+    isActivate = models.BooleanField(default=True,verbose_name='是否激活')
     # 重写__str__函数3
     def __str__(self):
         return str(self.name)

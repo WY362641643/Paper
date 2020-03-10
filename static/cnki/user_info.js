@@ -189,7 +189,7 @@ UserInfoDlg.addSubmit = function () {
     }
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "/mgr/add", function (data) {
+    var ajax = new $ax(Feng.ctxPath + "agency/mgr/add", function (data) {
         Feng.success("添加成功!");
         window.parent.MgrUser.table.refresh();
         UserInfoDlg.close();
@@ -213,7 +213,7 @@ UserInfoDlg.editSubmit = function () {
     }
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "/mgr/edit", function (data) {
+    var ajax = new $ax(Feng.ctxPath + "agency/mgr/edit", function (data) {
         Feng.success("修改成功!");
         if (window.parent.MgrUser != undefined) {
             window.parent.MgrUser.table.refresh();
@@ -230,7 +230,7 @@ UserInfoDlg.editSubmit = function () {
  * 修改密码
  */
 UserInfoDlg.chPwd = function () {
-    var ajax = new $ax(Feng.ctxPath + "/mgr/changePwd", function (data) {
+    var ajax = new $ax(Feng.ctxPath + "agency/mgr/changePwd", function (data) {
         Feng.success("修改成功!");
     }, function (data) {
         Feng.error("修改失败!" + data.responseJSON.message + "!");

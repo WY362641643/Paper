@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'agency',
+    'index',
 ]
 
 MIDDLEWARE = [
@@ -82,10 +83,10 @@ DATABASES = {
         # 'USER': 'www_cnkidata_com',
         # 'PASSWORD': 'yzdeY64CDDXYBf6w',
         # 'HOST': '127.0.0.1',
-        'NAME': 'paper',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'NAME': 'www_cnkidata_com',
+        'USER': 'www_cnkidata_com',
+        'PASSWORD': 'yzdeY64CDDXYBf6w',
+        'HOST': '47.244.144.152',
         'PORT': 3306,
         'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',

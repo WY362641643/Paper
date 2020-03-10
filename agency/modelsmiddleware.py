@@ -8,7 +8,8 @@
 
 from django.conf import settings
 from .models import *
-from win32com import client as wc
+# from win32com import client as wc
+import subprocess  # liunx　
 import time
 import docx
 import requests
@@ -18,7 +19,7 @@ import random
 import re
 import os
 import zipfile
-from urllib import parse as up
+import pdfkit
 source = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
 ]
@@ -288,30 +289,27 @@ def filedoc(path):
     :param path:
     :return:
     '''
-    # word = wc.Dispatch("Word.Application")
-    # doc = word.Documents.Open(path)
+    # windows 处理
+    # word = wc.Dispatch('Word.Application')
     # # 上面的地方只能使用完整绝对地址，相对地址找不到文件，且，只能用“\\”，不能用“/”，哪怕加了 r 也不行，涉及到将反斜杠看成转义字符。
-    # doc.SaveAs(r"F:\\***\\***\\appendDoc\\***.docx", 12, False, "", True, "", False, False, False,False)  # 转换后的文件,12代表转换后为docx文件
-    # # doc.SaveAs(r"F:\\***\\***\\appendDoc\\***.docx", 12)#或直接简写
-    # # 注意SaveAs会打开保存后的文件，有时可能看不到，但后台一定是打开的
-    # doc.Close
-    # word.Quit
-    word = wc.Dispatch('Word.Application')
-    # 上面的地方只能使用完整绝对地址，相对地址找不到文件，且，只能用“\\”，不能用“/”，哪怕加了 r 也不行，涉及到将反斜杠看成转义字符。
-    doc = word.Documents.Open(path)  # 目标路径下的文件
-    path_package = path.split('.')
-    docxpath = '.'.join(path_package[:-1]) + '.docx'
-    doc.SaveAs(docxpath, 12, False, "", True, "", False, False, False, False)  # 转换后的文件,12代表转换后为docx文件
-    doc.Close()
-    try:
-        word.Quit()
-    except AttributeError:
-        print('关闭 word 文件错误')
-    text = filedocx(docxpath)
-    # 删除 docx 文件
-    if os.path.exists(docxpath):
-        os.remove(docxpath)
-    return text
+    # doc = word.Documents.Open(path)  # 目标路径下的文件
+    # path_package = path.split('.')
+    # docxpath = '.'.join(path_package[:-1]) + '.docx'
+    # doc.SaveAs(docxpath, 12, False, "", True, "", False, False, False, False)  # 转换后的文件,12代表转换后为docx文件
+    # doc.Close()
+    # try:
+    #     word.Quit()
+    # except AttributeError:
+    #     print('关闭 word 文件错误')
+    # text = filedocx(docxpath)
+    # # 删除 docx 文件
+    # if os.path.exists(docxpath):
+    #     os.remove(docxpath)
+    # return text
+    # liunx 处理
+    output = subprocess.check_output(['antiword', path])
+    outstr = str(output, encoding='utf-8')
+    return outstr
 # 处理docx文档
 def filedocx(path):
     '''
@@ -414,14 +412,16 @@ def selectDetection(accobj,page=0,rows=0,title=''):
     return obj_list_dict
 # 重新检测检测失败并扣分的文章
 def resubmit(accobj,ids):
-    try:
+    # try:
         obj = DetectionList.objects.get(id=ids,iscode=-2,account=accobj)
         name = accobj.account
         author = obj.author
         title = obj.title
         filepath = obj.filepath
-        if 'docx' in filepath.split('.'[-1]):
+        if 'docx' == filepath.split('.')[-1]:
             fulltext = filedocx(filepath)
+        elif 'doc' == filepath.split('.')[-1]:
+            fulltext = filedoc(filepath)
         else:
             with open(filepath,'r') as f:
                 fulltext = f.read()
@@ -430,8 +430,9 @@ def resubmit(accobj,ids):
         obj.iscode = iscode
         obj.date = round(time.time() * 1000)
         obj.save()
-    except:
-        pass
+        return True
+    # except:
+    #     return False
 # 查询文件路径
 def selectfilepath(id):
     filepath = DetectionList.objects.values('id','filepath').filter(id=id)[0]
@@ -495,6 +496,9 @@ def zipDir(dirpath_list,path,outFullName,advertpath_list=''):
         for filename in filenamelist:
             zips.write(os.path.join(dpath, filename), os.path.join('', filename))
     zips.close()
+# 将html页面转换成 pdf 图片
+def html_pdf(url,filename):
+    pdfkit.from_url(url, filename)
 # 生成 A系统的检测报告
 def Areport(resDict,advertpath_list=''):
     timestr = str(resDict['title'].split('.')[0]) + '_' + ''.join(random.sample(source, 2))

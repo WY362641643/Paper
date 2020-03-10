@@ -20,7 +20,7 @@ function fmt_aciton(value,row,index) {
 function clearNum(orderid) {
 	$.messager.confirm("警告","确认清空此订单可用件数？此操作不可逆！",function(r){
 		if(r) {
-			$.get("/user/order/clear?orderid="+orderid, function(data,status){
+			$.get("agency/user/order/clear?orderid="+orderid, function(data,status){
 				if (data.result == true) {
 					$("#orderGrid").datagrid("reload");
 				}
@@ -65,7 +65,7 @@ function fmtInt(val) {
 
 </head>
 <body>
-	<table id="orderGrid" class="easyui-datagrid" data-options="url:'/user/order/list',pagination:true,striped:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true,toolbar:'#gridBar'">
+	<table id="orderGrid" class="easyui-datagrid" data-options="url:'agency/user/order/list',pagination:true,striped:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true,toolbar:'#gridBar'">
 		<thead>
 			<tr>
                 <th data-options="field:'orderid',width:200">订单号</th>

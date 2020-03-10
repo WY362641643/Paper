@@ -28,7 +28,7 @@
             $.ajax({
                 async: false,
                 type: "post",
-                url: "/docpack/add",
+                url: "/agency/docpack/add",
                 data: questionFile,
                 processData: false, //必须false才会避开jQuery对 formdata 的默认处理
                 contentType: false, //必须false才会自动加上正确的Content-Type
@@ -114,7 +114,7 @@
                     for (var i = 0; i < rows.length; i++) {
                         ids += rows[i].id + ",";
                     }
-                    $.get("/user/doc/delete?ids=" + ids, function (data, status) {
+                    $.get("/agency/user/doc/delete?ids=" + ids, function (data, status) {
                         if (data.result == true) {
                             $.messager.alert("Message", "删除成功.");
                         } else {
@@ -147,7 +147,7 @@
 </head>
 <body>
 <table id="docGrid" class="easyui-datagrid"
-       data-options="url:'/user/doc/list',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,toolbar:'#userBar',checkbox:true">
+       data-options="url:'/agency/user/doc/list',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,toolbar:'#userBar',checkbox:true">
     <thead>
     <tr>
         <th data-options="field:'id',checkbox:true">文档</th>

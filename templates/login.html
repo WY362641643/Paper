@@ -19,14 +19,14 @@
 <div class="container" id="container">
 	
 	<div class="form-container sign-in-container">
-		<form class="m-t" role="form" action="/login" method="post">
+		<form class="m-t" role="form" action="/agency/login" method="post">
             {% csrf_token %}
 			<h1>代理管理系统</h1>
 			<h4 style="color: red;"></h4>
 			<span>用户登录</span>
 			<input name="username" class="line" type="text" placeholder="账号">
 			<input name="password" class="line" type="password" placeholder="密码">
-			<a href="./login#"><input type="checkbox" name="remember">&nbsp;&nbsp;记住密码</a>
+			<a href="/agency/login#"><input type="checkbox" name="remember">&nbsp;&nbsp;记住密码</a>
 			<button type="submit">登录</button>
 		</form>
 	</div>
