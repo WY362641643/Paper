@@ -1,768 +1,440 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="Generator" content="Drupal 7 (http://drupal.org)"/>
-    <title>高校分解检测系统 | 论文检测检测系统</title>
-    <link type="text/css" rel="stylesheet"
-          href="/static/fenjie/css_o2L-FdvVF2JnBqv0xtMLz0-iWArTOOJYLXhwWtVky4o.css"
-          media="all"/>
-    <link type="text/css" rel="stylesheet"
-          href="/static/fenjie/css_LCI82S_LednLf374g89H39UZHpnpfbdTfcF32KNVFi8.css"
-          media="screen"/>
-    <link type="text/css" rel="stylesheet"
-          href="/static/fenjie/css_WbPSBa8L9LisdFQgMEc3tIqzlvSu_Y1kq_elzc1QBTU.css"
-          media="all"/>
-    <link rel="stylesheet" type="text/css" href="/static/webuploader/webuploader.css"/>
-    <script type="text/javascript" src="/static/fenjie/jquery-1.9.0.js"></script>
-    <script type="text/javascript" src="/static/webuploader/webuploader.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/layer/skin/layer.css"/>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>VIP/TMLC2论文检测</title>
+        <link rel="stylesheet" type="text/css" href="/static/assets_v2/css/common.css?v=2.3.167" />
+    <link rel="stylesheet" type="text/css" href="/static/assets_v2/css/webuploader.css?v=2.3.167" />
+    <link rel="stylesheet" type="text/css" href="/static/assets_v2/css/style.css?v=2.3.167" />
+    <link rel="stylesheet" type="text/css" href="/static/assets_v2/css/footer.css?v=2.3.167" />
+    <link rel="stylesheet" type="text/css" href="/static/assets_v2/css/share/share.css?v=2.3.167" />
+    <script type="text/javascript" src="/static/assets_v2/js/common/jquery-1.11.3.min.js?v=2.3.167"></script>
 
-    <!--[if (gte IE 8)&(lt IE 10)]>
-<link type="text/css" rel="stylesheet" href="sites/all/themes/new_cnki_theme/js/cors/jquery.xdr-transport.js-njla9t"  media="all" />
-<![endif]-->
-
-    <script type="text/javascript" src="/static/layer/layer.js"></script>
-    <script type="text/javascript" src="/static/fenjie/drupal.js"></script>
     <script type="text/javascript">
-        <!--//--><![CDATA[//><!--
-        $(document)
-            .ready(
-                function () {
-                    $('body')
-                        .iealert(
-                            {
-                                support: 'ie6',
-                                text: "为了得到我们平台最好的体验效果和最佳的安全性,我们建议您升级到最新版本的Internet Explorer或选择另一个最佳的web浏览器.<p class='text-error' style='font-size:12px;display:block'>如果您不升级,在过时浏览器中遇到的任何问题,我们将不予以解决,请谅解!</p>一个列表最流行的web浏览器在下面可以找到,点击后去官网下载安装.<br /><br /><button id='goon' class='btn btn-danger'>我要冒险继续访问</button>"
-                            });
-                });
-        //--><!]]>
-    </script>
-    <script type="text/javascript">
-        var multiUploader = null;
-        $(function () {
-
-
-            var domain = 'cnkicn';
-            var singleUploader = WebUploader.create({
-                auto: false,
-                multiple: false,
-                fileNumLimit: 1,
-                // fileSingleSizeLimit: 100*1024*1024,
-                swf: '/static/webuploader/Uploader.swf',
-                server: "/fenjie/" + domain + "/upload",
-                pick: $("#detectionFile"),
-                resize: false,
-                accept: {
-                    title: "office word document",
-                    extensions: 'doc,docx',
-                    mimeTypes: 'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                }
-            });
-            singleUploader.on("fileQueued", function (file) {
-                $("#single-filename-nofile").text(file.name);
-            });
-            singleUploader.on("beforeFileQueued", function (file) {
-                singleUploader.reset();
-            });
-            singleUploader.on("fileDequeued", function (file) {
-                $("#single-filename-nofile").text("未选择文件");
-                $("#singole-file-queue").css("display", "none");
-            });
-            singleUploader.on("uploadBeforeSend", function (block, data) {
-                $("#singole-file-queue").css("display", "block");
-                data.JSESSIONID = 'C936B950D3F447B25CA6B00BA4D33DE9';
-                data.title = $("#title").val();
-                data.author = $("#author").val();
-                data.orderid = $("#single-submit-tid").val();
-            });
-            singleUploader.on("uploadSuccess", function (file, json) {
-                try {
-                    var filename = file.name;
-                    if (filename.length > 50) {
-                        filename = filename.substring(0, 30) + "...";
-                    }
-
-
-                    if (json.result == true) {
-                        if ($("#single-submit-tid").val() != -1) {
-                            layer.alert(json.message, function () {
-                                window.location = "/fenjie/" + domain + "/query?orderid=" + $("#single-submit-tid").val();
-                            });
-                        } else {
-                            var error = parseError();
-                            layer.alert(error);
-                        }
-                    } else {
-                        var error = parseError(json.message);
-                        layer.alert(filename + "提交失败，错误：" + error);
-                    }
-                } catch (e) {
-                    layer.alert(e);
-                }
-                singleUploader.reset();
-                $("#single-filename-nofile").text("未选择文件");
-            });
-            singleUploader.on("uploadError", function (file, reason) {
-                layer.alert("文件【" + file.name + "】上传失败，错误：" + reason);
-            });
-
-
-            multiUploader = WebUploader.create({
-                auto: false,
-                multiple: true,
-                fileNumLimit: 10,
-                // fileSingleSizeLimit: 100*1024*1024,
-                swf: '/static/webuploader/Uploader.swf',
-                server: "/fenjie/" + domain + "/upload",
-                prepareNextFile: true,//允许在文件传输时提前把下一个文件准备好
-                pick: $("#multiDetectionFile"),
-                resize: false,
-                accept: {
-                    title: "office word document",
-                    extensions: 'doc,docx',
-                    mimeTypes: 'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                }
-            });
-
-            multiUploader.on("fileQueued", function (file) {
-                $("#multiFileResult tbody").append("<tr id='file_row_" + file.id + "'><td>" + file.name + "</td><td></td><td></td><td><a href='javascript:;;' onclick='javascript:multiUploader.removeFile(\"" + file.id + "\");$(\"#file_row_" + file.id + "\").remove();'>移除</a></td>");
-            });
-            multiUploader.on("uploadBeforeSend", function (block, data) {
-                data.JSESSIONID = 'C936B950D3F447B25CA6B00BA4D33DE9';
-                data.title = $("#title").val();
-                data.orderid = $("#multi-submit-tid").val();
-            });
-            multiUploader.on("uploadSuccess", function (file, json) {
-                try {
-                    var filename = file.name;
-                    if (filename.length > 50) {
-                        filename = filename.substring(0, 30) + "...";
-                    }
-
-
-                    if (json.result == true) {
-                        $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>提交完成</span> ");
-                    } else {
-                        var error = parseError(json.message);
-                        $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>提交失败，错误：" + error + "</span> ");
-                    }
-                } catch (e) {
-                    $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>错误：" + e + "</span> ");
-                }
-                $("#file_row_" + file.id + " a").attr("onclick", "$('#file_row_" + file.id + "').remove();").text("移除");
-            });
-            multiUploader.on("uploadStart", function (file) {
-                $("#file_row_" + file.id + " a").attr("onclick", "").text("-");
-            });
-            multiUploader.on("uploadFinished", function () {
-                multiUploader.reset();
-            });
-            multiUploader.on("uploadProgress", function (file, percentage) {
-                $("#file_row_" + file.id + " td:eq(1)").html(parseInt(percentage * 100) + "%");
-            });
-            multiUploader.on("uploadError", function (file, reason) {
-                $("#file_row_" + file.id + " td:eq(2)").html("<span style='color:red'>错误：" + reason + "</span> ");
-            });
-
-
-            function parseError(error) {
-                switch (error) {
-                    case "ORDER_QUERY_FAILED":
-                        error = "订单查询失败，请重试";
-                        break;
-                    case "ORDER_NOT_EXIST":
-                        error = "订单不存在，请确认订单是否有效或订单不属于当前店铺";
-                        break;
-                    case "ORDER_USED":
-                        error = "订单已经被使用，请使用有效订单";
-                        break;
-                    case "ORDER_DELIVERY_FAILED":
-                        error = "发货失败，请重试";
-                        break;
-                    case "ORDER_NUMBER_NOT_ENOUGH":
-                        error = "订单可用件数不足";
-                        break;
-                    case "TASK_SUBMIT_FAILED":
-                        error = "任务提交失败，请重试";
-                        break;
-                    case "AGENT_BALANCE_NOT_ENOUGH":
-                        error = "代理余额不足，请联系店家";
-                        break;
-                    case "ORDER_NOT_MATCH_PRODUCT":
-                        error = "订单属于当前店铺，但不属于当前宝贝，请确认订单所属宝贝";
-                        break;
-                        ;
-                    default:
-                        error = "未知:" + error;
-                        break;
-                }
-                return error;
-            }
-
-            $("#singleSumit").click(function () {
-                var order = $("#single-submit-tid").val();
-                order = order.replace(/ +/, "");
-                if (!/\d{15,20}/.test(order)) {
-                    layer.alert("请输入有效的订单号");
-                    return;
-                }
-                $("#single-submit-tid").val(order);
-                if ($("#title").val().length == 0) {
-                    alert("请填写论文标题");
-                    return;
-                }
-                singleUploader.upload();
-            });
-            $("#multiFileSubmit").click(function () {
-                var order = $("#multi-submit-tid").val();
-                order = order.replace(/ +/, "");
-                if (!/\d{15,20}/.test(order)) {
-                    layer.alert("请输入有效的订单号");
-                    return;
-                }
-                $("#multi-submit-tid").val(order);
-                multiUploader.upload();
-            });
-
-            $("#singleOrMulti li").each(function (index, elem) {
-                $(elem).click(function () {
-                    $("#singleOrMulti li").removeClass("active");
-                    $(".tab-content >div").removeClass("active");
-                    $(this).addClass("active");
-                    $(".tab-content >div:eq(" + index + ")").addClass("active");
-                });
-            });
-
-        });
-        <
-        !--//--><![CDATA[//><!--
-            jQuery
-                .extend(
-                    Drupal.settings,
-                    {
-                        "basePath": "\/",
-                        "pathPrefix": "",
-                        "admin_menu": {
-                            "suppress": 1
-                        },
-                        "ajaxPageState": {
-                            "theme": "new_qikan_theme",
-                            "theme_token": "Wc_8kdajq6VxKpper6TOvTcd4pd28EIe3Owy5tBmXPs",
-                            "js": {
-                                "sites/all/themes/checksystembasetheme/js/alliance.api.min.js": 1,
-                                "sites/all/themes/checksystembasetheme/js/alliance.api.reportdownload.min.js": 1,
-                                "sites/all/themes/checksystembasetheme/js/tmpl.min.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/vendor/jquery.ui.widget.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/tmpl.min.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/bootstrap.min.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/jquery.iframe-transport.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/jquery.fileupload.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/jquery.fileupload-process.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/jquery.fileupload-validate.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/jquery.fileupload-ui.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/main.min.js": 1,
-                                "sites/all/themes/new_cnki_theme/js/functions.js": 1,
-                                "0": 1,
-                                "sites/all/modules/jquery_update/replace/jquery/1.9/jquery.min.js": 1,
-                                "misc/jquery.once.js": 1,
-                                "misc/drupal.js": 1,
-                                "public:\/\/languages\/zh-hans_Jdr-3S32cMy3fz3cfOhwlxJRbJUDhwqlimsmHV6vfuk.js": 1,
-                                "sites/all/themes/paperbasetheme/js/jquery-migrate.min.js": 1,
-                                "sites/all/themes/paperbasetheme/js/iealert.js": 1,
-                                "1": 1
-                            },
-                            "css": {
-                                "sites/all/modules/ctools/css/ctools.css": 1,
-                                "sites/all/themes/paperbasetheme/css/iealert.css": 1,
-                                "sites/all/themes/new_cnki_theme/css/bootstrap.css": 1,
-                                "sites/all/themes/new_cnki_theme/css/cnkivipextra.css": 1,
-                                "sites/all/themes/new_cnki_theme/css/jquery.fileupload.css": 1,
-                                "sites/all/themes/new_cnki_theme/css/jquery.fileupload-ui.css": 1,
-                                "sites/all/themes/new_cnki_theme/js/cors/jquery.xdr-transport.js": 1
-                            }
-                        },
-                        "calculation": {
-                            "unit": "0",
-                            "price": "20.00",
-                            "minunit": "0"
-                        }
-                    });
-        //--><!]]>
-    </script>
-    <!-- Bootstrap -->
-    <noscript>
-        <link rel="stylesheet"
-              href="sites/all/themes/new_cnki_theme/css/jquery.fileupload-noscript.css">
-    </noscript>
-    <noscript>
-        <link rel="stylesheet"
-              href="sites/all/themes/new_cnki_theme/css/jquery.fileupload-ui-noscript.css">
-    </noscript>
+        var $CONFIG = {};
+                    $CONFIG['uid']='1809';
+                    $CONFIG['check_type']='3';
+                    $CONFIG['type_desc']='VIP/TMLC2论文检测';
+                    $CONFIG['chk_desc']='';
+                    $CONFIG['chk_flag']='cnki';
+                    $CONFIG['ver_chktype']='[3]';
+                    $CONFIG['price']='238.00';
+                    $CONFIG['unit']='1';
+                    $CONFIG['is_display_price']='0';
+                    $CONFIG['unit_piece']='1';
+                    $CONFIG['unit_name']='篇';
+                    $CONFIG['title_min']='0';
+                    $CONFIG['title_max']='0';
+                    $CONFIG['auther_min']='1';
+                    $CONFIG['auther_max']='30';
+                    $CONFIG['content_min']='0';
+                    $CONFIG['content_max']='0';
+                    $CONFIG['file_max_size']='83886080';
+                    $CONFIG['file_type']='[".txt",".doc",".docx"]';
+                    $CONFIG['agent_domain']='/cnki';
+                    $CONFIG['page_id']='555';
+                    $CONFIG['pay_list']='[0,1]';
+                    $CONFIG['all_pay_list']='{"0":"\u6dd8\u5b9d\u8ba2\u5355","2":"\u5fae\u4fe1\u652f\u4ed8","3":"\u652f\u4ed8\u5b9d","1":"\u5e73\u53f0\u68c0\u6d4b\u5361\u652f\u4ed8","4":"\u4eac\u4e1c\u8ba2\u5355","5":"\u5fae\u4fe1\u5361\u5305\u4f18\u60e0\u5238","6":"\u624b\u5de5\u68c0\u6d4b"}';
+                    $CONFIG['default_pay_type']='0';
+                    $CONFIG['notice']='论文上传 2-4 小时左右出结果，晚上23:00后提交的，次日上午10点左右下载结果，提交后请耐心等待，提交后不予退款！';
+                    $CONFIG['is_confirm_notice']='0';
+                    $CONFIG['pay_query_start_time']='10';
+                    $CONFIG['pay_query_interval']='3';
+                    $CONFIG['qrcode_expire_time']='180';
+                    $CONFIG['report_query_interval']='180';
+                    $CONFIG['is_check_file_wordnum']='0';
+                    $CONFIG['file_max_wordnum']='0';
+                    $CONFIG['guide_url']='https://item.taobao.com/item.htm?id=587849535770';
+                    $CONFIG['check_paper_library_desc_new']='Array';
+                    $CONFIG['logo_url']='/static/assets_v2/images/common/logo_cnki.png';
+                    $CONFIG['is_open_coupon']='0';
+                    $CONFIG['is_have_coupon_rule']='0';
+                    $CONFIG['coupon_rule_money']='0';
+                    $CONFIG['weixin_share_uri']='http://www.celunwen.com';
+                    $CONFIG['cnt_upload_type']='1';
+                    $CONFIG['file_wordnum_limit_desc']='';
+                    $CONFIG['wx_is_open_coupon']='0';
+                    $CONFIG['wx_is_have_coupon_rule']='0';
+                    $CONFIG['auto_audit_time']='0';
+                    $CONFIG['is_have_card_rules']='';
+                    $CONFIG['is_show_reduce_guide']='';
+            </script>
 </head>
+
 <body>
-
-<div class="container-fluid logo-header">
-		<span class="allwidth"> <img class="pull-left"
-                                     src="/static/fenjie/images/pmlc12_banner_a.gif">
-			<img class="pull-right"
-                 src="/static/fenjie/images/pmlc12_banner_c.gif">
-		</span><span class="span12" style="margin-top: -33px">
-			<div class="navbar">
-				<ul class="nav">
-					<li class="active"><a href="/fenjie/cnkicn">提交检测</a></li>
-					<li class=""><a href="/fenjie/cnkicn/query">查询结果</a></li>
-					<li class=""><a href="#">下载秘籍</a></li>
-					<li class=""><a href="/fenjie/cnkicn/question">常见问题</a></li>
-					<li class=""><a target="_blank"
-                                    href="https://item.taobao.com/item.htm?id=570904158813">卖家店铺</a></li>
-					<li class=""><a id="favorites" href="#">收藏系统</a></li>
-				</ul>
-			</div>
-		</span>
-</div>
-<div class="container-fluid">
-    <div class="row-fluid">
-
-        <div class="span2 body-left">
-            <!--Sidebar content-->
-            <h4 class="left-h">系统检测文献库范围</h4>
-            <ul class="def-fw">
-                <li>中国学术期刊网络出版总库</li>
-                <li>中国博士学位论文全文数据库</li>
-                <li>中国优秀硕士学位论文全文数据库</li>
-                <li>中国重要会议论文全文数据库</li>
-                <li>中国重要报纸全文数据库</li>
-                <li>中国专利全文数据库</li>
-                <li>互联网资源</li>
-                <li>英文数据库(涵盖期刊、博硕、会议的英文数据以及德国Springer、英国Taylor&amp;Francis
-                    期刊数据库等)
-                </li>
-                <li>港澳台学术文献库</li>
-                <li>优先出版文献库</li>
-                <li>互联网文档资源</li>
-                <li>个人比对库</li>
-                <li>图书资源</li>
+<div id="page_mask"></div>
+ <!-- 头部-->
+ <div class="header">
+   <h2 class="logo"><img id="logo_pic" src="/static/assets_v2/images/common/logo_cnki.png?v=01151134"/></h2>
+   <p class="header_rit"><img src="/static/assets_v2/images/common/head_rt.png"/></p>
+ </div>
+<!-- 中间区域(除了头、尾部)-->
+<div class="mainCont">
+    <!--leftSide左侧-->
+    <div class="leftSide col01">
+        <!--QQ栏目-->
+        <div class="contactInfo m_tp45" style="padding-bottom: 0px;">
+            <h3>获取帮助</h3>
+            <ul class="p_tp20 p_lf40">
+                <li id="get_help" class="m_tp25"><img src="/static/assets_v2/images/common/doubt.png" style="width:20px"><a href="javascript:;" class="iconText">常见问题</a></li>
+                <li>&nbsp;</li>
+                                                                <li>
+                                                            <p style="width:35px;text-align:left;">QQ&nbsp;：</p>
+                    <a target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=845908664&amp;site=qq&amp;menu=yes">
+                        <!-- <img border="0" src="https://wpa.qq.com/pa?p=2:845908664:51" alt="点击这里给我发消息" title="点击这里给我发消息"> -->
+                        <img src="/static/assets_v2/images/qq_kefu.gif" alt="点击这里给我发消息" title="点击这里给我发消息">
+                    </a><br/>
+                                                        </li>
+                                                                                <li class="m_tp25"><img src="/static/assets_v2/images/common/icon01.png" class="icon01"/><a id="report_demo" href="javascript:;" class="iconText" target='_blank'>报告样例</a></li>
             </ul>
-            <!--<h4 class="left-h">系统检测字符数限制</h4>
-            <ul class="def-fw">
-                <li><span class="def-size"></span></li>
-            </ul>-->
-            <h4 class="left-h">联系客服</h4>
-            <ul class="def-fw">
-                <li><a target="_blank"
-                       href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=知网学术不端查重&amp;siteid=cntaobao&amp;status=&amp;charset=utf-8">
-                    <img border="0"
-                         src="http://amos.alicdn.com/online.aw?v=2&amp;uid=知网学术不端查重&amp;site=cntaobao&amp;s=&amp;charset=utf-8"
-                         alt="点这里给我发消息">&nbsp;
-                </a></li>
-                <li>QQ:</li>
-                <li>电话:</li>
-            </ul>
-            <h4 class="left-h">系统主要适用于</h4>
-            <ul class="def-fw">
-                <li>期刊投稿&nbsp;&nbsp;职称发表</li>
-                <li>专本硕博&nbsp;&nbsp;毕业论文</li>
-            </ul>
-        </div>
-        <div class="span10 body-right">
-            <div class="alert fade in">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>温馨提示</strong>
-                &nbsp;&nbsp;1、现在处于毕业高峰期，检测的同学们比较多，所以高校论文检测系统检测所需时间较长，如果您的报告没有及时检测完成，请耐心等候！
-                <br> <span
-                    style="margin-left: 55px">&nbsp;2、提交完待测文章后，可以关闭检测页面，先休息会，过一阵再次访问检测系统，通过订单编号提取检测结果哦!</span><br>
-            </div>
-            <!--Body content-->
-            <div class="tabbable">
-                <ul class="nav nav-tabs" id="singleOrMulti">
-                    <li class="active firstlidef"><a href="javascript:;;"
-                                                     data-toggle="tab">&nbsp;&nbsp;单篇上传&nbsp;&nbsp;</a></li>
-                    <li><a href="javascript:;;" data-toggle="tab"
-                           title="通过一次性上传多篇文章进行检测。">&nbsp;&nbsp;【多篇上传】<span
-                            class="hotbg"></span>&nbsp;&nbsp;
-                    </a></li>
-                    <li><a href="/fenjie/cnkicn/query"
-                           title="如果已经提交过文章检测中，点这里去查询下载检测报告。">&nbsp;&nbsp;查询结果&nbsp;&nbsp;</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tab1">
-                        <form class="form-horizontal" id="singlefileupload"
-                              method="POST" enctype="multipart/form-data"
-                              accept-charset="utf-8">
-                            <input name="hidden_prive" type="hidden" id="hidden_prive"
-                                   value="100"> <input name="hidden_xt_bz" type="hidden"
-                                                       id="hidden_xt_bz" value="5"> <input
-                                name="hidden_nick_id" type="hidden" id="hidden_nick_id"
-                                value="2990749756@qq.com"> <input
-                                name="hidden_mobile_bz" type="hidden" id="hidden_mobile_bz"
-                                value="0"> <input name="hidden_en_nick_id"
-                                                  type="hidden" id="hidden_en_nick_id"
-                                                  value="BC8EFC5C620963A6E238D867BF94BEBEC9BDA8E0022E20E0">
-                            <div class="control-group">
-                                <label class="control-label "> <i
-                                        class="icon-barcode"></i>&nbsp;订单编号:
-                                </label>
-                                <div class="controls">
-                                    <input type="text" name="tids[]" id="single-submit-tid"
-                                           maxlength="20" data-sync-tid="#multi-submit-tid"
-                                           class="input-xlarge submit-tids"
-                                           placeholder="1:请先输入在店铺购买的定单编号"> <span
-                                        class="help-inline tipin">&nbsp;[必填]</span>
-                                    <p style="margin-top: 10px;" class="text-info">
-                                        <span class="label label-info">温馨提示</span>&nbsp;&nbsp;输入订单号时候，请仔细核实不要输入空格。（如果提示请输入有效的订单号，请仔细核实订单号是否正确）
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label"> <i
-                                        class="icon-indent-left"></i>&nbsp;论文标题:
-                                </label>
-                                <div class="controls">
-                                    <input type="text" name="title" class="input-xlarge"
-                                           id="title" maxlength="50" placeholder="填写好论文标题">
-                                    <span class="help-inline tipin">&nbsp;[必填]</span>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label"> <i class="icon-user"></i>&nbsp;论文作者:
-                                </label>
-                                <div class="controls">
-                                    <input class="input-xlarge" name="author"
-                                           maxlength="20" id="author"
-                                           type="text" placeholder="填写好作者"> <span
-                                        class="help-inline tipin">&nbsp;[选填]</span>
-                                    <p style="margin-top: 10px;" class="text-info">
-                                        <span class="label label-info">温馨提示</span>&nbsp;&nbsp;选择文件后，点【提交检测】，稍作休息后点上方【查询结果】下载报告
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label"> <i class="icon-font"></i>&nbsp;待测论文:
-                                </label>
-                                <div class="controls">
-                                    <div id="single-filename" class="tipin tipingray"
-                                         style="height：30px;line-height: 30px;color: #EA0808; font-family: '微软雅黑'">
-                                        <span id="single-filename-nofile">未选择文件</span>
-                                    </div>
-                                    <strong id="single-file-error" class="error text-error"></strong>
-                                </div>
-                            </div>
-                            <div class="control-group" style="height:40px;margin-buttom:0px;">
-                                <label class="control-label"> <i
-                                        class="icon-list-alt"></i>&nbsp;选择论文:
-                                </label>
-                                <div class="floor" style="top: 270px; left: 150px;">
-                                    <b class="fixpng b b1"></b><b class="fixpng b b2"
-                                                                  style="height: 34px; display: block;"></b>
-                                    <b class="b b3">1</b><b class="fixpng b4"></b>
-                                </div>
-                                <div class="floor" style="top: 270px; left: 340px;">
-                                    <b class="fixpng b b1"></b><b class="fixpng b b2"
-                                                                  style="height: 34px; display: block;"></b>
-                                    <b class="b b3">2</b><b class="fixpng b4"></b>
-                                </div>
-                                <div class="controls">
-                                    <div class="fileupload-buttonbar">
-                                        <div class="col-lg-7">
-                                            <div id="detectionFile" class="btn">选择文件</div>
-                                            <span style="clear:both;"></span>
-                                            <button type="button" id="singleSumit"
-                                                    class="btn btn-success start marginl20 width140">
-                                                <i class="glyphicon glyphicon-upload "></i><span><i
-                                                    class="icon-inbox icon-white"></i>&nbsp;提交检测 </span>
-                                            </button>
-
-                                            <a target="_blank"
-                                               href="http://item.taobao.com/item.htm?spm=686.1000925.1000774.22.vtolNA&amp;id=570904158813"
-                                               class="btn btn-warning width140 marginl50"><i
-                                                    class="icon-shopping-cart icon-white"></i>&nbsp;去淘宝购买</a>
-                                            <span class="fileupload-process"></span>
-                                        </div>
-                                        <div class="col-lg-5 fileupload-progress fade">
-                                            <div
-                                                    class="progress progress-striped progress-animated active"
-                                                    role="progressbar" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                <div class="progress-bar progress-bar-success"
-                                                     style="width: 0%; height: 20px"></div>
-                                            </div>
-                                            <div class="progress-extended">&nbsp;</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="control-group" id="singole-file-queue" style="margin-left:40px;display:none;">
-
-                            </div>
-                        </form>
                     </div>
-                    <!-- end of tab1-->
-                    <div class="tab-pane" id="tab2">
-                        <form class="form-horizontal" id="multifileupload" action=""
-                              method="POST" enctype="multipart/form-data"
-                              accept-charset="utf-8">
-                            <div class="control-group">
-                                <label class="control-label"> <i class="icon-th-list"></i>&nbsp;标题命名:
-                                </label>
-                                <div class="controls">
-                                    <p>
-                                        <strong>批量上传的检测文献文件名请按以下格式命名，便于系统解析标题和作者。</strong>
-                                    </p>
-                                    <p class="text-error">&nbsp;&nbsp;格式：作者_标题.doc</p>
-                                    <p class="muted">&nbsp;&nbsp;例如：张三_信息管理系统的设计1.doc</p>
-                                    <p class="muted" style="padding-left: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;张三_信息管理系统的设计2.doc</p>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label"> <i class="icon-th-list"></i>&nbsp;温馨提示:
-                                </label>
-                                <div class="controls">
-                                    <p>
-                                        1.选择文件后（不要管上传的进度是否完成），直接点提交检测，上传才能开始。
-                                    </p>
-                                    <p>
-                                        2.支持多文件选择上传，选择文件，按住CTRL同时选中多个要测的文件，出现进度条后，点：提交检测，这时才会开始上传，上传成功后20分钟左右点上方【查询结果】下载报告
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="control-group ordernum-wrapper">
-                                <label class="control-label"> <i class="icon-barcode"></i>&nbsp;订单编号:
-                                </label>
-                                <div class="controls">
-                                    <input type="text" id="multi-submit-tid" maxlength="20"
-                                           data-sync-tid="#single-submit-tid"
-                                           class="input-xlarge submit-tids"
-                                           placeholder="1:请先输入在店铺购买的定单编号"> <span
-                                        class="help-inline tipin">&nbsp;[必填]</span>
-                                    <p style="margin-top: 10px;" class="text-info">
-                                        <span class="label label-info">温馨提示</span>&nbsp;&nbsp;输入订单号时候，请仔细核实不要输入空格。（如果提示请输入有效的订单号，请仔细核实订单号是否正确）
-                                    </p>
-                                </div>
-                            </div>
+        <!--系统检测文献库栏目-->
+        <div class="p_tp50 systemArt">
+            <h3>系统检测文献库</h3>
+            <ul class="p_tp30 p_lf40" id="original_database">
+                                                                 <li><a href="#">中国学术期刊网络出版总库</a></li>
+                                               <li><a href="#">中国博士学位论文全文数据库/中国优秀硕士学位论文全文数据库</a></li>
+                                               <li><a href="#">中国重要会议论文全文数据库</a></li>
+                                               <li><a href="#">中国重要报纸全文数据库</a></li>
+                                               <li><a href="#">中国专利全文数据库</a></li>
+                                               <li><a href="#">互联网资源</a></li>
+                                               <li><a href="#">英文数据库(涵盖期刊、博硕、会议的英文数据以及德国Springer、英国Taylor&Francis 期刊数据库等)</a></li>
+                                               <li><a href="#">港澳台学术文献库</a></li>
+                                               <li><a href="#">优先出版文献库</a></li>
+                                               <li><a href="#">互联网文档资源</a></li>
+                                               <li><a href="#">源代码库</a></li>
+                                               <li><a href="#">图书资源</a></li>
+                                               <li><a href="#">CNKI大成编客-原创作品库</a></li>
+                                               <li><a href="#">学术论文联合比对库</a></li>
+                                               <li><a href="#">个人比对库</a></li>
+                                                </ul>
+        </div>
 
-                            <div class="control-group"
-                                 style="margin-bottom: 10px !important">
-                                <label class="control-label"> <i class="icon-font"></i>&nbsp;待测论文:
-                                </label>
-                                <!-- <div class="controls">
-                                    <p class="paddingb17 muted" style="margin-top: 5px;">本系统支持多文件选择上传，或者直接将文档拖动到浏览器页面即可（拖拽仅支持高版本浏览器，如谷歌、IE9式及以上或高速模式），选择完成后，下方将显示待上传文件列表。</p>
-                                </div> -->
-                            </div>
-                            <div class="control-group">
-                                <div class="fileupload-buttonbar"
-                                     style="padding-top: 10px; padding-left: 40px;">
-                                    <div class="col-lg-7">
-                                        <div id="multiDetectionFile" class="btn">选择文件</div>
-                                        <button type="button" id="multiFileSubmit"
-                                                class="btn btn-success width140 start marginl20">
-                                            <i class="glyphicon glyphicon-upload"></i><span><i
-                                                class="icon-inbox icon-white"></i>&nbsp;提交检测 </span>
-                                        </button>
-                                        <!--<button type="reset" class="btn btn-danger cancel marginl50">
-                                            <i class="glyphicon glyphicon-ban-circle"></i><span><i
-                                                class="icon-ban-circle icon-white"></i>&nbsp;取消已选择文件 </span>
-                                        </button>-->
-                                        <span class="fileupload-process"></span>
+    </div>
+    <!--rightSide右侧-->
+    <div class="rightSide">
+        <div class="rightCont">
+            <!--公告-->
+            <div class="right-content-area">
+                              <!--上传检测-->
+                <div class="m_tp5">
+                    <!--导航-->
+                   <div class="tabBar">
+                     <ul>
+                     <li class="selected"><a id="single_upload" href="/cnki">单篇上传</a></li>
+                     <li><a id="multiple_upload" href="/cnki/?multiple=1">多篇上传</a></li>
+                     <li><a href="/cnki/report">下载检测报告</a></li>
+
+                                                               </ul>
+                   </div>
+                   <!--切换-->
+                    <div class="tabContent">
+                        <!--单篇上传-->
+                        <div class="Articles">
+                            <form method="" action="" class="form">
+                                <div id="varn_nums"  style="display:none"></div>
+                                <div id="typePage" style="display:none" pageType="2"></div>
+                                <input  type="hidden" value="0" id="storage_type">
+                                <input  type="hidden" value="" id="uploadTmpname">
+                                <input  type="hidden" value="" id="uploadName">
+                                <input  type="hidden" value="" id="uploadMd5">
+                                                                <input type="hidden" name="share_uid" value="" />
+                                <div class="tb clearfix">
+                                    <label class="ico01">论文题目：</label>
+                                    <div class="fm_input">
+                                        <input type="text" id="paper-title"/>
+                                        <p class="tishi"></p>
                                     </div>
-                                    <div class="col-lg-5 fileupload-progress fade">
-                                        <div
-                                                class="progress progress-striped progress-animated active"
-                                                role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar progress-bar-success"
-                                                 style="width: 0%; height: 20px"></div>
+                                    <div class="fm_input check-ok check-title"></div>
+                                </div>
+                                <div class="tb clearfix">
+                                    <label class="ico02">文章作者：</label>
+                                    <div class="fm_input">
+                                        <input type="text" placeholder="作者真实姓名，多作者用英文逗号分隔" id="paper-author"/>
+                                        <p class="tishi" id="info" style="color:gray">此文发表过或引用了自己发表的文章，请填写作者真实姓名</p>
+                                    </div>
+                                    <div class="fm_input check-ok check-author"></div>
+                                </div>
+                                <div class="tb tb2 clearfix" style="margin-bottom:-6px;">
+                                    <label class="ico03">待检论文：</label>
+                                    <div class="fm_input">
+                                        <div class="lb_box uploader">
+                                            <!--用来存放文件-->
+                                            <div id="thelist" class="uploader-list">
+
+                                            </div>
+                                            <div class="btns" id="btns">
+                                                <div id="picker" class="startBtn startText">开始上传</div>
+                                            </div>
+                                            <p class="tishi">
+
+                                            </p>
                                         </div>
-                                        <div class="progress-extended">&nbsp;</div>
                                     </div>
                                 </div>
-                                <div id="multifileslist"
-                                     style="padding-top: 10px; padding-left: 40px;"></div>
-                                <div>
-                                    <table id="multiFileResult" class="table  table-striped template-Container-wrapper">
-                                        <thead>
-                                        <tr>
-                                            <th>文件名</th>
-                                            <th>上传进度</th>
-                                            <th>错误</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thread>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
+                                <div class="tb clearfix upload_img_input" style="position:absolute;overflow:unset;top:-1rem;z-index:-1;">
+                                    <label class="ico07"></label>
+                                    <div class="fm_input">
+                                        <div class="lb_box">
+                                            <!-- 用来存放文件 -->
+                                            <div id="fileList" class="uploader-list-paper">
+                                            </div>
+                                            <div class="btnss" id="btns" style="overflow:none;position: absolute;top:0px;left:311px;">
+                                                <div id="filePicker" class="startBtn startText" style="width:66px;">开始上传</div>
+                                            </div>
+                                            <p class="coupon_error"></p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                                <div id="is_display_unit_price" class="tb clearfix" style="display:none">
+                                    <label class="ico07" style="display:block">单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：</label>
+                                    <p class="check_price"></p>
+                                    <div style="height:20px"></div>
+                                </div>
+                                <div class="tb clearfix" id="pay_methods"  >
+                                    <label class="ico04">支付方式：</label>
+                                    <div class="fm_input" >
+                                        <a name="payMethod_id_item"></a>
+                                        <div class="payMethod" id="payMethod_id_item">
+                                        <!-- <span class="way_01" payList="0">
+                                            <a href="javascript:;">
+                                                淘宝订单
+                                                <i></i>
+                                            </a>
+                                            <div class="maskLayer"></div>
+                                        </span>
+                                        <span class="way_02" payList="2">
+                                            <a href="javascript:;">
+                                                微信
+                                                <i></i>
+                                            </a>
+                                            <div class="maskLayer"></div>
+                                        </span>
+                                        <span class="way_03" payList="3">
+                                            <a href="javascript:;">
+                                                支付宝
+                                                <i></i>
+                                            </a>
+                                            <div class="maskLayer"></div>
+                                        </span> -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="zf_tab" id="zf_tab"><!-- 点击支付方式后显示区域 --></div>
+
+                                <div class="subBtn" id="subbtn" style="position:relative;">
+                                	<div id="submit_btn_mask" style="position: absolute; width: 100%; height: 100%;display:none;"></div>
+                                    <input type="button" value="提交检测" class="submitUpload green" />
+                                </div>
+                                <h3 id="get_help2" style="display:none;color:red;position:relative;left:110px;margin:15px 0px 10px 0px;cursor: pointer;">微信或支付宝已支付，但论文提交失败怎么办？</h3>
+                            </form>
+                        </div>
+                        <!--单篇上传结束-->
                     </div>
                 </div>
-                <!--<div class="controls pull-left">
-    <a href="#myModal" role="button" data-toggle="modal" class="btnupload"></a>
-</div>-->
-
             </div>
-            <h4 class="notice-title">
-                <i class="icon-fullscreen"></i>&nbsp;提交检测须知
-            </h4>
-            <dl class="dl-horizontal">
-                <dt>
-                    <span class="label label-info">订单编号</span> &nbsp;
-                </dt>
-                <dd>在淘宝中购买宝贝后，可以在“我已购买宝贝”中看到有“订单编号”，高校系统检测需要输入订单编号才能使用。</dd>
-                <dt>
-                    <span class="label label-important">文章大小限制</span> &nbsp;
-                </dt>
-                <dd>
-                    文档大小请不要超过<span class="label label-important">20MB</span>
-                    ，否则将无法上传；请把不必要的图片删除即可（系统不检测图片）！
-                </dd>
-                <dt>
-                    <span class="label label-important">无法提交</span> &nbsp;
-                </dt>
-                <dd>用360或搜狗等浏览器的切换到兼容模式，或极速和兼容模式来回切换下，多刷新常识；用【备用网址】提交（宝贝描述里面有写，或联系客服）</dd>
-                <dt>
-                    <span class="label label-info">是否准确</span> &nbsp;
-                </dt>
-                <dd>此使用的系统跟学校的系统是一致，同样的系统，同样的数据库，在提交到学校检测之前，请确保和本系统中检测的文章内容一致，这样才能确保结果一致！</dd>
-                <dt>
-                    <span class="label label-info">标题字符数</span> &nbsp;
-                </dt>
-                <dd>高校系统标题字符数限制在50字符内，如超出则会进行截断，请控制好标题字符数。</dd>
-                <dt>
-                    <span class="label label-info">检测论文格式</span> &nbsp;
-                </dt>
-                <dd>上传检测的文档格式为Word的.docx或者是.doc格式、PDF格式、TXT格式，请勿上传其他格式的文档。但PDF格式高校系统易发生不识别情况，上传PDF格式文章出现任何问题，后果自负！</dd>
-                <dt>
-                    <span class="label label-info">检测篇数</span> &nbsp;
-                </dt>
-                <dd>高校VIP检测是按照篇数来计算，检测一次就是一篇，系统将按照一篇文章目录来分段，所以请勿将多篇不同的文章合并上传检测，否则系统将无法检测！</dd>
-                <dt>
-                    <span class="label label-info">检测字数</span> &nbsp;
-                </dt>
-                <dd>文章字符数+空格数+特殊字符数，与word计算字符有区别，请控制在系统字符限制数内，否则系统将无法检测您的文章，请上传前确认好！</dd>
-                <dt>
-                    <span class="label label-info">安全可靠</span> &nbsp;
-                </dt>
-                <dd>上传论文检测入口，官网授权。正规公司运营店铺，真正实现24小时自助检测，阿里云官方服务器保驾护航，检测时间15分钟左右；下载报告后自行删除安全可靠。</dd>
-                <dt>
-                    <span class="label label-info">初稿or定稿系统</span> &nbsp;
-                </dt>
-                <dd>初稿系统和定稿系统都是正规知网系统，先选择选初稿检测，修改抄袭率到很低后（10%内），再选择高校定稿系统测一次过，是最佳方案。</dd>
-            </dl>
-            <!-- The template to display files available for upload -->
-            <script id="template-upload" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
-        <td>
-            <span class="preview"> <img  width="32" height="32" src="sites/all/themes/new_cnki_theme/img/wordimg.png"/></span>
-        </td>
-        <td>
-            <p class="name">{% =file.name %}</p> <strong class="error text-error"></strong>
-        </td>
-        <td>
-			<input type="text" name="title" value="{% =file.title %}" maxlength="50" class="input-xlarge" placeholder="论文标题[必填]"></td>
-		<td>
-			<input type="text" name="author" value="{% =file.author %}" maxlength="16" class="input-small" placeholder="作者[必填]"></td>
-        <td>
-         <strong><p class="size">处理中...</p></strong>
-        </td>
-        <td style="width:90px">
-            <div class="progress progress-striped progress-animated active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;height:20px;"></div></div>
-        </td>
-        <td>
-            {% if (!i && !o.options.autoUpload) { %}
-                <button class="btn btn-primary start" style="display:none" disabled>
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span>上传</span>
-                </button>
-            {% } %}
-            {% if (!i) { %}
-                <button class="btn btn-warning cancel">
-                    <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span>取消</span>
-                    </button>
-            {% } %}
-        </td>
-    </tr>
-{% } %}
-
-            </script>
-            <!-- The template to display files available for download -->
-            <script id="template-download" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-download fade">
-        <td>
-            <span class="preview"> <img  width="32" height="32" src="sites/all/themes/new_cnki_theme/img/wordimg.png"/></span>
-        </td>
-        <td>
-            <p class="name">{% =file.name %}</p>
-            {% if (file.error) { %}
-                <div><span class="label label-important">提交错误</span> {% =file.error %}</div>
-            {% } %}
-        </td>
-        <td>
-			<p class="title">{% =file.title %}</p></td>
-		<td>
-			<p class="author">{% =file.author %}</p></td>
-        <td>
-            <span class="size">{% =o.formatFileSize(file.size) %}</span>
-        </td>
-		<td>
-			{% if (file.error) { %}
-                <div><span class="label label-important">提交错误</span></div>
-            {% }else{ %}
-				<span class="size label label-success">提交成功</span>
-			{% } %}
-        </td>
-        <td>
-            {% if (file.deleteUrl) { %}
-                <button class="btn btn-danger delete" data-type="{% =file.deleteType %}" data-url="{% =file.deleteUrl %}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <span>删除</span>
-                </button>
-                <input type="checkbox" name="delete" value="1" class="toggle">
-            {% } else { %}
-                <button class="btn btn-warning cancel">
-                    <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span>取消</span>
-                </button>
-            {% } %}
-        </td>
-         <td></td>
-    </tr>
-{% } %}
-
-            </script>
+            <!--右侧底部公用-->
+            <div class="rightFooter rightFooter_text">
+                <h3 class="rtfooter_til">论文提交检测须知</h3>
+                <ul>
+                                    <li>
+                    <span class="label label-info">正版验证</span>
+                                        支持官网真伪验证，谨防假冒，<a href='http://check7.cnki.net/codeverify' style='color:blue' target='_blank'>点击这里验证真伪</a>。                   </li>
+                                    <li>
+                    <span class="label label-success">提交格式</span>
+                                        文件名用“姓名_题目”命名，比如“马克思_资本论”，去掉学校信息，学校测什么就提交什么，和给学校的格式一样 ， 学校只测正文就提交正文，学校都测就都加上 比如 目录、摘要、正文、参考文献，学校测什么就提交什么，格式也一样。                   </li>
+                                    <li>
+                    <span class="label label-warning">文件大小</span>
+                                        文档大小请不要超过30M ，否则将无法上传；不能超过26万字符                   </li>
+                                    <li>
+                    <span class="label label-danger">文件格式</span>
+                                        PDF和WORD计算字符有差异，相同内容PDF和WORD格式检测结果不同，务必搞清楚学校是用PDF还是WORD。如果学校测PDF，要提交PDF；如果学校测WORD，就提交WORD。                    </li>
+                                    <li>
+                    <span class="label label-primary">报告乱码</span>
+                                        某些软件生成的PDF论文会导致报告乱码。请用Adobe Reader打开PDF论文，全选复制内容，粘贴到WORD中，如WORD中出现乱码，知网报告也会是乱码。苹果电脑生成的PDF一般会乱码，建议在windows系统上生成。报告乱码问题是论文原文件格式导致，如执意用论文PDF文件提交学校也同样会是乱码，故不接受因乱码问题引起的退款。                   </li>
+                                    <li>
+                    <span class="label label-info">检测范围</span>
+                                        与学校测的内容/格式一致：目录/摘要/正文/参考文献等学校测哪些就提交哪些。如学校只测正文就提交正文，都测就都提交；请自行删除封面/声明/授权书/致谢中的学校信息，否则因系统自动删除导致的问题作者承担                   </li>
+                                    <li>
+                    <span class="label label-success">检测字数</span>
+                                        文章字符数+空格+特殊字符数，与word计算字符有区别，请控制在系统字符限制数内，否则将无法检测                   </li>
+                                    <li>
+                    <span class="label label-warning">关于退款</span>
+                                        此系统一旦提交，开始检测后，就会产生成本，我们不接受退款，多谢理解                   </li>
+                                    <li>
+                    <span class="label label-danger">有关作者</span>
+                                        如果引用了以前自己所写的内容并且被系统文献库收录，则只要此次检测填写作者，就会有“去除本人已发表文献复制比”的结果                   </li>
+                                    <li>
+                    <span class="label label-primary">关于分段</span>
+                                        检测系统分段方式较复杂，使用Word自动导出的目录，一般系统会按照章节来分段，但有时即使自动导出目录也不一定按照目录来分段。尽量调整好格式与交给学校检测的文章一致                   </li>
+                                    <li>
+                    <span class="label label-info">关于结果</span>
+                                        系统只保证同一篇论文不做任何修改和短期内时报告结果一致，高校系统的可能存在的抽取不全或者含有自建库等其他问题导致结果不同的，概不负责                   </li>
+                                    <li>
+                    <span class="label label-success">关于注解</span>
+                                        脚注、尾注、参考文献、目录等属于文章格式，如报告中上述内容被标红、标黄属于作者论文排版格式引起                   </li>
+                                    <li>
+                    <span class="label label-warning">报告下载</span>
+                                        检测报告保留7天，请尽快下载报告到电脑永久保存                   </li>
+                                </ul>
+            </div>
         </div>
     </div>
 </div>
+<input id="hidden_params" type="hidden" name="hidden_params" is_have_coupon="0" coupon-login-cookie="" coupon-code="" coupon-money="" is_admit_coupon=""  auto_audit_time="0"  is_login="" is_notice_paper_status="" f="" unionid_page_id="" mp_qrcode_url=""/>
+<!--footer-->
+<div class="footerIn">
+    <div class="footCont clearfix">
+        <ul class="clearfix">
+                                                                    </ul>
+        <p>Copyright &copy; 2012-2020
+            ,
+                            jinbang.celunwen.com
+                        . All Rights Reserved  <a href="http://www.beian.miit.gov.cn" target="_blank">京ICP备12045736号-4</a>&nbsp; | &nbsp;
+            <span class="glyphicon glyphicon-stats"></span>
+            权威的文献相似度对比系统，由<a href="http://www.kuailelunwen.com" target="_blank" style="color:#afafaf;">快乐论文自助系统提供技术支持</a>。
+        </p>
+            </div>
+</div>
+<div id="share_desc_text" style="display:none;">[]</div>
+<!--footer结束-->
 
-<div class="footer">
-    <div class="container"
-         style="width: 980px; padding-top: 10px; padding-bottom: 10px;">
-        <p class="footer-desc">
-            <strong>版权所有&nbsp;&nbsp;平台技术支持 QQ：453749696</strong>
-        </p>
-        <p class="list-bottom">
-            <a target="_blank" href="#">网站首页</a> &nbsp; | &nbsp; <a
-                target="_blank" href="#">关于我们</a> &nbsp; | &nbsp; <a target="_blank"
-                                                                     href="#">使用帮助</a> &nbsp; | &nbsp; <a
-                target="_blank" href="#">相关文档</a>
-            &nbsp; | &nbsp; <a target="_blank" href="#">报告样本</a> &nbsp; | &nbsp;
-            <a target="_blank" href="#">报告验证</a> &nbsp; | &nbsp; <a
-                target="_blank" href="#">常见问题</a> &nbsp; | &nbsp; <a target="_blank"
-                                                                     href="disclaimer.aspx?nick_id=BC8EFC5C620963A6E238D867BF94BEBEC9BDA8E0022E20E0">免责声明</a>
-        </p>
+<div id="mask"></div>
+ <div class="model dbLayModel">
+     <div class="modelCont">
+         PDF格式的论文在官网检测有时
+         <!-- <div>文在官网检测有时文在官网检测有时文在官网检测有时文在官网检测有时</div>-->
+     </div>
+     <div class="btnCont">
+         <ul>
+             <li class="btn selected">选择1</li>
+             <li class="btn">选择2</li>
+         </ul>
+     </div>
+ </div>
+ <div class="model noticeLayer">
+     <div class="modelCont"></div>
+     <div class="btnCont">
+         <p class="btn selected" id="submitAgain">选择1</p>
+     </div>
+ </div>
+  <div class="model noticeLayer1">
+     <div class="closeBtn"></div>
+     <h3 class="mdTitle m_tp45">主文案</h3>
+     <div class="modelCont"></div>
+     <div class="btnCont">
+         <p class="btn btnSelected btnSelected1">选择1</p>
+     </div>
+ </div>
+  <div class="model dbLayModel1">
+     <div class="reloadBtn"></div>
+     <h3 class="mdTitle m_tp45">主文案</h3>
+     <div class="modelCont">
+         PDF格式的论文在官网检测有时
+         <!-- <div>文在官网检测有时文在官网检测有时文在官网检测有时文在官网检测有时</div>-->
+     </div>
+     <div class="btnCont">
+         <ul>
+             <li class="btn selected">选择1</li>
+             <li class="btn">选择2</li>
+         </ul>
+     </div>
+ </div>
+ <div class="model layModel">
+     <div class="modelCont"></div>
+     <div class="btnCont">
+         <p class="btn selected">选择1</p>
+     </div>
+ </div>
+
+<div id="check_help" class="model" style="border-radius: 3px;display:none;border:1px solid #ccc">
+    <div id="close_help" style=" width: 22px;height: 22px;position: absolute;top: 13px;right: 13px;cursor: pointer;"><img src="/static/assets_v2/images/common/close.png"></div>
+    <div style="height: 100px;margin-top: 50px;margin-left: 10px;">
+        <p style="position: absolute;color: red;font-size: 15px;" id="pay-itext-content">选择已付款的支付方式 -> 输入商户（订）单号 -> 再次提交</p>
+        <ul id="pay_explain_bar" style="margin-top: -18px;">
+
+        </ul>
     </div>
+</div>
+<div class="view_kf"></div>
+<div id="fx_login_openid" style="display:none;"></div>
+<div class="userListBodyLevel" style="display:none;width: 100px; padding: 0px; top: 52.5px; right: 601.5px;">
+	<span class="fx_level_name">我的检测卡</span>
+	<div class="fx_info_detial_close"></div>
+	<div class="fx_info_detial">
+	    <table class="tb-border">
+	        <tbody id="check_card_tbody">
+		        <tr style="background: #fff;" class="title_tr">
+		            <td class="trt level_txt" style="border-bottom:1px solid #e7e7eb">检测卡号</td>
+		            <td style="border-bottom:1px solid #e7e7eb">操作</td>
+		        </tr>
+	    	</tbody>
+	   </table>
+	</div>
+</div>
+ <script type="text/javascript" src="/static/assets_v2/js/check_card_pay.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/clipboard.min.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/common/jquery.splendid.textchange.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/common/ajaxHelper.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/common/webuploader.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/common/common.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/common/qrcode.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/uploadCoupon.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/uploadPaper.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/payment.js?v=2.3.168"></script>
+<script src="/static/assets_v2/js/share/share.js?v=2.3.167"></script>
+<script type="text/javascript" src="/static/assets_v2/js/local_storage.js?v=2.3.167"></script>
 
-</div>
-<div style="width:0px;height:0px;padding:0px;margin:0px;">
-</div>
+<script>
+var local_host = location.href;
+var uploadTmpname = localStorage.getItem('uploadTmpname'+local_host);
+if(uploadTmpname) {
+    $("#uploadTmpname").val(uploadTmpname);
+}
+var storageType = localStorage.getItem('storage_type'+local_host);
+var price_cache = localStorage.getItem('storage_price'+local_host);
+if(storageType) {
+	if(price_cache==$CONFIG['price']){
+		$("#storage_type").val(storageType);
+	    $("#varn_nums").html(storageType);
+	}else{
+		localStorage.clear();
+	}
+}
+var uploadName = localStorage.getItem('upload_name'+local_host);
+if(uploadName) {
+    $("#uploadName").val(uploadName);
+}
+var uploadMd5 = localStorage.getItem('upload_md5'+local_host);
+if(uploadMd5) {
+    $("#uploadMd5").val(uploadMd5);
+}
+var fileName = localStorage.getItem('file_name'+local_host);
+var fileId = localStorage.getItem('file_id'+local_host);
+if(fileName && fileId){
+    $('.uploader-list').append('<p class="info"><span class="paperDoc">'+fileName+'</span>'+'<a  class="cancel cancelBtn"><img src="/static/assets_v2/images/right/del.png" /></a></p>');
+    $('#picker').html('已上传');
+    $('#picker').addClass('success');
+    $('.cancelBtn').bind('click',function(){
+        $("#uploadTmpname").val('');
+        $('.uploader-list').find('.info').remove();
+        $('#picker').html('开始上传');
+        $('.zf_cont').removeClass('selected');
+        $('.payMethod a').removeClass('selected');
+        $('.payMethod div').css('display','none');
+        $('#picker').removeClass('success');
+    });
+}
+</script>
+
+<script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src = "https://hm.baidu.com/hm.js?16bab14dc4d4c59962e75db7d4649263";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})();</script>
+
+<input type="hidden" id="device_id" value="">
+<input type="hidden" id="script_url" value="">
 </body>
 </html>

@@ -17,7 +17,8 @@ from django.contrib import admin
 # from django.urls import path
 from django.conf.urls import url,include
 urlpatterns = [
-    url('admin', admin.site.urls),
-    url(r'agency', include('agency.urls')),
+    url('^admin', admin.site.urls),
+    url(r'^agency', include('agency.urls')),
+    url(r'cnki',include('index.urls')),
     url(r'^', include('index.urls')),
 ]

@@ -31,9 +31,9 @@ class Users(models.Model):
             'domain':self.domain,
         }
         return d
-# 绑定用户各种检测次数
+# 绑定代理商各种检测次数
 class Surplus(models.Model):
-    account = models.ForeignKey(Users,on_delete=models.CASCADE,verbose_name='用户')
+    account = models.ForeignKey(Users,on_delete=models.CASCADE,verbose_name='代理商')
     a = models.IntegerField(default=0, blank=True, verbose_name='A剩余')
     p = models.IntegerField(default=0, blank=True, verbose_name='P剩余')
     v = models.IntegerField(default=0, blank=True, verbose_name='V剩余')
@@ -56,8 +56,9 @@ class Surplus(models.Model):
         return d
 # 检测卡列表
 class IsActivateCode(models.Model):
+    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='代理商')
     card = models.CharField(max_length=12,unique=True,verbose_name='卡号')
-    isActivate = models.BooleanField(default=True,verbose_name='是否销毁')
+    isActivate = models.BooleanField(default=False,verbose_name='是否已使用')
 
     # 重写__str__函数3
     def __str__(self):
@@ -69,7 +70,7 @@ class IsActivateCode(models.Model):
         verbose_name_plural = verbose_name
 # 检测列表
 class DetectionList(models.Model):
-    account = models.ForeignKey(Users,on_delete=models.CASCADE,verbose_name='用户')
+    account = models.ForeignKey(Users,on_delete=models.CASCADE,verbose_name='代理商')
     orderacc = models.CharField(max_length=19,null=True,blank=True,verbose_name='订单编号')
     title = models.CharField(max_length=64,null=True,blank=True,verbose_name='标题')
     author = models.CharField(max_length=16,null=True,blank=True,verbose_name='作者')
@@ -106,7 +107,7 @@ class DetectionList(models.Model):
         return d
 # 错误列表
 class ErrotList(models.Model):
-    account = models.ForeignKey(Users,on_delete=models.CASCADE,verbose_name='用户')
+    account = models.ForeignKey(Users,on_delete=models.CASCADE,verbose_name='代理商')
     orderacc = models.CharField(max_length=16,null=True,blank=True,verbose_name='订单编号')
     title = models.CharField(max_length=64,null=True,blank=True,verbose_name='标题')
     author = models.CharField(max_length=16,null=True,blank=True,verbose_name='作者')
@@ -122,7 +123,7 @@ class ErrotList(models.Model):
         verbose_name_plural = verbose_name
 # 打包文档
 class Packdocument(models.Model):
-    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
+    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='代理商')
     filename = models.CharField(null=True, blank=True, max_length=128, verbose_name='文档名称')
 
     # 重写__str__函数3
@@ -141,7 +142,8 @@ class Packdocument(models.Model):
         return d
 # 订单管理
 class Order(models.Model):
-    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
+    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='代理商')
+    types = models.CharField(max_length=4,default='A',verbose_name='订单类型')
     ordernumber = models.CharField(max_length=20,default=0,verbose_name='订单号')
     date = models.CharField(max_length=16,default=0,verbose_name='时间')
     quantity_residual = models.IntegerField(default=0,verbose_name='剩余数量')
@@ -156,7 +158,7 @@ class Order(models.Model):
         verbose_name_plural = verbose_name
 # 宝贝管理
 class Treasure(models.Model):
-    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='用户')
+    account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='代理商')
     website = models.CharField(max_length=128,null=True,blank=True,verbose_name='域名')
     individuation = models.CharField(max_length=32,null=True,blank=True,verbose_name='个性化')
     treid = models.CharField(max_length=16,null=True,blank=True,verbose_name='宝贝ID')

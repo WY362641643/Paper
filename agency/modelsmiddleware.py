@@ -373,6 +373,8 @@ def addDetection(accobj,order,title,author,taskid,iscode,path,number_text:int):
     :return:
     '''
     try:
+        if isinstance(order,tuple):
+            order = order[1]
         obj = DetectionList()
         obj.account = accobj
         obj.orderacc = order
@@ -696,6 +698,40 @@ def deletdoc(accobj,ids):
         return True
     except:
         return False
+# 查询订单号是否正确
+def ajax_check_order(order):
+    obj = Order.objects.filter(ordernumber=order,quantity_residual__gt=0)
+    return obj
+# 查询检测卡是否使用
+def test_card(card):
+    try:
+        obj = IsActivateCode.objects.filter(card=card,isActivate=False)
+        if obj:
+            accobj = obj.account
+            return accobj
+    except:
+        pass
+    return False
+# 修改激活卡 或订单号
+def updateorder(card):
+    if isinstance(card,str):
+        obj = IsActivateCode.objects.get(card=card)
+        obj.isActivate = True
+        obj.save()
+    else:
+        # 这是 淘宝订单号 card = (系统类型,订单号)
+        obj = Order.objects.get(ordernumber=card[1])
+        obj.quantity_residual = obj.quantity_residual-1
+        obj.save()
+# 轮循查询三个订单号是否正确,返回 代理obj, (类型,订单号)
+def round_robin(orderids:list):
+    for orderid in orderids:
+        obj = ajax_check_order(orderid)
+        if obj:
+            accobj = obj[0].account
+            types = obj[0].types
+            return accobj,(types,orderid)
+    return False,False
 if __name__ == '__main__':
     filepath = 'C:\\Users\\Administrator\\Desktop\\project\\individual_event\\pdf_collect_porject\\Paper\\static\\file\A.doc'
     text = filedoc(filepath)

@@ -8,7 +8,6 @@
 from django.conf.urls import url
 from . import views
 urlpatterns = [
-    url(r'^$', views.index_views),
     url(r'login',views.index_views),
     url(r'logout',views.logout),
     url(r'detection/$',views.detection),
@@ -31,4 +30,5 @@ urlpatterns = [
     url(r'product/',views.product),
     url(r'user_info/',views.user_info),
     url(r'user_chpwd/',views.user_chpwd),
+    url(r'^', views.index_views),
     ]
