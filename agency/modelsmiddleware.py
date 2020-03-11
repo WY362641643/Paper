@@ -20,6 +20,14 @@ import re
 import os
 import zipfile
 import pdfkit
+from hashlib import md5
+# 加密
+def get_md5(link:str):
+    if isinstance(link, str):
+        link = link.encode('utf-8')
+    m = md5()
+    m.update(link)
+    return m.hexdigest()
 source = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
 ]
@@ -135,7 +143,16 @@ n_table_a_child = '''<TR>
                                                  {chapter}</A> （总{word_count}字）  
                                          </TD></TR>'''
 # 论文检测接口
-url = 'http://api.cnkin.net'
+# url = 'http://api.cnkin.net'
+# 查询论文检测接口
+def paper_detection_port():
+    try:
+        obj = Globo.objects.values('info').filter(name__icontains='检测接口',isActivate=True)
+        if obj:
+            return obj[0]['info']
+    except:
+        pass
+    return False
 # 发送论文检测
 def post_jiance(name,author,title,fulltext):
     '''
@@ -153,6 +170,9 @@ def post_jiance(name,author,title,fulltext):
         'content': fulltext,
     }
     try:
+        url = paper_detection_port()
+        if not url:
+            return '论文接口未打开', -2
         res = requests.post(url+'/post/', data=data).text
         resdata = json.loads(res)
         if resdata['result'] == '1':
@@ -184,6 +204,9 @@ def post_examiningz_report(id,state=False):
             'taskid':obj.taskid,
         }
         headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'}
+        url = paper_detection_port()
+        if not url:
+            return '论文接口未打开', -2
         res = requests.post(url + '/query/',headers=headers,data=data)
         if res.status_code != 200:
             print('接口错误')
@@ -264,6 +287,18 @@ def surplus_minus(accobj, surp):
             return False
         accountSurplus_obj.v = accountSurplus_obj.v - 1
     accountSurplus_obj.save()
+    return True
+# 修改 订单 剩余次数
+def surplus_order_minus(order):
+    '''
+    修改 订单 剩余次数
+    :param account:
+    :param surp:
+    :return:
+    '''
+    obj = Order.objects.get(ordernumber=order)
+    obj.quantity_residual = obj.quantity_residual -1
+    obj.save()
     return True
 # 检测卡查询 并置零
 def orderisactivate(order):
@@ -352,15 +387,38 @@ def textLenOrder(numbtext, order):
     '''
     flag = False
     if  'A' in order:
-        if numbtext <= 50000:
+        if numbtext <= 52000:
             flag = True
     elif 'P' in order:
-        if numbtext <= 150000:
+        if numbtext <= 156000:
             flag = True
     elif 'V' in order:
-        if numbtext <= 250000:
+        if numbtext <= 260000:
             flag = True
     return flag
+# 根据订单号判断文章是否符合字符数
+def textLentaobaoOrder(numbtext,order):
+    try:
+        obj = Order.objects.get(ordernumber=order)
+        if obj.quantity_residual < 1:
+            return False,'此订单余额不足,请选择其他订单'
+        types = obj.types
+        flag = False
+        if 'A' in types:
+            if numbtext <= 52000:
+                flag = True
+        elif 'P' in types:
+            if numbtext <= 156000:
+                flag = True
+        elif 'V' in types:
+            if numbtext <= 260000:
+                flag = True
+        if flag:
+            return True,True
+        else:
+            return False,'字符数与系统类型不匹配,请选择其他类型'
+    except:
+        return False,'订单号不存在'
 # 增加检测列表
 def addDetection(accobj,order,title,author,taskid,iscode,path,number_text:int):
     '''
@@ -414,7 +472,7 @@ def selectDetection(accobj,page=0,rows=0,title=''):
     return obj_list_dict
 # 重新检测检测失败并扣分的文章
 def resubmit(accobj,ids):
-    # try:
+    try:
         obj = DetectionList.objects.get(id=ids,iscode=-2,account=accobj)
         name = accobj.account
         author = obj.author
@@ -433,8 +491,8 @@ def resubmit(accobj,ids):
         obj.date = round(time.time() * 1000)
         obj.save()
         return True
-    # except:
-    #     return False
+    except:
+        return False
 # 查询文件路径
 def selectfilepath(id):
     filepath = DetectionList.objects.values('id','filepath').filter(id=id)[0]
@@ -600,9 +658,20 @@ def Areport(resDict,advertpath_list=''):
         n_table_a += n_table_a_child.format(**msg)
     n_table_a += '</TBODY></TABLE>'
     similarity = float('%.4f' % (float(resDict['similarity']) * 100))
+    circular_bead = similarity * 3.6
     no_problem = 100 - similarity
-    article_copy = 100 - no_problem
+    similar_offsetsed = resDict["report_annotation_ref"]['similar_offsets']
+    similar_offsets = []
+    for similar_offset in similar_offsetsed:
+        if not similar_offset["reference"]:
+            similar_offset["reference"] = 0
+        else:
+            similar_offset["reference"] = 1
+        similar_offsets.append(similar_offset)
     message = {
+        'similar_offsets': similar_offsets,  # 条形图数据
+        'no_problem': no_problem,  # 无问题部分
+        'circular_bead': circular_bead,  # 全文复制比的饼状图幅度
         'n_table_a': n_table_a,  # 论文各部分数据总汇
         'Detection_of_the_literature': resDict['source_max_similar_title'],  # 检测文献标题
          'title_type':'全文对照',
@@ -632,7 +701,7 @@ def Areport(resDict,advertpath_list=''):
         'range_time': datetime.datetime.now().strftime('%Y-%m-%d'),
         'paragraphtd': quanwenduizhao,  # 文章对比数据
     }
-    with open('templates/reprot/A.html', 'r', encoding='utf-8')as f:
+    with open('templates/reprot/A1.html', 'r', encoding='utf-8')as f:
         html = f.read()
     html = re.sub('{', '￥$', html, flags=re.S)
     html = re.sub('}', '￥', html, flags=re.S)
@@ -714,6 +783,11 @@ def test_card(card):
     return False
 # 修改激活卡 或订单号
 def updateorder(card):
+    '''
+    修改激活卡 或订单号
+    :param card:
+    :return:
+    '''
     if isinstance(card,str):
         obj = IsActivateCode.objects.get(card=card)
         obj.isActivate = True
@@ -732,6 +806,40 @@ def round_robin(orderids:list):
             types = obj[0].types
             return accobj,(types,orderid)
     return False,False
+# 通过 前端查询编号 来查询 检测列表里的检测数据
+def select_DetectionList_order(order):
+    obj_list = DetectionList.objects.filter(orderacc=order)
+    message = []
+    if obj_list:
+        for obj in obj_list:
+            message.append(obj.dicreport())
+    return message
+def select_detec_order(order):
+    try:
+        obj_list = DetectionList.objects.filter(orderacc=order)
+        if obj_list:
+            message =[]
+            for obj in obj_list:
+                message.append(obj.dicreport())
+            return message
+    except:
+        return False
+# 1前端提交 删除 检测记录
+def ajax_del_report(orderid,sid):
+    try:
+        obj = DetectionList.objects.get(id=sid,orderacc=orderid)
+        filepath = obj.filepath
+        zipurl = obj.zipurl
+        if os.path.exists(filepath):
+            os.remove(filepath)
+        if os.path.exists(zipurl):
+            os.remove(zipurl)
+        obj.delete()
+        return True
+    except:
+        return False
+
+
 if __name__ == '__main__':
     filepath = 'C:\\Users\\Administrator\\Desktop\\project\\individual_event\\pdf_collect_porject\\Paper\\static\\file\A.doc'
     text = filedoc(filepath)

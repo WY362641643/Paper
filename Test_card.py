@@ -10,6 +10,7 @@ import random
 from hashlib import md5
 from DBUtils.PooledDB import PooledDB
 import pymysql
+import time
 source = [
     'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v',
     'b', 'n', 'm',
@@ -115,4 +116,9 @@ if __name__ == '__main__':
                 break
             except:
                 print('输入错误, 请重新输入: ')
-        crea_iscode(numbers,types)
+        try:
+            crea_iscode(numbers,types)
+            print('生成完成')
+        except:
+            print('生成错误')
+        time.sleep(3)

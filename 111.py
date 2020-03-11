@@ -1449,9 +1449,20 @@ for paragraph in resDict['report_fulltext_comparison']['chapters']:
     n_table_a += n_table_a_child.format(**msg)
 n_table_a +='</TBODY></TABLE>'
 similarity = float('%.4f' % (float(resDict['similarity'])*100))
-no_problem = 100 - similarity
-article_copy =100 - no_problem
+circular_bead = similarity * 3.6
+no_problem  = 100 - similarity
+similar_offsetsed = resDict["report_annotation_ref"]['similar_offsets']
+similar_offsets = []
+for similar_offset in similar_offsetsed:
+    if not similar_offset["reference"]:
+        similar_offset["reference"] = 0
+    else:
+        similar_offset["reference"] = 1
+    similar_offsets.append(similar_offset)
 message = {
+    'similar_offsets':similar_offsets, # 条形图数据
+    'no_problem':no_problem , # 无问题部分
+    'circular_bead':circular_bead, # 全文复制比的饼状图幅度
     'n_table_a':n_table_a,  # 论文各部分数据总汇
     'Detection_of_the_literature':resDict['title'],  # 检测文献标题
     'title_type':'全文对照',
@@ -1474,7 +1485,7 @@ message = {
     'range_time':datetime.datetime.now().strftime('%Y-%m-%d'),
 'paragraphtd':quanwenduizhao, # 文章对比数据
 }
-with open('templates/reprot/A.html','r',encoding='utf-8')as f:
+with open('templates/reprot/A1.html','r',encoding='utf-8')as f:
     html = f.read()
 html = re.sub('{','￥$',html,flags=re.S)
 html = re.sub('}','￥',html,flags=re.S)

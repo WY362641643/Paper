@@ -2,13 +2,19 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse,FileResponse
 import json
 import time
+import requests
+from hashlib import md5
 import os
 import random
 from . import modelsmiddleware as MDW
 from django.conf import settings
 import urllib.parse as up
+from agency.models import *
+from agency.sign import Sign
 # Create your views here.
-
+source = [
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
+]
 def index_views(request):
     # print("/")
     if request.method == 'GET':
@@ -135,7 +141,8 @@ def detection(request):
                     f.write(fulltext)
                 taskid,iscode = MDW.post_jiance(name,author,title,fulltext)
                 word_number_text = len(fulltext)
-                MDW.addDetection(accobj, types, title, author, taskid, iscode,path,len(fulltext))
+                orders = str(types) + str(''.join(random.sample(source, 14)))
+                MDW.addDetection(accobj, orders, title, author, taskid, iscode,path,len(fulltext))
                 jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
@@ -153,7 +160,7 @@ def upload(request):
             # 获取前端传输的文件对象
             file_obj = request.FILES.get('file')
             try:
-                pattern, order, author, title = file_obj.name.split('_')
+                order, author, title = file_obj.name.split('_')
             except:
                 jsonStr = {
                     'result': 0,
@@ -191,35 +198,20 @@ def upload(request):
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取文章字符数
             word_number_text = len(text)
-            if not MDW.textLenOrder(word_number_text,pattern) and len(pattern) == 1:
+            status,types = MDW.textLentaobaoOrder(word_number_text,order)
+            if not status:
                 jsonStr = {
                     'result': 0,
-                    'message': '类型错误: 文章字符数过多,请选择其他系统类型'
-                }
-                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            if len(order) == 18:
-                try:
-                    int(order)
-                except:
-                    jsonStr = {
-                        'result': 0,
-                        'message': '订单号错误'
-                    }
-                    return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-                print('此处对接订单管理数据库, 查询淘宝交易ID')
-            else:
-                jsonStr = {
-                    'result': 0,
-                    'message': '订单号错误'
+                    'message': types
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 查询账户剩余积分是否够用
-            if not MDW.surplus_shengyu(accobj, pattern):
-                jsonStr = {
-                    'result': 0,
-                    'message': '该系统剩余积分不足, 请充值'
-                }
-                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            # if not MDW.surplus_shengyu(accobj, pattern):
+            #     jsonStr = {
+            #         'result': 0,
+            #         'message': '该系统剩余积分不足, 请充值'
+            #     }
+            #     return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             taskid,iscode = MDW.post_jiance(name,author,title,text)
             if not MDW.addDetection(accobj,order, title, author, taskid, iscode,path,word_number_text):
                 jsonStr = {
@@ -227,11 +219,11 @@ def upload(request):
                     'message': '添加检测失败'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
-            MDW.surplus_minus(accobj, pattern)
+            MDW.surplus_order_minus(order)
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-# 用户前端检测
+# 用户前端检测  # 废弃
 def upload_user(request):
     if 'sname' in request.session:
         name = request.session['sname']
@@ -587,3 +579,125 @@ def logout(request):
             return resp  # 返回登录页面
         except:
             return render(request, 'login.html')
+# 推送订单保存
+def order_put(request):
+    if request.method == 'POST':
+        try:
+            aopic = request.GET.get('aopic')
+            sign = request.GET.get('sign')
+            timestamp = request.GET.get('timestamp')
+            json_data = request.POST.get('json')
+            if Sign(timestamp, json_data) != sign:
+                return HttpResponse('验签失败')
+            all_data = json.loads(json_data)
+            tid = all_data['Tid']  # 订单号
+            account = all_data['SellerNick']  # 代理商
+            treid = all_data['Orders'][0]['NumIid']  # 宝贝id
+            WW = all_data['BuyerNick']  # 旺旺
+            payment = all_data['Payment']  # 实付金额
+            quantity_residual = all_data['Num']  # 数量
+            date = all_data['PayTime']  # 付款日期
+            # 订单推送,插入表订单信息等数据
+            if aopic == "21" or aopic == 21 or aopic == "2" or aopic == 2 or aopic == "1" or aopic == 1:
+                treasure = Treasure.objects.get(treid=treid)
+                xitong = treasure.xitong
+                account_id = treasure.account
+                order = Order()
+                order.types = xitong
+                order.account = account_id
+                order.ordernumber = tid
+                order.date = date
+                order.quantity_residual = quantity_residual
+                order.payment = payment
+                order.save()
+                return HttpResponse('验签成功,保存数据成功')
+            # 退款订单推送，删除订单等信息
+            elif aopic == "256" or aopic == 256:
+                Order.objects.get(ordernumber=tid).delete()
+                return HttpResponse('退款订单完成')
+            # 撤销退款订单推送，需重新增加订单信息
+            elif aopic == "32768" or aopic == 32768:
+                treasure = Treasure.objects.get(treid=treid)
+                xitong = treasure.xitong
+                account_id = treasure.account
+                order = Order()
+                order.types = xitong
+                order.account = account_id
+                order.ordernumber = tid
+                order.date = date
+                order.quantity_residual = quantity_residual
+                order.payment = payment
+                order.save()
+                return HttpResponse('撤销订单成功')
+            else:
+                return HttpResponse('未知推送')
+        except:
+            return HttpResponse('验签错误')
+# 无需物流发货
+def gods_up(request):
+    if request.method == "POST":
+        tids = request.POST.get('tids')    #订单号
+        url = "http://gw.api.agiso.com/alds/Trade/LogisticsDummySend"   # 请求链接
+        timestamp = str(int(time.time()))
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+            "ApiVersion ": "1",
+            "Authorization": "Bearer TbAldsee25p739wafxdz5u88uxxrfxtrydp6eh62htatkuggf5",
+        }
+        s = ("p8hbc7zvurx6ckyzu5hxteyf6ykhky9w" + "tid"+str(tids) + "timestamp" + timestamp + "p8hbc7zvurx6ckyzu5hxteyf6ykhky9w").encode('utf8')
+        ms = md5(s).hexdigest()
+        data = {
+            "tid":str(tids),
+            "timestamp": timestamp,
+            "sign": ms
+        }
+        res = requests.post(url,data=data,headers=headers)
+        json_hmtl = res.text
+        # {"IsSuccess":true,"Data":null,"Error_Code":0,"Error_Msg":"","AllowRetry":null}
+        html = json.loads(json_hmtl)
+        if html['Error_Code'] != 0:
+            jsonStr = {"result": "验签错误"}
+            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+        if html['Data']:
+            jsonStr = {"result": "发货成功"}
+            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+        jsonStr = {"result": html['Data']}
+        return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+# 获取商家信息
+def seller_info(request):
+    if request.method == "POST":
+        numIid = request.POST.get('treid')    # 获取宝贝id
+        url = "http://gw.api.agiso.com/alds/Item/SellerGet"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+            "ApiVersion ": "1",
+            "Authorization": "Bearer TbAldsee25p739wafxdz5u88uxxrfxtrydp6eh62htatkuggf5",
+        }
+        timestamp = str(int(time.time()))
+        fields = "nick"
+        s = ("p8hbc7zvurx6ckyzu5hxteyf6ykhky9w" + "fields" + str(fields) + "numIid" + str(numIid) + "timestamp" + timestamp + "p8hbc7zvurx6ckyzu5hxteyf6ykhky9w").encode('utf8')
+        ms = md5(s).hexdigest()
+        data = {
+            "fields": fields,
+            "numIid": str(numIid),
+            "timestamp": timestamp,
+            "sign": ms
+        }
+        res = requests.post(url, data=data, headers=headers)
+        json_html = res.text
+        # 示例数据
+        # {"IsSuccess":true,"Data":{"AfterSaleId":0,"ApproveStatus":null,"AuctionPoint":0,"AutoFill":null,"AutoRepost":false,"Barcode":null,"ChangeProp":null,"ChaoshiExtendsInfo":null,"ChargeFreeList":null,"Cid":0,"CodPostageId":0,"CpvMemo":null,"Created":null,"CuntaoItemSpecific":null,"CustomMadeTypeId":null,"DelistTime":null,"DeliveryTime":null,"Desc":null,"DescModuleInfo":null,"DescModules":null,"DetailUrl":null,"EmsFee":null,"ExpressFee":null,"Features":null,"FoodSecurity":null,"FreightPayer":null,"GlobalStockCountry":null,"GlobalStockDeliveryPlace":null,"GlobalStockTaxFreePromise":false,"GlobalStockType":null,"HasDiscount":false,"HasInvoice":false,"HasShowcase":false,"HasWarranty":false,"Iid":null,"Increment":null,"InnerShopAuctionTemplateId":0,"InputCustomCpv":null,"InputPids":null,"InputStr":null,"Is3D":false,"IsAreaSale":false,"IsCspu":false,"IsEx":false,"IsFenxiao":0,"IsLightningConsignment":false,"IsPrepay":false,"IsTaobao":false,"IsTiming":false,"IsVirtual":false,"IsXinpin":false,"ItemImgs":null,"ItemRectangleImgs":null,"ItemSize":null,"ItemWeight":null,"ItemWirelessImgs":null,"LargeScreenImageUrl":null,"ListTime":null,"LocalityLife":null,"Location":null,"Modified":null,"MpicVideo":null,"MsPayment":null,"Newprepay":"default","Nick":"金榜教育服务","Num":0,"NumIid":0,"O2oBindService":false,"OneStation":false,"OuterId":null,"OuterShopAuctionTemplateId":0,"PaimaiInfo":null,"PeriodSoldQuantity":0,"PicUrl":null,"PostFee":null,"PostageId":0,"Price":null,"ProductId":0,"PromotedService":null,"PropImgs":null,"PropertyAlias":null,"Props":null,"PropsName":null,"Qualification":null,"Score":0,"SecondKill":null,"SellPoint":null,"SellPromise":false,"SellerCids":null,"Skus":null,"SoldQuantity":0,"SpuConfirm":false,"StuffStatus":null,"SubStock":0,"SupportChargeFree":false,"TemplateId":null,"Title":null,"Type":"fixed","ValidThru":0,"VerticalImgs":null,"VideoId":0,"Videos":null,"Violation":false,"Volume":0,"WapDesc":null,"WapDetailUrl":null,"WhiteBgImage":null,"WirelessDesc":null,"WithHoldQuantity":0,"WwStatus":false},"Error_Code":0,"Error_Msg":"","AllowRetry":null}
+        html = json.loads(json_html)
+        IsSuccess = html['IsSuccess']
+        if IsSuccess:
+            nick = html['Data']['Nick']
+            print('存储卖家信息,卖家信息是根据宝贝id来找到的，一个卖家对应多个宝贝,一个宝贝id对应一个卖家')
+            jsonStr = {"result": nick}
+            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+        jsonStr = {"result": "获取失败"}
+        return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+
+
+
+
+
