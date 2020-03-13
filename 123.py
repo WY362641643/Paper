@@ -6,4 +6,4 @@
 # @Email   : 362641643@qq.com
 # @Software: win10 python3.7.2
 ip_port = '1564674658746134l653'
-int(ip_port)
+print(len('2016-07-11 11:20:20'))

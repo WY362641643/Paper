@@ -142,8 +142,12 @@ n_table_a_child = '''<TR>
     <TD class="n_text_block_a2"><A href=""> 
                                                  {chapter}</A> （总{word_count}字）  
                                          </TD></TR>'''
-# 论文检测接口
-# url = 'http://api.cnkin.net'
+#将当前时间转换为时间字符串，默认为2017-10-01 13:37:04格式
+def now_to_date(times,format_string="%Y-%m-%d %H:%M:%S"):
+ time_stamp = int(times/1000)
+ time_array = time.localtime(time_stamp)
+ str_date = time.strftime(format_string, time_array)
+ return str_date
 # 查询论文检测接口
 def paper_detection_port():
     try:
@@ -218,7 +222,9 @@ def post_examiningz_report(id,state=False):
         for advert_path_obj in advertpathobjlist:
             advertpath_list.append(advert_path_obj.filename)
         zippath = Areport(data,advertpath_list)
+        obj.report_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 报告时间
         obj.zipurl=zippath
+        obj.iscode = 4
         obj.save()
         return zippath
 # 判断账户密码是否存在
@@ -291,13 +297,16 @@ def surplus_minus(accobj, surp):
 # 修改 订单 剩余次数
 def surplus_order_minus(order):
     '''
-    修改 订单 剩余次数
+    修改 订单 剩余次数 并修改 代理商 相应的类型数量
     :param account:
     :param surp:
     :return:
     '''
     obj = Order.objects.get(ordernumber=order)
     obj.quantity_residual = obj.quantity_residual -1
+    accobj = obj.account
+    types = obj.types
+    surplus_minus(accobj, types)
     obj.save()
     return True
 # 检测卡查询 并置零
@@ -364,8 +373,12 @@ def filetxt(path):
     :param path:
     :return:
     '''
-    with open(path,'r') as f:
-        text = f.read()
+    try:
+        with open(path,'r',encoding='gb18030') as f:
+            text = f.read()
+    except UnicodeDecodeError:
+        with open(path,'r',encoding='utf-8') as f:
+            text = f.read()
     return text
 # 处理 wps 文档
 def filewps(path):
@@ -398,8 +411,14 @@ def textLenOrder(numbtext, order):
     return flag
 # 根据订单号判断文章是否符合字符数
 def textLentaobaoOrder(numbtext,order):
+    '''
+    根据订单号判断文章是否符合字符数
+    :param numbtext:
+    :param order:
+    :return:
+    '''
     try:
-        obj = Order.objects.get(ordernumber=order)
+        obj = Order.objects.get(ordernumber=order,freeze=False)
         if obj.quantity_residual < 1:
             return False,'此订单余额不足,请选择其他订单'
         types = obj.types
@@ -442,6 +461,7 @@ def addDetection(accobj,order,title,author,taskid,iscode,path,number_text:int):
         obj.taskid = taskid
         obj.filepath = path
         obj.iscode = iscode
+        obj.report_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 报告时间
         obj.textnumber = number_text
         obj.save()
         return True
@@ -472,6 +492,12 @@ def selectDetection(accobj,page=0,rows=0,title=''):
     return obj_list_dict
 # 重新检测检测失败并扣分的文章
 def resubmit(accobj,ids):
+    '''
+    重新检测检测失败并扣分的文章
+    :param accobj:
+    :param ids:
+    :return:
+    '''
     try:
         obj = DetectionList.objects.get(id=ids,iscode=-2,account=accobj)
         name = accobj.account
@@ -495,7 +521,9 @@ def resubmit(accobj,ids):
         return False
 # 查询文件路径
 def selectfilepath(id):
-    filepath = DetectionList.objects.values('id','filepath').filter(id=id)[0]
+    filepath = DetectionList.objects.values('id','filepath','iscode').filter(id=id)[0]
+    if filepath['iscode'] == 5:
+        return False
     return filepath['filepath']
 # 增加错误列表
 def addErrot(accobj,order,title,author):
@@ -525,10 +553,13 @@ def deletedata15day(id):
         filepath = obj.filepath
         if os.path.exists(filepath):
             os.remove(filepath)
+            obj.filepath = ''
         zipurl = obj.zipurl
         if os.path.exists(zipurl):
             os.remove(zipurl)
-        obj.delete()
+            obj.zipurl = ''
+        obj.iscode = 5
+        obj.save()
     except:
         pass
 # 批量下载前压缩
@@ -769,8 +800,23 @@ def deletdoc(accobj,ids):
         return False
 # 查询订单号是否正确
 def ajax_check_order(order):
-    obj = Order.objects.filter(ordernumber=order,quantity_residual__gt=0)
+    obj = Order.objects.filter(ordernumber=order,quantity_residual__gt=0,freeze=False)
     return obj
+# 查询订单号是否可用, 代理商账户类型是否可用
+def select_order_account(order):
+    '''
+    查询订单号是否可用, 代理商账户类型是否可用
+    :param order:
+    :return:
+    '''
+    orderobj = ajax_check_order(order)
+    if orderobj:
+        accobj = orderobj[0].account
+        types = orderobj[0].types
+        status = surplus_shengyu(accobj, types)
+        if status:
+            return True
+    return False
 # 查询检测卡是否使用
 def test_card(card):
     try:
@@ -795,6 +841,9 @@ def updateorder(card):
     else:
         # 这是 淘宝订单号 card = (系统类型,订单号)
         obj = Order.objects.get(ordernumber=card[1])
+        accobj = obj.account
+        types = obj.types
+        surplus_minus(accobj, types)
         obj.quantity_residual = obj.quantity_residual-1
         obj.save()
 # 轮循查询三个订单号是否正确,返回 代理obj, (类型,订单号)
@@ -808,15 +857,26 @@ def round_robin(orderids:list):
     return False,False
 # 通过 前端查询编号 来查询 检测列表里的检测数据
 def select_DetectionList_order(order):
+    '''
+    通过 前端查询编号 来查询 检测列表里的检测数据
+    :param order:
+    :return:
+    '''
     obj_list = DetectionList.objects.filter(orderacc=order)
     message = []
     if obj_list:
         for obj in obj_list:
             message.append(obj.dicreport())
     return message
+# 通过 前端查询编号 来查询 检测列表里的检测数据
 def select_detec_order(order):
+    '''
+    通过 前端查询编号 来查询 检测列表里的检测数据
+    :param order:
+    :return:
+    '''
     try:
-        obj_list = DetectionList.objects.filter(orderacc=order)
+        obj_list = DetectionList.objects.filter(orderacc=order).order_by('-date')
         if obj_list:
             message =[]
             for obj in obj_list:
@@ -824,22 +884,61 @@ def select_detec_order(order):
             return message
     except:
         return False
-# 1前端提交 删除 检测记录
+# 前端提交 删除 检测记录
 def ajax_del_report(orderid,sid):
     try:
         obj = DetectionList.objects.get(id=sid,orderacc=orderid)
-        filepath = obj.filepath
-        zipurl = obj.zipurl
-        if os.path.exists(filepath):
-            os.remove(filepath)
-        if os.path.exists(zipurl):
-            os.remove(zipurl)
-        obj.delete()
+        obj.isclear = True
+        obj.iscode = 5
+        obj.save()
         return True
     except:
         return False
-
-
+# 无需物流发货
+def gods_up(tids):
+    '''
+    无需物流发货
+    :param request:
+    :return:
+    '''
+    url = "http://gw.api.agiso.com/alds/Trade/LogisticsDummySend"   # 请求链接
+    timestamp = str(int(time.time()))
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+        "ApiVersion ": "1",
+        "Authorization": "Bearer TbAldsee25p739wafxdz5u88uxxrfxtrydp6eh62htatkuggf5",
+    }
+    s = ("p8hbc7zvurx6ckyzu5hxteyf6ykhky9w" + "tids"+str(tids) + "timestamp" + timestamp + "p8hbc7zvurx6ckyzu5hxteyf6ykhky9w").encode('utf8')
+    ms = md5(s).hexdigest()
+    data = {
+        "tids":str(tids),
+        "timestamp": timestamp,
+        "sign": ms
+    }
+    requests.post(url,data=data,headers=headers)
+# 查询订单 列表
+def select_order(accobj):
+    obj_list = Order.objects.filter(account=accobj)
+    message =[]
+    for obj in obj_list:
+        message.append(obj.dic())
+    return message
+# 清空某个订单可用件数
+def clear_order_num(accobj,order):
+    try:
+        obj = Order.objects.get(account=accobj,ordernumber=order)
+        obj.quantity_residual = 0
+        obj.save()
+        return True
+    except:
+        return False
+# 查看 宝贝管理 的数据
+def select_product(accobj):
+    obj_list = Treasure.objects.filter(account=accobj)
+    message =[]
+    for obj in obj_list:
+        message.append(obj.dic())
+    return message
 if __name__ == '__main__':
     filepath = 'C:\\Users\\Administrator\\Desktop\\project\\individual_event\\pdf_collect_porject\\Paper\\static\\file\A.doc'
     text = filedoc(filepath)

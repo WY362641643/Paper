@@ -14,7 +14,6 @@
                 $("#detectionGrid").datagrid("reload");
             }, 1000 * 60);
         });
-
         function fmt_date(value, row, rowIndex) {
             if (value == undefined) {
                 return "";
@@ -27,7 +26,6 @@
                 return value;
             }
         }
-
         function fmt_state(value, row, rowIndex) {
             switch (value) {
                 case -2:
@@ -44,11 +42,12 @@
                     return "正在生成报告...";
                 case 4:
                     return "检测完成";
+                case 5:
+                    return "报告已删除 ";
                 default:
                     return "未知";
             }
         }
-
         function fmt_action(value, row, rowIndex) {
             var action = "";
             action += "&nbsp;<a href='/agency/user/detection/doc/download?id=" + row.id + "' >下载原文</a>&nbsp;";
@@ -56,11 +55,7 @@
                 {#action += "&nbsp;<a href='javascript:openSubmitTextWin(\"" + row.id + "\",\"" + row.title + "\");' >提交文本</a>&nbsp;";#}
                 action += "&nbsp;<a href='/agency/user/detection/doc/resubmit?id=" + row.id + "' target=\"_blank\">重新检测</a>&nbsp;";
             }
-            // if(row["filename"] != undefined && row["filename"].length > 0) {
-            // action += "<a href='/user/detection/doc/download?id="+row.id+"' >下载原文</a>";
-            // }
-
-            if (row.state == 4) {
+            if (row.state >= 4) {
                 //http://www.cnk1.org/fenjie/ccnkii/download?id=a53649b7-3425-4b27-a2a9-ea6e56e6c28b
                 var url = "/agency/fenjie/common/download?id=" + row.id;
                 action += "&nbsp;<a href='" + url + "' >下载报告</a>";
@@ -72,7 +67,6 @@
             }
             return action;
         }
-
         function search() {
             var day = $("#detectionDay").datebox("getValue");
             var user = null;
@@ -89,16 +83,12 @@
                 domain: domain
             });
         }
-
         function fmt_similarity(value, row, rowIndex) {
-            {#console.log('相似度');#}
-            {#console.log(value);#}
             if (value != undefined && row.state >= 2) {
                 return parseFloat(value * 100).toFixed(1);
             }
             return "";
         }
-
         function fmt_matchNo(value, row, rowIndex) {
             return value;
             switch (value) {
@@ -112,7 +102,6 @@
                     return "未知";
             }
         }
-
         function batchDownload() {
             var rows = $("#detectionGrid").datagrid("getSelections");
             if (rows.length == 0) {
@@ -125,25 +114,21 @@
             }
             window.open("/agency/user/detection/batchDownload?ids=" + ids, "downloadWindow")
         }
-
         function updateMatchNo(taskid, matchNo) {
             $.post("/agency/user/detection/matchNo", {taskid: taskid, matchNo: matchNo}, function (data, statue) {
                 $("#detectionGrid").datagrid("reload");
             });
         }
-
         function searchOne(val) {
             $("#detectionGrid").datagrid("reload", {
                 title: val
             });
         }
-
         function openSubmitTextWin(id, title) {
             $("#submitTextWin").window("setTitle", "【" + title + "】文本提交");
             $("#submitTextForm input[name='id']").val(id);
             $("#submitTextWin").window("open");
         }
-
         function submitText() {
             $('#submitTextForm').form({
                 url: "/agency/user/detection/post",
@@ -165,15 +150,12 @@
             });
             $('#submitTextForm').submit();
         }
-
         function serverAndDomain_fmt(value, row, index) {
-            {#console.log(row);#}
             if (row["orderid"] == "-") {
                 return "-";
             }
             return "http://" + row.serverName + "/fenjie/" + row.domain;
         }
-
         function retryPackage(id) {
             $.messager.confirm("确认", "确认重新打包？非特殊情况请勿重新打包!", function (r) {
                 if (r) {
@@ -187,15 +169,12 @@
                     });
                 }
             });
-
         }
-
     </script>
     <style type="text/css">
         * {
             font-size: 12px;
         }
-
         .error {
             color: red;
         }
@@ -207,7 +186,6 @@
     <thead>
     <tr>
         <th data-options="field:'taskid',width:100,checkbox:true"></th>
-
         <th data-options="field:'orderid',width:200">订单编号</th>
         <th data-options="field:'title',width:200">标题</th>
         <th data-options="field:'author',width:100">作者</th>
@@ -215,7 +193,6 @@
         <th data-options="field:'postTime',width:150,align:'right',formatter:fmt_date">提交时间</th>
         <th data-options="field:'state',width:80,align:'right',formatter:fmt_state">状态</th>
         <th data-options="field:'similarity',width:80,align:'right',formatter:fmt_similarity">相似度</th>
-        <th data-options="field:'detection_number',width:100">用户检测编号</th>
         <th data-options="field:'attr1',width:200,formatter:fmt_action">操作</th>
     </tr>
     </thead>
@@ -232,7 +209,7 @@
 
     <a href="javascript:search();" class="easyui-linkbutton" data-options="plain:true">搜索</a>&nbsp;&nbsp;&nbsp;&nbsp;
     <input class="easyui-searchbox" data-options="prompt:'需要检索的标题或订单号',searcher:searchOne" style="width:200px"></input>
-    <a href="javascript:batchDownload();" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-download'">批量下载</a>
+{#    <a href="javascript:batchDownload();" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-download'">批量下载</a>#}
 </div>
 <div id="submitTextWin" class="easyui-window"
      data-options="width:800,height:500,collapsible:false,minimizable:false,maximizable:false,closed:true,modal:true">

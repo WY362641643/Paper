@@ -134,62 +134,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="datagrid-body" style="width: 1650px; margin-top: 0px; overflow-x: hidden; height: 25px;">
-                    <table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0">
-                        <tbody>
-                        <tr id="datagrid-row-r1-2-0" datagrid-row-index="0" class="datagrid-row" style="height: 25px;">
-                            <td field="serverName">
-                                <div style="height:auto;" class="datagrid-cell datagrid-cell-c1-serverName">
-                                    www.cnkiki.net
-                                </div>
-                            </td>
-                            <td field="domain">
-                                <div style="height:auto;" class="datagrid-cell datagrid-cell-c1-domain">cnkicn</div>
-                            </td>
-                            <td field="productid">
-                                <div style="text-align:right;height:auto;"
-                                     class="datagrid-cell datagrid-cell-c1-productid">570904158813
-                                </div>
-                            </td>
-                            <td field="wangwang">
-                                <div style="height:auto;" class="datagrid-cell datagrid-cell-c1-wangwang">知网学术不端查重</div>
-                            </td>
-                            <td field="qq">
-                                <div style="height:auto;" class="datagrid-cell datagrid-cell-c1-qq"></div>
-                            </td>
-                            <td field="phone">
-                                <div style="height:auto;" class="datagrid-cell datagrid-cell-c1-phone"></div>
-                            </td>
-                            <td field="authorized">
-                                <div style="height:auto;" class="datagrid-cell datagrid-cell-c1-authorized"><span
-                                        style="color:green;">已授权</span></div>
-                            </td>
-                            <td field="lastAuthTime">
-                                <div style="text-align:right;height:auto;"
-                                     class="datagrid-cell datagrid-cell-c1-lastAuthTime">2018-10-4 18:43:51
-                                </div>
-                            </td>
-                            <td field="action">
-                                <div style="text-align:right;height:auto;"
-                                     class="datagrid-cell datagrid-cell-c1-action">&nbsp;&nbsp;&nbsp;&nbsp;<a
-                                        href="javascript:openAuthorizedWin(&#39;http://taobaoapi.laibokeji.com/app/taobao/container3.aspx?appid=10007&amp;userid=361&#39;)">重新授权</a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
                 <div class="datagrid-footer" style="width: 1650px;">
                     <div class="datagrid-footer-inner" style="display: none;"></div>
                 </div>
             </div>
             <table id="userProductId" class="easyui-datagrid"
-                   data-options="url:&#39;/user/product/list&#39;,pagination:false,rownumbers:true,pageSize:20,fitColumns:true,singleSelect:true,checkbox:true"
+                   data-options="url:&#39;/agency/user/product/list&#39;,pagination:false,rownumbers:true,pageSize:20,fitColumns:true,singleSelect:true,checkbox:true"
                    style="display: none;">
                 <thead>
                 <tr>
                     <th data-options="field:&#39;serverName&#39;,width:200">域名</th>
-                    <th data-options="field:&#39;domain&#39;,width:200">个性化</th>
+                    <th data-options="field:&#39;domain&#39;,width:200">类型</th>
                     <th data-options="field:&#39;productid&#39;,width:200,align:&#39;right&#39;">宝贝ID</th>
                     <th data-options="field:&#39;wangwang&#39;,width:200">旺旺</th>
                     <th data-options="field:&#39;qq&#39;,width:200">qq</th>

@@ -26,11 +26,14 @@ urlpatterns = [
     url(r'docpack/',views.docpack),
     url(r'user/doc/delete',views.deletedoc),
     url(r'user/doc/list', views.docpack),
-    url(r'order/',views.order),
-    url(r'product/',views.product),
+    url(r'order_put/', views.order_put),  # 订单推送路由
+    url(r'^/order',views.order),
+    url(r'^/user/order/list',views.order),
+    url(r'^/user/order/clear',views.order_clear),
+    url(r'^/product/',views.product),
+    url(r'^/user/product/list',views.product),
     url(r'user_info/',views.user_info),
     url(r'user_chpwd/',views.user_chpwd),
-    url(r'order_put/',views.order_put),   # 订单推送路由
     url(r'gods_up/',views.gods_up),   # 无需物流发货路由
     url(r'seller_info/',views.seller_info),   # 获取卖家信息路由
     url(r'^', views.index_views),

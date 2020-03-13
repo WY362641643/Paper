@@ -68,6 +68,11 @@ class Crawler(object):
         print('时间超时修改完成')
 
     def searchResult(self):
+        '''
+        查询状态为1的数据是否完成
+        完成后打包
+        :return:
+        '''
         while True:
             if not self.SearchResultQuery.empty():
                 info = self.SearchResultQuery.get()

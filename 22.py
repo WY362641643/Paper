@@ -9,16 +9,6 @@ import requests
 import json
 import time
 from hashlib import md5
-
-s = 'A_111111111111111111_牡蛎君_标色辅助修改.docx'
-t = s.split('_')[-2:]
-# 加密
-def get_md5(link:str):
-    if isinstance(link, str):
-        link = link.encode('utf-8')
-    m = md5()
-    m.update(link)
-    return m.hexdigest()
-m = get_md5(s)
-print(m)
-print(len(m))
+for i in range(1000):
+    s = i//50
+    print(s)

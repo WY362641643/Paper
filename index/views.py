@@ -7,6 +7,7 @@ import os
 from django.conf import settings
 import random
 import urllib.parse as up
+
 # Create your views here.
 
 source = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C',
@@ -70,7 +71,7 @@ def cnki(request):
             }
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
         status = MDW.addDetection(accobj, orderId1, paper_title, paper_author, taskid, iscode, path,
-                                            word_number_text)
+                                  word_number_text)
         if not status:
             jsonStr = {
                 'status': 0,
@@ -80,6 +81,7 @@ def cnki(request):
         MDW.updateorder(orderId1)
         if isinstance(orderId1, tuple):
             orderId1 = orderId1[1]
+        MDW.gods_up(orderId1)
         jsonStr = {"status": 1, "info": '', 'data': {
             'tid': orderId1,
         }}
@@ -117,7 +119,6 @@ def upload_file(request):
             "upload_file_wordnum": 3993}
                     }
         return HttpResponse(json.dumps(jsonDict), content_type="application/json")
-
 
 
 #  多篇 上传 文件检测
@@ -162,13 +163,13 @@ def ajax_check_order(request):
     if request.method == 'GET':
         _ = request.GET.get('_')
         tid = request.GET.get('tid')
-        status = MDW.ajax_check_order(tid)
+        status = MDW.select_order_account(tid)
         if status:
             jsonDict = {"status": True, "info": "订单号可用", "data": []}
         else:
             jsonDict = {"status": False,
                         "info": "来自淘宝的信息：订单号【" + str(
-                            tid) + "】有误，可能是：Invalid session:非法或过期的SessionKey参数，请使用有效的SessionKey参数",
+                            tid) + "】有误，可能是：订单次数使用完或商家类型数量不足,请联系客服",
                         "data": []}
         return HttpResponse(json.dumps(jsonDict), content_type="application/json")
 
@@ -236,8 +237,9 @@ def multiple(request):
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             MDW.updateorder(orderId1)
-            if isinstance(orderId1,tuple):
+            if isinstance(orderId1, tuple):
                 orderId1 = orderId1[1]
+            MDW.gods_up(orderId1)
             jsonStr = {"status": 1, "info": '', 'data': {
                 'tid': orderId1,
             }}
@@ -248,7 +250,7 @@ def multiple(request):
 def report(request):
     if request.method == 'GET':
         order = request.GET.get('orderNum')
-        message = MDW.select_DetectionList_order(order)
+        # message = MDW.select_DetectionList_order(order)
         # if message:
         #     jsonDict = {
         #         'status':1,
@@ -263,8 +265,9 @@ def report(request):
         #     }
         return render(request, 'report.html')
 
+
 # 下载检测报告
-def download(request,order,id):
+def download(request, order, id):
     if request.method == 'GET':
         zippath = MDW.post_examiningz_report(id)
         if not zippath:
@@ -282,7 +285,7 @@ def download(request,order,id):
 def report_tid_order(request, order):
     if request.method == 'GET':
         order = {
-            'order':order
+            'order': order
         }
         return render(request, 'report.html', locals())
 
@@ -307,7 +310,7 @@ def ajax_search_order(request):
         return HttpResponse(json.dumps(jsonDic), content_type="application/json")
     else:
         # 这是广告请求
-        jsonDic = {"status":True, "info": "get succ",
+        jsonDic = {"status": True, "info": "get succ",
                    "data": {"uid": "1809", "domain": "jinbang.celunwen.com", "beian": "",
                             "sitename": "\u4e2d\u56fd\u77e5\u7f51\u8bba\u6587\u68c0\u6d4b\u67e5\u91cd\u7cfb\u7edf\u5165\u53e3-\u514d\u6ce8\u518c,24\u5c0f\u65f6\u5168\u81ea\u52a9\u68c0\u6d4b",
                             "sitekeywords": "\u77e5\u7f51\u5e10\u53f7\u3001\u6587\u732e\u4e0b\u8f7d\u3001\u77e5\u7f51\u67e5\u91cd,\u77e5\u7f51\u8bba\u6587\u67e5\u91cd\u5165\u53e3,\u77e5\u7f51\u8bba\u6587\u68c0\u6d4b,\u8bba\u6587\u68c0\u6d4b,\u8bba\u6587\u67e5\u91cd,\u77e5\u7f51\u8bba\u6587\u67e5\u91cd,\u77e5\u7f51\u8bba\u6587\u68c0\u6d4b\u7cfb\u7edf,\u77e5\u7f51\u8bba\u6587\u68c0\u6d4b\u5165\u53e3,cnki\u8bba\u6587\u68c0\u6d4b,\u7855\u58eb\u8bba\u6587\u68c0\u6d4b",
@@ -320,13 +323,15 @@ def ajax_search_order(request):
                             "fx2_open_time": "0000-00-00 00:00:00",
                             "service_domain": "http:\/\/jinbang.celunwen.com\/cnki"}}
         return HttpResponse(json.dumps(jsonDic), content_type="application/json")
+
+
 # 1前端提交 删除 检测记录
 def ajax_del_report(request):
     if request.method == 'GET':
         sid = request.GET.get('sid')
         orderid = request.GET.get('tid')
-        MDW.ajax_del_report(orderid,sid)
+        MDW.ajax_del_report(orderid, sid)
         jsonDic = {'status': True,
-                'info': '删除成功',
-                'data': []}
+                   'info': '删除成功',
+                   'data': []}
         return HttpResponse(json.dumps(jsonDic), content_type="application/json")

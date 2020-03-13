@@ -1,5 +1,5 @@
 from django.db import models
-
+import time
 
 # Create your models here.
 
@@ -73,19 +73,29 @@ num = {
     -2: '0',
     1: '0',
     4: '1',
+    5:'2'
 }
 strs = {
     -2: '正在检测中',
     1: '正在检测中',
-    4: '完成'
+    4: '完成',
+    5:'完成',
 }
+
+#将当前时间转换为时间字符串，默认为2017-10-01 13:37:04格式
+def now_to_date(times,format_string="%Y-%m-%d %H:%M:%S"):
+ time_stamp = int(int(times)/1000)
+ time_array = time.localtime(time_stamp)
+ str_date = time.strftime(format_string, time_array)
+ return str_date
 # 检测列表
 class DetectionList(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='代理商')
     orderacc = models.CharField(max_length=19, null=True, blank=True, verbose_name='订单编号')
     title = models.CharField(max_length=64, null=True, blank=True, verbose_name='标题')
     author = models.CharField(max_length=16, null=True, blank=True, verbose_name='作者')
-    date = models.CharField(max_length=14, null=True, blank=True, verbose_name='提交时间')
+    date = models.CharField(max_length=20, null=True, blank=True, verbose_name='提交时间')
+    report_date = models.CharField(max_length=20,null=True,blank=True,default='',verbose_name='完成时间')
     iscode = models.IntegerField(null=True, blank=True, default=-2, verbose_name='状态')
     # --状态 -2文件解析出错 ,-1待提交： 0待检测， 1检测中， 2等待获取报告, 3正在生产报告, 4检测完成
     similarity = models.FloatField(null=True, blank=True, default=0, verbose_name='相似度')  # --相似度，值区间0~1
@@ -93,6 +103,7 @@ class DetectionList(models.Model):
     taskid = models.CharField(max_length=38, blank=True, verbose_name='taskid')
     filepath = models.CharField(max_length=254, default='', verbose_name='文本路径')
     zipurl = models.URLField(blank=True, null=True, verbose_name='报告压缩包地址')
+    isclear = models.BooleanField(default=False,verbose_name='用户是否删除')
 
     # 重写__str__函数3
     def __str__(self):
@@ -125,8 +136,8 @@ class DetectionList(models.Model):
              "type": "VIP\/TMLC2",
              "title": self.title,
              "author": self.author,
-             "add_date": self.date,
-             "report_date": self.date,
+             "add_date": now_to_date(self.date),
+             "report_date": self.report_date,
              "wordnum": "3253",
              "price": "1.00",
              "report_day": 0,
@@ -134,7 +145,7 @@ class DetectionList(models.Model):
              "status": {"num": num[self.iscode],
                         "str": strs[self.iscode],
                         "color": "black",
-                        "extra": "",
+                        "extra": "报告已删除",
                         "is_change_paper": 0,
                         "is_report_expire": 0},
              "query_time": self.date,
@@ -146,7 +157,7 @@ class ErrotList(models.Model):
     orderacc = models.CharField(max_length=16, null=True, blank=True, verbose_name='订单编号')
     title = models.CharField(max_length=64, null=True, blank=True, verbose_name='标题')
     author = models.CharField(max_length=16, null=True, blank=True, verbose_name='作者')
-    date = models.CharField(max_length=14, null=True, blank=True, verbose_name='提交时间')
+    date = models.CharField(max_length=20, null=True, blank=True, verbose_name='提交时间')
 
     # 重写__str__函数3
     def __str__(self):
@@ -180,10 +191,11 @@ class Packdocument(models.Model):
 class Order(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='代理商')
     types = models.CharField(max_length=4, default='A', verbose_name='订单类型')
-    ordernumber = models.CharField(max_length=20, default=0, verbose_name='订单号')
-    date = models.CharField(max_length=16, default=0, verbose_name='时间')
+    ordernumber = models.CharField(max_length=20,unique=True, default=0, verbose_name='订单号')
+    date = models.CharField(max_length=20, default=0, verbose_name='时间')
     quantity_residual = models.IntegerField(default=0, verbose_name='剩余数量')
     payment = models.CharField(max_length=16, verbose_name='实付金额')
+    freeze = models.BooleanField(default=False,verbose_name='是否冻结')
     # 重写__str__函数3
     def __str__(self):
         return str(self.account)
@@ -191,6 +203,14 @@ class Order(models.Model):
         db_table = "order"
         verbose_name = '订单管理列表'
         verbose_name_plural = verbose_name
+
+    def dic(self):
+        d = {
+            'orderid':self.ordernumber,
+            'addTime':self.date,
+            'num':self.quantity_residual,
+        }
+        return d
 # 宝贝管理
 class Treasure(models.Model):
     GENDER = (
@@ -201,12 +221,12 @@ class Treasure(models.Model):
     account = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='代理商')
     website = models.CharField(max_length=128, null=True, blank=True, verbose_name='域名')
     individuation = models.CharField(max_length=32, null=True, blank=True, verbose_name='个性化')
-    treid = models.CharField(max_length=16, null=True, blank=True, verbose_name='宝贝ID')
+    treid = models.CharField(max_length=16, null=True, unique=True, blank=True, verbose_name='宝贝ID')
     WW = models.CharField(max_length=16, null=True, blank=True, verbose_name='旺旺')
     qq = models.CharField(max_length=16, null=True, blank=True, verbose_name='QQ')
     phone = models.CharField(max_length=12, null=True, blank=True, verbose_name='电话')
     iscode = models.BooleanField(default=True, blank=True, verbose_name='授权状态')
-    date = models.CharField(max_length=14, null=True, blank=True, verbose_name='授权时间')
+    date = models.CharField(max_length=20, null=True, blank=True, verbose_name='授权时间')
     operation = models.CharField(max_length=12, null=True, blank=True, verbose_name='操作')
     xitong = models.CharField(choices=GENDER, max_length=6, verbose_name="类型")
 
@@ -218,6 +238,22 @@ class Treasure(models.Model):
         db_table = "treasure"
         verbose_name = '宝贝管理'
         verbose_name_plural = verbose_name
+
+    def dic(self):
+        d = {
+            'id':self.id,
+            'serverName':'http://www.cnkidata.com',
+            'domain':self.xitong,
+            'productid':self.treid,
+            'wangwang':self.WW,
+            'qq':self.qq,
+            'phone':self.phone,
+            'authorized':self.iscode,
+            'lastAuthTime':self.date,
+            'xitong':self.xitong,
+            'authorizedUrl':'http://alds.agiso.com/Authorize.aspx?appId=20190520341920&state=2233',
+        }
+        return d
 # 全局管理
 class Globo(models.Model):
     name = models.CharField(max_length=8, verbose_name='名称')

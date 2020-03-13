@@ -167,6 +167,12 @@ def upload(request):
                     'message': '未识别文件名或文件名错误'
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            if not MDW.select_order_account(order):
+                jsonStr = {
+                    'result': 0,
+                    'message': '订单号错误,或者商家剩余积分不足, 请联系客服'
+                }
+                return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取当前时间的时间戳
             timestr = str(time.time()).replace('.', '')
             # 获取后缀
@@ -220,6 +226,7 @@ def upload(request):
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             MDW.surplus_order_minus(order)
+            MDW.gods_up(order)
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
@@ -362,6 +369,8 @@ def textdownload(request):
             return render(request, 'login.html')
         id = request.GET.get('id')
         filepath = MDW.selectfilepath(id)
+        if not filepath:
+            return
         filename = up.quote("_".join(filepath.split('/')[-1].split('_')[1:]))
         file = open(filepath, 'rb')
         response = FileResponse(file)
@@ -379,9 +388,6 @@ def batchDownload(request):
         ids = request.GET.get('ids')
         idls = ids.split(',')
         filepathlist =[]
-        for id in idls:
-            if id:
-                filepathlist.append(MDW.selectfilepath(id))
         timestr = str(time.time()).replace('.', '')
         zippath = os.path.join(settings.BASE_DIR, 'static/zipfiles/{0}{1}'.format(timestr, '.zip'))
         MDW.zipDir(filepathlist,'static/file/',zippath)
@@ -405,7 +411,7 @@ def errorlist(request):
             jsonStr = {"result": 1, "msg": ''}
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
-# 打包检测 成功的 文档
+# 打包 检测成功的 文档
 def file_package(request):
     if request.method == 'GET':
         name = request.GET.get('name')
@@ -413,7 +419,7 @@ def file_package(request):
         id = request.GET.get('id')
         jsonStr = {"result": 0, "message": ''}
         if name=='admin' and pwd == 'zz141242':
-            if MDW.post_examiningz_report(id):
+            if not MDW.post_examiningz_report(id):
                 jsonStr = {"result": 1,  "message": '请求接口错误'}
         return HttpResponse(json.dumps(jsonStr), content_type="application/json")
 # 下载检测报告
@@ -522,8 +528,25 @@ def order(request):
         if request.method == 'GET':
             return render(request, 'order.html', locals())
         else:
-            jsonStr = {"result": 1, "msg": ''}
-            return HttpResponse(json.dumps(jsonStr), content_type="application/json")
+            message = MDW.select_order(accobj)
+            return HttpResponse(json.dumps(message), content_type="application/json")
+    return render(request, 'login.html')
+# 清空订单可用件数
+def order_clear(request):
+    if 'sname' in request.session:
+        name = request.session['sname']
+        pwd = request.session['spwd']
+        accobj = MDW.account_result(name, pwd)
+        if not accobj:
+            return render(request, 'login.html')
+        if request.method == 'GET':
+            orderid = request.GET.get('orderid')
+            msg = MDW.clear_order_num(accobj,orderid)
+            if msg:
+                message={"result": 1,  "message": '清空成功'}
+            else:
+                message = {"result": 0, "message": '清空失败'}
+            return HttpResponse(json.dumps(message), content_type="application/json")
     return render(request, 'login.html')
 # 宝贝管理
 def product(request):
@@ -534,9 +557,9 @@ def product(request):
         if not accobj:
             return render(request, 'login.html')
         if request.method == 'GET':
-            return render(request, 'product.html', locals())
+            return render(request, 'product.html')
         else:
-            jsonStr = {"result": 1, "msg": ''}
+            jsonStr = MDW.select_product(accobj)
             return HttpResponse(json.dumps(jsonStr), content_type="application/json")
     return render(request, 'login.html')
 # 个人资料
@@ -587,18 +610,27 @@ def order_put(request):
             sign = request.GET.get('sign')
             timestamp = request.GET.get('timestamp')
             json_data = request.POST.get('json')
-            if Sign(timestamp, json_data) != sign:
-                return HttpResponse('验签失败')
-            all_data = json.loads(json_data)
-            tid = all_data['Tid']  # 订单号
-            account = all_data['SellerNick']  # 代理商
-            treid = all_data['Orders'][0]['NumIid']  # 宝贝id
-            WW = all_data['BuyerNick']  # 旺旺
-            payment = all_data['Payment']  # 实付金额
-            quantity_residual = all_data['Num']  # 数量
-            date = all_data['PayTime']  # 付款日期
+            f = open('推送json串.txt','a')
+            f.write(json_data+'\n')
+            f.write(str(aopic) + '\n')
+            f.write(str(sign) + '\n')
+            f.write(str(timestamp) + '\n')
+            # if Sign(timestamp, json_data) != sign:
+            #     return HttpResponse('验签失败')
             # 订单推送,插入表订单信息等数据
             if aopic == "21" or aopic == 21 or aopic == "2" or aopic == 2 or aopic == "1" or aopic == 1:
+                all_data = json.loads(json_data)
+                tid = all_data['Tid']  # 订单号
+                # account = all_data['SellerNick']  # 代理商
+                treid = all_data['Orders'][0]['NumIid']  # 宝贝id
+                # WW = all_data['BuyerNick']  # 旺旺
+                payment = all_data['Payment']  # 实付金额
+                quantity_residual = all_data['Num']  # 数量
+                date = all_data['PayTime']  # 付款日期
+                if date == None or date == "null":
+                    date = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+                f.write(str(tid) + '\n')
+                f.close()
                 treasure = Treasure.objects.get(treid=treid)
                 xitong = treasure.xitong
                 account_id = treasure.account
@@ -610,29 +642,41 @@ def order_put(request):
                 order.quantity_residual = quantity_residual
                 order.payment = payment
                 order.save()
+
                 return HttpResponse('验签成功,保存数据成功')
             # 退款订单推送，删除订单等信息
             elif aopic == "256" or aopic == 256:
-                Order.objects.get(ordernumber=tid).delete()
-                return HttpResponse('退款订单完成')
+                # {"Tid":888710912223440387,"Oid":888710912223440387,"RefundId":56043394560448703,"SellerNick":"金榜教育服务","BuyerNick":"爱尚乐购8","RefundFee":"35.00","RefundPhase":"onsale","BillType":"refund_bill","Modified":"2020-03-13 16:35:58"}
+                all_data = json.loads(json_data)
+                tid = all_data['Tid']  # 订单号
+                try:
+                    o = Order.objects.get(ordernumber=tid)
+                    o.freeze = True
+                    o.save()
+                    # d = DetectionList.objects.get(orderacc=tid)
+                    # d.iscode = 5
+                    # d.save()
+                except:
+                    return HttpResponse('买家申请退款失败')
+                return HttpResponse('买家申请退款')
             # 撤销退款订单推送，需重新增加订单信息
             elif aopic == "32768" or aopic == 32768:
-                treasure = Treasure.objects.get(treid=treid)
-                xitong = treasure.xitong
-                account_id = treasure.account
-                order = Order()
-                order.types = xitong
-                order.account = account_id
-                order.ordernumber = tid
-                order.date = date
-                order.quantity_residual = quantity_residual
-                order.payment = payment
-                order.save()
-                return HttpResponse('撤销订单成功')
+                try:
+                    all_data = json.loads(json_data)
+                    tid = all_data['Tid']  # 订单号
+                    o = Order.objects.get(ordernumber=tid)
+                    o.freeze = False
+                    o.save()
+                    # d = DetectionList.objects.get(orderacc=tid)
+                    # d.iscode = 0
+                    # d.save()
+                except:
+                    return HttpResponse('买家撤销退款失败')
+                return HttpResponse('买家撤销退款')
             else:
                 return HttpResponse('未知推送')
-        except:
-            return HttpResponse('验签错误')
+        except Exception as e:
+            return HttpResponse('验签错误:%s'%str(e))
 # 无需物流发货
 def gods_up(request):
     if request.method == "POST":
@@ -644,10 +688,10 @@ def gods_up(request):
             "ApiVersion ": "1",
             "Authorization": "Bearer TbAldsee25p739wafxdz5u88uxxrfxtrydp6eh62htatkuggf5",
         }
-        s = ("p8hbc7zvurx6ckyzu5hxteyf6ykhky9w" + "tid"+str(tids) + "timestamp" + timestamp + "p8hbc7zvurx6ckyzu5hxteyf6ykhky9w").encode('utf8')
+        s = ("p8hbc7zvurx6ckyzu5hxteyf6ykhky9w" + "tids"+str(tids) + "timestamp" + timestamp + "p8hbc7zvurx6ckyzu5hxteyf6ykhky9w").encode('utf8')
         ms = md5(s).hexdigest()
         data = {
-            "tid":str(tids),
+            "tids":str(tids),
             "timestamp": timestamp,
             "sign": ms
         }
