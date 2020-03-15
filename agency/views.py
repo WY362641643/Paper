@@ -15,6 +15,12 @@ from agency.sign import Sign
 source = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
 ]
+sourcetitle = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C',
+          'V', 'B', 'N', 'M',
+          'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'j', 'h', 'k', 'l', 'm', 'n', 'b',
+          'v', 'c', 'x', 'z',
+          '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
+          ]
 def index_views(request):
     # print("/")
     if request.method == 'GET':
@@ -174,7 +180,7 @@ def upload(request):
                 }
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")
             # 获取当前时间的时间戳
-            timestr = str(time.time()).replace('.', '')
+            timestr = ''.join(random.sample(source, 2))
             # 获取后缀
             suffix = file_obj.name.split(".")[-1]
             # 获取程序需要写入的文件路径
@@ -370,7 +376,7 @@ def textdownload(request):
         id = request.GET.get('id')
         filepath = MDW.selectfilepath(id)
         if not filepath:
-            return
+            return HttpResponse('<h1>原文已删除</h1>')
         filename = up.quote("_".join(filepath.split('/')[-1].split('_')[1:]))
         file = open(filepath, 'rb')
         response = FileResponse(file)
@@ -386,10 +392,9 @@ def batchDownload(request):
         if not accobj:
             return render(request, 'login.html')
         ids = request.GET.get('ids')
-        idls = ids.split(',')
         filepathlist =[]
         timestr = str(time.time()).replace('.', '')
-        zippath = os.path.join(settings.BASE_DIR, 'static/zipfiles/{0}{1}'.format(timestr, '.zip'))
+        zippath = os.path.join(settings.BASE_DIR, 'static/fileszip/{0}{1}'.format(timestr, '.zip'))
         MDW.zipDir(filepathlist,'static/file/',zippath)
         filename = zippath.split('/')[-1]
         file = open(zippath, 'rb')
@@ -483,7 +488,7 @@ def addDocPack(request):
             timestr = str(random.randint(1,99999))
             # 获取程序需要写入的文件路径
             filename = timestr + '_'+ file_obj.name
-            path = os.path.join(settings.BASE_DIR, 'static/advertfile/{}'.format(filename))
+            path = os.path.join(settings.BASE_DIR, 'static/fileadvert/{}'.format(filename))
             if os.path.exists(path):
                 jsonStr = {"result": 0, "massage": '失败,文件名已存在'}
                 return HttpResponse(json.dumps(jsonStr), content_type="application/json")

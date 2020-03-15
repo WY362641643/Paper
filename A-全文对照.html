@@ -21,7 +21,7 @@
           rel="stylesheet" type="text/css">
     <LINK href="https://check.cnki.net/smlc2/App_Themes/SMLC/smlc.css"
           rel="stylesheet" type="text/css">
-    <LINK style="color:#ff4934;" href="https://check.cnki.net/smlc2/App_Themes/SMLC/sms.css"
+    <LINK href="https://check.cnki.net/smlc2/App_Themes/SMLC/sms.css"
           rel="stylesheet" type="text/css">
     <LINK href="https://check.cnki.net/smlc2/App_Themes/SMLC/TabbedPanels.css"
           rel="stylesheet" type="text/css">
@@ -62,7 +62,6 @@
 
 
 
-
     </SCRIPT>
     <STYLE type="text/css">
         .n_main {
@@ -77,9 +76,14 @@
         * {
             text-align: left;
         }
-
         em {
-            color: #860505;
+            font－family:宋体;
+            color:red;
+            text-align: left;
+            line-height: 180%;
+            text-indent: 2em;
+            font-size: 12px;
+            font-style: normal;
         }
 
         html, body {
@@ -1414,12 +1418,12 @@
                             <TBODY>
                             <TR>
                                 <TD width="420" class="n_text_red_a">№:<SPAN
-                                        id="Label_ReportID">ADBD2020R_2019051809171320200312024115589064152768</SPAN>
+                                        id="Label_ReportID">ADBD2020R_2019051809171320200315190905794540851290</SPAN>
 
                                 </TD>
                                 <TD width="60" class="t_text_red_a">检测时间：
                                 </TD>
-                                <TD><SPAN id="Label_Apply_Time">2020-03-12 02:41:15</SPAN>
+                                <TD><SPAN id="Label_Apply_Time">2020-03-15 19:09:05</SPAN>
                                 </TD>
                             </TR>
                             <TR>
@@ -1453,7 +1457,7 @@
                     <TD class="n_text_green" style="width: 100px;">时间范围：
                     </TD>
                     <TD class="n_text_block_a"><SPAN
-                            id="Label_Time_Range">1900-01-01至2020-03-12</SPAN>
+                            id="Label_Time_Range">1900-01-01至2020-03-15</SPAN>
                     </TD>
                 </TR>
                 </TBODY>
@@ -1512,41 +1516,42 @@
                         <TD width="59"><SPAN class="n_text_block_bss">[&nbsp;<SPAN id="Label_All_CopyWords">3905</SPAN>&nbsp;]</SPAN>
                         </TD>
                         <TD width="103" class="n_text_block_8 n_text_Gm">总段落数：</TD>
-                        <TD width="39"><SPAN class="n_text_block_bss">[&nbsp;<SPAN id="Label_All_Section">2</SPAN>&nbsp;]</SPAN>
+                      <TD width="39"><SPAN class="n_text_block_bss">[&nbsp;<SPAN id="Label_All_Section">2</SPAN>&nbsp;]</SPAN>
                         </TD>
-
-
+                        
+                        
+                        
                         <TD width="78" height="79" rowspan="5" align="right" valign="middle">
-                            <DIV class="tabRig clearfix">
-                                <canvas id="mycanvas" width="80px" height="80px">您的浏览器暂不支持HTML5的canvas元素！！</canvas>
-                                <script type="text/javascript">
-                                    //定义变量获取画布DOM
-                                    var canvas = document.getElementById("mycanvas");
-                                    //设置绘画环境为2d
-                                    var context = canvas.getContext("2d");
+                            <DIV class="tabRig clearfix"> 
+                             <canvas id="mycanvas" width="80px" height="80px">您的浏览器暂不支持HTML5的canvas元素！！</canvas>
+        <script type="text/javascript">
+        //定义变量获取画布DOM
+        var canvas=document.getElementById("mycanvas");
+        //设置绘画环境为2d
+        var context=canvas.getContext("2d");
 
-                                    //2、绘制饼图的每一块
-                                    //2.1、第一块，右下角
-                                    context.beginPath();
-                                    context.lineWidth = 5;
-                                    context.fillStyle = "#868686";
-                                    context.moveTo(36, 36);
-                                    context.arc(36, 36, 35, 0, 2 * Math.PI);
-                                    context.fill();
+        //2、绘制饼图的每一块
+        //2.1、第一块，右下角
+        context.beginPath();
+        context.lineWidth=5;
+        context.fillStyle="#868686";
+        context.moveTo(36,36);
+        context.arc(36,36,35,0,2*Math.PI);
+        context.fill();
 
-                                    //2.4、第四块，右上角
-                                    context.beginPath();
-                                    context.lineWidth = 5;
-                                    context.fillStyle = "#e06b7d";
-                                    context.moveTo(36, 36);
-                                    context.arc(36, 36, 35, 0, Math.PI * 0.0055555555555 * (105.12));//29.2%需要转换成数值
-                                    context.fill();
-                                </script>
-
+        //2.4、第四块，右上角
+        context.beginPath();
+        context.lineWidth=5;
+        context.fillStyle="#e06b7d";
+        context.moveTo(36,36);
+        context.arc(36,36,35,0,Math.PI*0.0055555555555*(105.12));//29.2%需要转换成数值
+        context.fill();
+    </script>
+       
                             </DIV>
                         </TD>
                         <TD width="132" rowspan="1">&nbsp;</TD>
-
+                      
                         <TD width="40" rowspan="1">&nbsp;</TD>
                     </TR>
                     <TR>
@@ -1556,11 +1561,9 @@
                         <TD class="n_text_block_8 n_text_Gm">疑似段落数：</TD>
                         <TD><SPAN class="n_text_block_bss">[&nbsp;<SPAN
                                 id="lb_yszj">2</SPAN>&nbsp;]</SPAN></TD>
-
-                        <TD width="132" rowspan="1" valign="top">&nbsp;<img
-                                src="http://www.cnkidata.com/static/images/mht2871.gif" width="10" height="8"/> <span
-                                id="wb">文字复制部分&nbsp;29.2%</span></TD>
-                        <TD width="40" rowspan="1">&nbsp;</TD>
+                                
+                                <TD width="132" rowspan="1" valign="top">&nbsp;<img src="http://www.cnkidata.com/static/images/mht2871.gif" width="10" height="8" /> <span id="wb">文字复制部分&nbsp;29.2%</span></TD>
+                                <TD width="40" rowspan="1">&nbsp;</TD>
                     </TR>
                     <TR>
                         <TD class="n_text_block_8 n_text_Gm"><SPAN id="Label1">单篇最大重复字数：</SPAN>
@@ -1570,10 +1573,8 @@
                         <TD class="n_text_block_8 n_text_Gm">前部重合字数：</TD>
                         <TD><SPAN class="n_text_block_bss">[&nbsp;<SPAN
                                 id="lb_qcf">225</SPAN>&nbsp;]</SPAN></TD>
-                        <TD width="132" rowspan="1" valign="top">&nbsp;<img
-                                src="http://www.cnkidata.com/static/images/mht28B2.gif" width="10" height="8"/> <span
-                                id="wb">引用部分&nbsp;0%</span></TD>
-                        <TD width="40" rowspan="1">&nbsp;</TD>
+                                <TD width="132" rowspan="1" valign="top">&nbsp;<img src="http://www.cnkidata.com/static/images/mht28B2.gif" width="10" height="8" /> <span id="wb">引用部分&nbsp;0%</span></TD>
+                                <TD width="40" rowspan="1">&nbsp;</TD>
                     </TR>
                     <TR>
                         <TD class="n_text_block_8 n_text_Gm"><SPAN
@@ -1584,9 +1585,7 @@
                         <TD class="n_text_block_8 n_text_Gm">后部重合字数：</TD>
                         <TD><SPAN class="n_text_block_bss">[&nbsp;<SPAN
                                 id="lb_hcf">3460</SPAN>&nbsp;]</SPAN></TD>
-                        <TD width="132" valign="top">&nbsp;<img src="http://www.cnkidata.com/static/images/mht28F3.gif"
-                                                                width="10" height="8"/> <span
-                                id="wb">无问题部分&nbsp;70.8%</span></TD>
+                        <TD width="132" valign="top">&nbsp;<img src="http://www.cnkidata.com/static/images/mht28F3.gif" width="10" height="8" /> <span id="wb">无问题部分&nbsp;70.8%</span></TD>
                         <TD width="40" rowspan="1">&nbsp;</TD>
                     </TR>
                     <TR id="danpian">
@@ -1650,177 +1649,50 @@
                     </TR>
                     </TBODY>
                 </TABLE>
-                <TABLE class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                    <TBODY>
-                    <TR>
-                        <TD width="20" height="25">&nbsp;</TD>
-                        <TD style="width: 58px; text-align: left;">
-                            <DIV class="per_y">25.5%</DIV>
-                        </TD>
-                        <TD width="50" align="left">(1924)</TD>
-                        <TD class="n_text_block_a2"><A href="">
-                            浅析埃及新宪法_第1部分</A> （总7559字）
-                        </TD>
-                    </TR>
-                    <TR>
-                        <TD width="20" height="25">&nbsp;</TD>
-                        <TD style="width: 58px; text-align: left;">
-                            <DIV class="per_y">34.1%</DIV>
-                        </TD>
-                        <TD width="50" align="left">(1981)</TD>
-                        <TD class="n_text_block_a2"><A href="">
-                            浅析埃及新宪法_第2部分</A> （总5801字）
-                        </TD>
-                    </TR>
-                    </TBODY>
-                </TABLE>
+                <TABLE class="n_table_a" border="0" cellspacing="0" cellpadding="0"><TBODY><TR>
+    <TD width="20" height="25">&nbsp;                                    </TD>
+    <TD style="width: 58px; text-align: left;">
+      <DIV class="per_y">25.5%</DIV></TD>
+    <TD width="50" align="left">(1924)                                     </TD>
+    <TD class="n_text_block_a2"><A href=""> 
+                                                 浅析埃及新宪法_第1部分</A> （总7559字）  
+                                         </TD></TR><TR>
+    <TD width="20" height="25">&nbsp;                                    </TD>
+    <TD style="width: 58px; text-align: left;">
+      <DIV class="per_y">34.1%</DIV></TD>
+    <TD width="50" align="left">(1981)                                     </TD>
+    <TD class="n_text_block_a2"><A href=""> 
+                                                 浅析埃及新宪法_第2部分</A> （总5801字）  
+                                         </TD></TR></TBODY></TABLE>
                 <DIV class="n_k3" id="imgdiv">
                     <DIV class="n_pic">
-                        <canvas id="myCanvas" width="602" height="15" style="border:1px solid black ; color:#868686; ">
-                            您的浏览器不支持 HTML5 canvas 标签。
-                        </canvas>
+   <canvas id="myCanvas" width="602" height="15" style="border:1px solid black ; color:#868686; ">
+您的浏览器不支持 HTML5 canvas 标签。</canvas>
 
-                        <script>
-                            //这里请求网络api获取json格式解析出data和word_count
-                            var json = [{'reference': 0, 'start': 346, 'end': 393}, {
-                                'reference': 0,
-                                'start': 489,
-                                'end': 635
-                            }, {'reference': 0, 'start': 764, 'end': 796}, {
-                                'reference': 0,
-                                'start': 4222,
-                                'end': 4307
-                            }, {'reference': 0, 'start': 4408, 'end': 4440}, {
-                                'reference': 0,
-                                'start': 4474,
-                                'end': 4544
-                            }, {'reference': 0, 'start': 4641, 'end': 4662}, {
-                                'reference': 0,
-                                'start': 4662,
-                                'end': 4701
-                            }, {'reference': 0, 'start': 4901, 'end': 4925}, {
-                                'reference': 0,
-                                'start': 4993,
-                                'end': 5043
-                            }, {'reference': 0, 'start': 5145, 'end': 5198}, {
-                                'reference': 0,
-                                'start': 5321,
-                                'end': 5345
-                            }, {'reference': 0, 'start': 5376, 'end': 5463}, {
-                                'reference': 0,
-                                'start': 5547,
-                                'end': 5660
-                            }, {'reference': 0, 'start': 5678, 'end': 5778}, {
-                                'reference': 0,
-                                'start': 5834,
-                                'end': 5923
-                            }, {'reference': 0, 'start': 5939, 'end': 5989}, {
-                                'reference': 0,
-                                'start': 6027,
-                                'end': 6111
-                            }, {'reference': 0, 'start': 6153, 'end': 6280}, {
-                                'reference': 0,
-                                'start': 6336,
-                                'end': 6361
-                            }, {'reference': 0, 'start': 6436, 'end': 6520}, {
-                                'reference': 0,
-                                'start': 6532,
-                                'end': 6651
-                            }, {'reference': 0, 'start': 6665, 'end': 6716}, {
-                                'reference': 0,
-                                'start': 7047,
-                                'end': 7074
-                            }, {'reference': 0, 'start': 7081, 'end': 7239}, {
-                                'reference': 0,
-                                'start': 7374,
-                                'end': 7453
-                            }, {'reference': 0, 'start': 7559, 'end': 7593}, {
-                                'reference': 0,
-                                'start': 7631,
-                                'end': 7805
-                            }, {'reference': 0, 'start': 7805, 'end': 7892}, {
-                                'reference': 0,
-                                'start': 7940,
-                                'end': 8046
-                            }, {'reference': 0, 'start': 8060, 'end': 8146}, {
-                                'reference': 0,
-                                'start': 8192,
-                                'end': 8278
-                            }, {'reference': 0, 'start': 8348, 'end': 8370}, {
-                                'reference': 0,
-                                'start': 8370,
-                                'end': 8402
-                            }, {'reference': 0, 'start': 8478, 'end': 8569}, {
-                                'reference': 0,
-                                'start': 8582,
-                                'end': 8682
-                            }, {'reference': 0, 'start': 8790, 'end': 8877}, {
-                                'reference': 0,
-                                'start': 8917,
-                                'end': 8953
-                            }, {'reference': 0, 'start': 9021, 'end': 9052}, {
-                                'reference': 0,
-                                'start': 9174,
-                                'end': 9261
-                            }, {'reference': 0, 'start': 9265, 'end': 9301}, {
-                                'reference': 0,
-                                'start': 9488,
-                                'end': 9520
-                            }, {'reference': 0, 'start': 10165, 'end': 10185}, {
-                                'reference': 0,
-                                'start': 10380,
-                                'end': 10421
-                            }, {'reference': 0, 'start': 10843, 'end': 10867}, {
-                                'reference': 0,
-                                'start': 10907,
-                                'end': 10929
-                            }, {'reference': 0, 'start': 10946, 'end': 10980}, {
-                                'reference': 0,
-                                'start': 11167,
-                                'end': 11193
-                            }, {'reference': 0, 'start': 11251, 'end': 11283}, {
-                                'reference': 0,
-                                'start': 11417,
-                                'end': 11435
-                            }, {'reference': 0, 'start': 11679, 'end': 11717}, {
-                                'reference': 0,
-                                'start': 11773,
-                                'end': 11810
-                            }, {'reference': 0, 'start': 11957, 'end': 11980}, {
-                                'reference': 0,
-                                'start': 12169,
-                                'end': 12212
-                            }, {'reference': 0, 'start': 12260, 'end': 12303}, {
-                                'reference': 0,
-                                'start': 12377,
-                                'end': 12575
-                            }, {'reference': 0, 'start': 12604, 'end': 12726}, {
-                                'reference': 0,
-                                'start': 12785,
-                                'end': 12806
-                            }];
-                            var word_count = 13360;
+<script>
+//这里请求网络api获取json格式解析出data和word_count
+var json = [{'reference': 0, 'start': 346, 'end': 393}, {'reference': 0, 'start': 489, 'end': 635}, {'reference': 0, 'start': 764, 'end': 796}, {'reference': 0, 'start': 4222, 'end': 4307}, {'reference': 0, 'start': 4408, 'end': 4440}, {'reference': 0, 'start': 4474, 'end': 4544}, {'reference': 0, 'start': 4641, 'end': 4662}, {'reference': 0, 'start': 4662, 'end': 4701}, {'reference': 0, 'start': 4901, 'end': 4925}, {'reference': 0, 'start': 4993, 'end': 5043}, {'reference': 0, 'start': 5145, 'end': 5198}, {'reference': 0, 'start': 5321, 'end': 5345}, {'reference': 0, 'start': 5376, 'end': 5463}, {'reference': 0, 'start': 5547, 'end': 5660}, {'reference': 0, 'start': 5678, 'end': 5778}, {'reference': 0, 'start': 5834, 'end': 5923}, {'reference': 0, 'start': 5939, 'end': 5989}, {'reference': 0, 'start': 6027, 'end': 6111}, {'reference': 0, 'start': 6153, 'end': 6280}, {'reference': 0, 'start': 6336, 'end': 6361}, {'reference': 0, 'start': 6436, 'end': 6520}, {'reference': 0, 'start': 6532, 'end': 6651}, {'reference': 0, 'start': 6665, 'end': 6716}, {'reference': 0, 'start': 7047, 'end': 7074}, {'reference': 0, 'start': 7081, 'end': 7239}, {'reference': 0, 'start': 7374, 'end': 7453}, {'reference': 0, 'start': 7559, 'end': 7593}, {'reference': 0, 'start': 7631, 'end': 7805}, {'reference': 0, 'start': 7805, 'end': 7892}, {'reference': 0, 'start': 7940, 'end': 8046}, {'reference': 0, 'start': 8060, 'end': 8146}, {'reference': 0, 'start': 8192, 'end': 8278}, {'reference': 0, 'start': 8348, 'end': 8370}, {'reference': 0, 'start': 8370, 'end': 8402}, {'reference': 0, 'start': 8478, 'end': 8569}, {'reference': 0, 'start': 8582, 'end': 8682}, {'reference': 0, 'start': 8790, 'end': 8877}, {'reference': 0, 'start': 8917, 'end': 8953}, {'reference': 0, 'start': 9021, 'end': 9052}, {'reference': 0, 'start': 9174, 'end': 9261}, {'reference': 0, 'start': 9265, 'end': 9301}, {'reference': 0, 'start': 9488, 'end': 9520}, {'reference': 0, 'start': 10165, 'end': 10185}, {'reference': 0, 'start': 10380, 'end': 10421}, {'reference': 0, 'start': 10843, 'end': 10867}, {'reference': 0, 'start': 10907, 'end': 10929}, {'reference': 0, 'start': 10946, 'end': 10980}, {'reference': 0, 'start': 11167, 'end': 11193}, {'reference': 0, 'start': 11251, 'end': 11283}, {'reference': 0, 'start': 11417, 'end': 11435}, {'reference': 0, 'start': 11679, 'end': 11717}, {'reference': 0, 'start': 11773, 'end': 11810}, {'reference': 0, 'start': 11957, 'end': 11980}, {'reference': 0, 'start': 12169, 'end': 12212}, {'reference': 0, 'start': 12260, 'end': 12303}, {'reference': 0, 'start': 12377, 'end': 12575}, {'reference': 0, 'start': 12604, 'end': 12726}, {'reference': 0, 'start': 12785, 'end': 12806}];
+var word_count = 13360;
 
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
 
-                            var c = document.getElementById("myCanvas");
-                            var ctx = c.getContext("2d");
+ctx.fillStyle="#C0C0C0";
+ctx.fillRect(0,0,720,75);
+ctx.strokeStyle = "#eb6f87";
+ctx.lineWidth="0.6";
+	
+for( var key in json ){
+	for(i=parseInt(json[key]["start"]);i<=parseInt(json[key]["end"]);i++){
+	ctx.moveTo(i/word_count*600,0);
+	ctx.lineTo(i/word_count*600,15);		
+	}	    
+}
 
-                            ctx.fillStyle = "#C0C0C0";
-                            ctx.fillRect(0, 0, 720, 75);
-                            ctx.strokeStyle = "#eb6f87";
-                            ctx.lineWidth = "0.6";
-
-                            for (var key in json) {
-                                for (i = parseInt(json[key]["start"]); i <= parseInt(json[key]["end"]); i++) {
-                                    ctx.moveTo(i / word_count * 600, 0);
-                                    ctx.lineTo(i / word_count * 600, 15);
-                                }
-                            }
-
-                            ctx.stroke();
-                        </script>
-
-                    </DIV>
+ctx.stroke();
+</script>
+                    
+    </DIV>
                     <TABLE width="640" class="n_table_zs" border="0" cellspacing="0"
                            cellpadding="0">
                         <TBODY>
@@ -1849,1113 +1721,1015 @@
 
         <DIV class="n_bodymid">
             <div class="n_bodymid_bf">
-                <table width="640" class="n_table_jiebf" border="0" cellspacing="0" cellpadding="0">
+    <table width="640" class="n_table_jiebf" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td width="25" height="30" class="n_bf_bt"></td>
+            <td width="499" class="n_text_block_bs"><a name="34255109_000"></a>浅析埃及新宪法_第1部分</td>
+            <td width="116" class="n_table_jiebf_zzs">总字数： <span class="n_text_block_bs">7559</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table width="640" class="n_table_jiebfs" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                     <tr>
-                        <td width="25" height="30" class="n_bf_bt"></td>
-                        <td width="499" class="n_text_block_bs"><a name="34255109_000"></a>浅析埃及新宪法_第1部分</td>
-                        <td width="116" class="n_table_jiebf_zzs">总字数： <span class="n_text_block_bs">7559</span>
+                        <td width="90" style="text-indent: 1em;">相似文献列表</td>
+                        <td width="150" class="n_table_jiebf_fzb">文字复制比：</td>
+                        <td width="100">
+                            <div class="n_jcjg_am">25.5%</div>
                         </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <table width="640" class="n_table_jiebfs" border="0" cellspacing="0" cellpadding="0">
-                                <tbody>
-                                <tr>
-                                    <td width="90" style="text-indent: 1em;">相似文献列表</td>
-                                    <td width="150" class="n_table_jiebf_fzb">文字复制比：</td>
-                                    <td width="100">
-                                        <div class="n_jcjg_am">25.5%</div>
-                                    </td>
-                                    <td class="n_table_jiebf_fzb" style="text-align: left;">疑似剽窃观点（0）</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
+                        <td class="n_table_jiebf_fzb" style="text-align: left;">疑似剽窃观点（0）</td>
                     </tr>
                     </tbody>
                 </table>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">1</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net"
-                                                                 target="_blank">纳赛尔主义与埃及的现代化</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">7.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《世界历史》- 2002</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">2</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及社会转型期的政治合法性研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">4.4%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《上海外国语大学博士论文》- 2014</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">3</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">英国在伊拉克的委任统治研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">2.0%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《辽宁大学硕士论文》- 2017</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">4</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">青年土耳其党及其执政实践研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.9%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《西北大学博士论文》- 2017</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">5</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及穆斯林兄弟会政党化问题研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《外交学院硕士论文》- 2011</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">6</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及宪法的创设、沿革及其修订</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《阿拉伯世界研究》- 2009</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">7</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net"
-                                                                 target="_blank">埃及宪法的发展及其特点</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.6%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《武汉大学学报(社会科学版)》- 2002</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">8</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">宪政主义、绝对主义与现代伊斯兰主义</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.3%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《南开大学博士论文》- 2008</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">9</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及近代以来教育发展与埃及现代化</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.3%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《西北大学博士论文》- 2002</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">10</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">困顿与变革:伊朗萨法维王朝阿拔斯一世改革</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.2%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《长江大学学报(社科版)》- 2018</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">11</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net"
-                                                                 target="_blank">埃及现代政党政治的演变</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.2%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《南开学报(哲学社会科学版)》- 2007</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">12</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">当代中东伊斯兰国家民主化若干问题研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.0%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《中国社会科学院研究生院博士论文》- 2003</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">13</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">伊斯兰传统文明的基本特征与中东现代化进程的历史轨迹</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.0%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《史学理论研究》- 2007</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">14</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及伊斯兰政治势力与政权的关系</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">1.0%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《西亚非洲》- 1990</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">15</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">&ldquo;七月革命&rdquo;与埃及现代化进程的路标性转换</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《内蒙古民族大学学报(社会科学版)》- 2004</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">16</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">沙俄对伊朗扩张政策演变（1779-1828)</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《哈尔滨师范大学社会科学学报》- 2018</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">17</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">中国与埃及现行宪政法律制度比较</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《西亚非洲》- 2010</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">18</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">&ldquo;一带一路&rdquo;资本技术合作中的风险与应对&mdash;&mdash;以先进生产技术对政治的影响为视角</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《云南社会科学》- 2018</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">19</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及穆斯林兄弟会发展演变研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《云南大学硕士论文》- 2013</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">20</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">大国博弈视角下的南波斯洋枪队始末(1916&mdash;1921)</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.7%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《文化学刊》- 2018</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">21</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">法律硕士专业学位研究联考应试指导(综合考试课)</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.7%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《中国人民大学出版社》- 2003</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">22</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">从选举政治到广场政治:埃及穆巴拉克时代的民众政治参与</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.7%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《西亚非洲》- 2013</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">23</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">藏外佛教文献</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.7%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《中國人民大學出版社》- 2008</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">24</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">圣域的眼泪</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.7%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《中国城市出版社》- 1999</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">26</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net"
-                                                                 target="_blank">沙特阿拉伯宗教政治初探</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">0.7%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《西亚非洲》- 2008</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </td>
+        </tr>
+        </tbody>
+    </table><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
             <tbody>
-            <div class="n_qwdz_ywnr">
-                <table border="0" cellspacing="0" cellpadding="0"
-                       style="border-collapse: collapse; table-layout: fixed;"
-                       id="table2" class="n_bgd_biao">
-                    <tbody>
-                    <tr id="Repeater1_ctl00_tr_item">
-                        <td class="n_bgd_biao_b" width="330" colspan="2">原文内容
-                        </td>
-                        <td width="310" class="n_bgd_biao_bs">相似内容来源
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table border="0" cellspacing="0" cellpadding="0"
-                       style="border-collapse: collapse; table-layout: fixed;"
-                       id="table3" class="n_bgd_biao">
-                    <tbody>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            1
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;47&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>而后随着英国殖民统治日渐加深,民族矛盾逐渐上升为埃及现代化进程中社会矛盾的主要形式。在此期间,</em>埃及人民现代政治思想的萌芽渐渐孕育而出。
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 被称为欧洲内阁。随着殖民侵略的加深和殖民统治的建立,<em class='similar'>民族对立日趋尖锐,民族矛盾逐渐上升为埃及现代化进程中社会主要矛盾。</em>在1882年阿拉比起义中,埃及民众出于对列强控制和掠夺埃及的反抗,&nbsp;&nbsp;&nbsp;&nbsp;蒋灏-《埃及穆巴拉克政权对穆斯林兄弟会的政策研究》-2011（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 冲击导致埃及社会矛盾的错综交织。随着殖民侵略的加深和殖民统治的建立,<em class='similar'>民族对立日趋尖锐,民族矛盾逐渐上升为埃及现代化进程中社会矛盾的主要形式。1882年奥拉比领导的武装起义,</em>首开埃及民众反抗英国殖民统治的先河。19191921年,&nbsp;&nbsp;&nbsp;&nbsp;哈全安-《纳赛尔主义与埃及的现代化》-2002（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            2
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;146&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>埃及进入共和制时代。1971年,埃及颁布永久宪法。这是一部希冀允许更多自由的新民主宪法。值得一提的是,伊斯兰教法成为主要的立法来源。然而,自美国以反恐的名义发动伊拉克和阿富汗战争并大力推行对中东国家的&quot;民主改造&quot;政策以来,埃及国内政治改革进程开始发生复杂而微妙的变化。加之埃及近年内政局更迭,</em>经济发展迟缓,社会局势动荡,宗教势力崛起
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 经济上实施对外开放政策,发展私营经济,引进外资,改革国营经济。<em class='similar'>政治上颁布1971年永久宪法,确立了总统共和制的代议制政体。</em>外交上,缓和与美国的关系,签订埃以和平条约和戴维营协议,&nbsp;&nbsp;&nbsp;&nbsp;鲁蓉蓉-《西方宪政主义对埃及宪政发展的影响》-2016（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> ,不仅将胜利的民主推向了练的低调将军,都因为表面的软弱无总统<em class='similar'>颁布了埃及第一部永久宪法,对罪恶的民主,</em>还在自以为是的正确里为而被当作过渡人物委以重任,塞西内去纳赛尔化,&nbsp;&nbsp;&nbsp;&nbsp;王猛-《&ldquo;法老&rdquo;、总统和国家&mdash;&mdash;从塞西当选埃及总统说开去》-2014（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 埃及颁布永久宪法,该体制在30多年里<em class='similar'>一直保持着稳定状态。然而,自从美国以反恐的名义发动伊拉克和阿富汗战争并大力推行对中东伊斯兰国家的&quot;民埃及国内政治改革进程发生了复杂而微妙的</em>了复杂而微妙的&nbsp;&nbsp;&nbsp;&nbsp;孔令涛-《埃及宪法的创设、沿革及其修订》-2009（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 自从美国以反恐的名义发动伊<em class='similar'>拉克和阿富汗战争并大力推行对中东伊斯兰国家的&quot;民主改造&quot;以来,埃及国内政治改革进程发生了复杂而微妙的改变;加之埃及近年来经济发展遭遇困难</em>,贫困现象激增,社会动荡加剧,宗教势力崛起,&nbsp;&nbsp;&nbsp;&nbsp;孔令涛-《埃及宪法的创设、沿革及其修订》-2009（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            3
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;85&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>对这一问题的研究,有助于认识发展中资本主义国家在现代化过程中模仿西方宪政模式所遭遇的波折等问题,以及了解埃及人民期待以此为契机使历经动荡的埃及逐步走向稳定发展的期望。一、</em>埃及的制宪历程
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 从而形成民族民主党一党独大的局面,故谓之有限多党制。对这一制度的研究,<em class='similar'>将有助于认识发展中资本主义国家在现代化过程中政治制度的变化;西方政治制度模</em>式同一些发展中国家社会、经济、&nbsp;&nbsp;&nbsp;&nbsp;毕健康-《浅析当代埃及政党制度的演进》-2001（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> $$埃及新宪法草案的出炉,是政治过渡进程取得的一项重要成果。<em class='similar'>人们期待以此为契机,使历经动荡的埃及逐步走向稳定和发展。</em>$$(本报开罗12月2日电)&nbsp;&nbsp;&nbsp;&nbsp;刘水明；张梦旭；刘睿-《埃及新宪法草案出炉》-2013（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            4
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;32&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>受世界大局势的影响,埃及人民智力的觉醒和现代政治思想的萌生初现,</em>而受到震撼世界的1917年俄国十月革命成
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 伴随着新式学校的出现和印刷出版业的发展,西方文化和现代政治思想幵始从基督教欧洲传人,<em
-                                            class='similar'>19世纪的埃及智力开始觉醒,现代政治思想开始萌生。19世纪埃及智力的觉醒与现代政治思想的萌生,</em>再先表现为伊斯兰现主义的兴起。统治模式决定反抗模式,&nbsp;&nbsp;&nbsp;&nbsp;郑已东-《埃及社会转型期的政治合法性研究》-2014（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            5
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;70&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>民族主义运动兴起。终于,在1922年,英国宣布埃及为独立国家。虽然英国承认了埃及享有独立主权国家的地位,但仍保留了英国在埃及的四项重要特权。</em>由此可见,埃及政府只是获得了一定程度上的
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 纳哈斯帕夏和一位科普特人马克拉姆&quot;即乌贝都拉帕<em class='similar'>夏&quot;共同领导民族主义运动;1922年,埃及宣布独立,</em>1924年1月,扎格鲁尔组建内阁,其中包括两位科普特人:莫克斯哈纳担任公共工程部长,&nbsp;&nbsp;&nbsp;&nbsp;张燕军-《中东国家建构中的少数族群问题》-2014（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 赛义德拉加卜哈拉兹: 埃及近现代简史 ,<em class='similar'>商务印书馆年版,第页。第173页方面宣布承认埃及为&quot;独立的主权国家&quot;,但英国仍要保留四项特保护权:保障</em>帝国交通线的安全;埃及抵抗外来的直接或间保护外国接的侵略;人利益和少数民族问题;&nbsp;&nbsp;&nbsp;&nbsp;(德)赫尔穆特&middot;麦切尔(H.Mej
-                                        cher)著-《圣域的眼泪》-1999（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            6
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;21&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>制定并颁布了埃及作为独立国家的第一部宪法。</em>
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 英国仍然控制着埃及的国防及全国的交通线。年法。<em class='similar'>宪法宣布:埃及是一个君主立宪的月,埃及颁布了宪独立国家&quot;。宪法反映了资产阶级的利益,</em>又保留了封建贵族、地主的特权(如国王有权解散议会、&nbsp;&nbsp;&nbsp;&nbsp;王斯德-《世界现代史
-                                        上》-1988（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            7
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;39&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>此次宪法赋予国王以广泛的权力,包括任免首相,解散内阁和议会以及延长议会的任期。</em>埃及的政体也因此明显区别于欧洲的议会民主
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 以便从中渔利;另一方面凭借其占领军,肆无忌惮地插手埃及内政<em class='similar'>。王室:1923年宪法赋予国王很大权力,他有权任免首相,</em>解散下院,钦定上院五分之二的议员。但福阿德和法鲁克国王在位期间,&nbsp;&nbsp;&nbsp;&nbsp;中国现代国际关系研究所-《全球变局美国与伊拉克》-2003（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">1</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">纳赛尔主义与埃及的现代化</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">7.8%（589）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《世界历史》- 2002</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
             </tbody>
-            <div class="n_bodymid_bf">
-                <table width="640" class="n_table_jiebf" border="0" cellspacing="0" cellpadding="0">
-                    <tbody>
-                    <tr>
-                        <td width="25" height="30" class="n_bf_bt"></td>
-                        <td width="499" class="n_text_block_bs"><a name="34255109_000"></a>浅析埃及新宪法_第2部分</td>
-                        <td width="116" class="n_table_jiebf_zzs">总字数： <span class="n_text_block_bs">5801</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <table width="640" class="n_table_jiebfs" border="0" cellspacing="0" cellpadding="0">
-                                <tbody>
-                                <tr>
-                                    <td width="90" style="text-indent: 1em;">相似文献列表</td>
-                                    <td width="150" class="n_table_jiebf_fzb">文字复制比：</td>
-                                    <td width="100">
-                                        <div class="n_jcjg_am">34.1%</div>
-                                    </td>
-                                    <td class="n_table_jiebf_fzb" style="text-align: left;">疑似剽窃观点（0）</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">1</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">穆尔西时期埃及穆斯林兄弟会兴衰研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">8.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《外交学院硕士论文》- 2016</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">2</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">政治变革中新旧埃及宪法的比较分析</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">7.2%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《亚非纵横》- 2014</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">3</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">后穆巴拉克时代埃及的宪法变迁</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">7.1%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《西亚非洲》- 2015</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">4</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">穆斯林兄弟会对埃及宪政发展的影响</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">5.8%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《湖南师范大学硕士论文》- 2016</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">5</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及宪法变迁研究</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">3.2%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《湘潭大学硕士论文》- 2012</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">6</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">近年来我国学者关于国外政治转型问题的研究述评&mdash;&mdash;基于比较政治的学科视角</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">2.6%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《当代世界与社会主义》- 2018</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">7</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">西方宪政主义对埃及宪政发展的影响</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">2.5%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《湖南师范大学硕士论文》- 2016</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="n_xu">
-                    <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                        <tr>
-                            <td width="20" class="n_xu_a n_text_back_a">8</td>
-                            <td width="500" class="n_text_G2"><a href="http://www.cnki.net"
-                                                                 target="_blank">轮回:从穆巴拉克到穆尔西</a>
-                            </td>
-                            <td width="100" class="n_xu_d n_text_red_d">2.1%</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="n_text_block_b"> - 《新华每日电讯》- 2013</td>
-                            <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
             <tbody>
-            <div class="n_qwdz_ywnr">
-                <table border="0" cellspacing="0" cellpadding="0"
-                       style="border-collapse: collapse; table-layout: fixed;"
-                       id="table2" class="n_bgd_biao">
-                    <tbody>
-                    <tr id="Repeater1_ctl00_tr_item">
-                        <td class="n_bgd_biao_b" width="330" colspan="2">原文内容
-                        </td>
-                        <td width="310" class="n_bgd_biao_bs">相似内容来源
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table border="0" cellspacing="0" cellpadding="0"
-                       style="border-collapse: collapse; table-layout: fixed;"
-                       id="table3" class="n_bgd_biao">
-                    <tbody>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            1
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;34&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>2005年,穆巴拉克总统要求议会修改第76条,允许多候选人总统选举。</em>然而,它被认为对党派和独立的总统候选人都
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 经次公民投票,最终批准了对1971年宪法的第一次修正[14]。<em class='similar'>2005年2月26日,穆巴拉克总统向人民议会提议修改宪法第76条的要求,</em>5月10日,人民议会以405票赞成、&nbsp;&nbsp;&nbsp;&nbsp;丁峰-《埃及宪法变迁的方式和特色》-2018（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 另一半仍将由王室任命产生。为了满足社会各界加快政治改革的愿望,<em class='similar'>2005年2月26日,埃及总统穆巴拉克要求人民议会和协商会议修改宪法第76条,</em>即总统产生方式由公民直选,从多名候选人中选出,&nbsp;&nbsp;&nbsp;&nbsp;曹轶-《中东权威主义政治》-2010（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            2
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;174&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>2011年2月11日,穆巴拉克辞去总统职务并将权力移交军方。军方随即发表声明,宣布暂时中止于1971年制定的《阿拉伯埃及共和国永久宪法》,解散议会,任命宪法修改委员会。在军方的主导下,埃及开始了修宪进程。2011年3月19日,由军方主导的阿拉伯埃及共和国宪法修正案举行全民公决,以70%的支持率获得通过。3月23日,最高委员会正式发布《宪法宣言》。</em>
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 经受住2011年&quot;一二五革命&quot;的强烈政治冲击,埃及武装部队最高<em
-                                            class='similar'>委员会于2月13日发布声明,宣布中止1971年 阿拉伯埃及共和国永久宪法 ,解散议会,及议会与总</em>人组成的宪法修改委员会,要求在6个月内完成宪法的修改以及议会与总&nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《后穆巴拉克时代埃及的宪法变迁》-2015（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 防止权力的外溢,军方宣布1971年宪法中止,<em class='similar'>解散议会并任命修宪委员会,于是在军方主导下,埃及启动修宪进程。新宪法明确了最高军事委员会在立法、</em>预算、任命国民议会议员、&nbsp;&nbsp;&nbsp;&nbsp;任芳-《穆尔西时期埃及穆斯林兄弟会兴衰研究》-2016（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 并于15日任命<em class='similar'>了由8人组成的宪法修改委员会。3月19日,埃及宪法修正案举行全民公决,并以70%的支持率获得通过,</em>该修正案涉及与总统选举相关的9项条款。&nbsp;&nbsp;&nbsp;&nbsp;董小菡-《埃及宪法变迁研究》-2012（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 临时政府频频更迭,<em class='similar'>抗议示威接二连三,虽然与埃及政治重建进程密切相关的宪法修正案在2011年3月19日的全民公决中以77.2%的支持率获得通过,但军方承诺的</em>半年内举行议会和总统选举日期多次被推迟。在民众催促军方交权的社&nbsp;&nbsp;&nbsp;&nbsp;余建华-《宪法公投对后穆巴拉克时代埃及社会政治的影响》-2013（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 员会<em class='similar'>向埃及民众公布了修宪草案3月19日该草案经全民公投,以70%的支持率获得通过。3月23日,最高委员会正式发布了&quot;军方63条&quot;,</em>即具有临时宪法性质的
-                                        宪法宣言 。(二) 宪法宣言 的重大变化与影响 宪法&nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《后穆巴拉克时代埃及的宪法变迁》-2015（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            3
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;87&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>《宪法宣言》共63条,重点修改了涉及与总统选举相关的9项条款,为凸显军方地位,宪法宣言第56条规定了最高军事委员会在立法、预算、任命国民议会议员、颁布和废除法律等方面的大权。</em>
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 埃及宪法修正案举行全民公决,并以70%的支持率获得通<em class='similar'>过,该修正案涉及与总统选举相关的9项条款。</em>军政府统治下的埃及并非得到社会的稳定,&nbsp;&nbsp;&nbsp;&nbsp;董小菡-《埃及宪法变迁研究》-2012（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 埃及宪法修正案举行全民公决,并以70%的支持率获得通<em class='similar'>过,该修正案涉及与总统选举相关的9项条款。</em>军政府统治下的埃及并非得到社会的稳定,&nbsp;&nbsp;&nbsp;&nbsp;董小菡-《埃及宪法变迁研究》-2012（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 应在就职后的60天内任命一名或多名副总统&quot;。此外,<em class='similar'> 宪法宣言
-                                        第56条规定了埃及武装部队最髙委员会在立法、预算、</em>任命国民议会议员、&nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《后穆巴拉克时代埃及的宪法变迁》-2015（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 宪法宣言 第56条<em class='similar'>规定了埃及武装部队最髙委员会在立法、预算、任命国民议会议员、</em>颁布和废除法律等方面的大权;第61条规定武装部队最高委员会继续行使此宣言中&nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《后穆巴拉克时代埃及的宪法变迁》-2015（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 于是在军方主导下,埃及启动修宪进程。<em class='similar'>新宪法明确了最高军事委员会在立法、预算、任命国民议会议员、同时限定了总统的权力,</em>大权,同时限定了总统的权力,&nbsp;&nbsp;&nbsp;&nbsp;任芳-《穆尔西时期埃及穆斯林兄弟会兴衰研究》-2016（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            4
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;106&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>[footnoteRef:7]由于军方还政于民的时间表迟迟没有出台,2011年6月28日至29日,埃及首都开罗发生了自穆巴拉克倒台以来最严重的一次流血冲突。埃及民众想借以推翻穆巴拉克政权的势头,冲垮军方过渡政府。</em>然而军方却愈加无节制的笼权,
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"><em class='similar'>的埃及并非得到社会的稳定,2011年6月28日至29日,埃及首都开罗发生了自穆巴拉克倒台以来最严重的流血冲突,数千示威民众与安全部最高委员会&quot;的标语。</em>打倒武装部队最高委员会&quot;的标语。&nbsp;&nbsp;&nbsp;&nbsp;董小菡-《埃及宪法变迁研究》-2012（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 示威者打出&quot;打倒武装部队最高委员会&quot;的标语。&quot;二次革命&quot;的口号在埃及正式响起,<em
-                                            class='similar'>埃及的民众准备用推翻穆巴拉克政权的劲头,来推翻当前的军人过渡政府。</em>2011年11月初,副总理塞勒米提出一份&quot;宪法原则性文件&quot;并由军方通过。这项&quot;原则性文件&quot;中有&nbsp;&nbsp;&nbsp;&nbsp;董小菡-《埃及宪法变迁研究》-2012（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            5
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;86&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>新一轮的示威抗议随即爆发,并蔓延至整个国家。[7:丁峰、夏新华.政治转型时期埃及的宪法危机及启示[J].湖南师范大学社会科学学报,2015,(03).](六)2012年宪法</em>
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> (2)李伟建 中东政治转型及中国中东外交 ,载于 西亚非洲 2012年第4期。<em
-                                            class='similar'>(3)夏新华、丁峰 政治转型时期埃及的宪法危机及启示 ,</em>载于 湖南师范大学社会科学学报
-                                        2015年第3期。(4)吴彦 沙特阿拉伯宗教政治&nbsp;&nbsp;&nbsp;&nbsp;吕同舟-《近年来我国学者关于国外政治转型问题的研究述评&mdash;&mdash;基于比较政治的学科视角》-2018（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 回顾埃及穆斯林兄弟会与埃及宪政发展的历程,对穆斯林兄弟会和埃<em class='similar'>及宪政二者之(1)夏新华,丁峰.政治转型时期埃及的宪法危机及启示[J].</em>湖南师范大学社会科学学报,2015(3).2间的相互关系和经验教训进行研究、&nbsp;&nbsp;&nbsp;&nbsp;王新岳-《穆斯林兄弟会对埃及宪政发展的影响》-2016（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c">
-                                        nalOfInternationalSecurityAssistanceManagement,III(DISAMAnnual2014),<em
-                                            class='similar'>pp.23-24.夏新华、丁峰: 政治转型时期埃及的宪法危机及启示 ,载 湖南师范大学社会科学学报 &quot;Morsi
-                                        sMoment,</em>GhoshBobby&amp;KhalilAshraf,&quot;Morsi sMoment,&nbsp;&nbsp;&nbsp;&nbsp;任芳-《穆尔西时期埃及穆斯林兄弟会兴衰研究》-2016（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> nnual2014),<em class='similar'>pp.23-24.夏新华、丁峰:
-                                        政治转型时期埃及的宪法危机及启示 ,载 湖南师范大学社会科学学报 2015年第&quot;Morsi sMoment,</em>obby&amp;KhalilAshraf,&quot;Morsi
-                                        sMoment,&nbsp;&nbsp;&nbsp;&nbsp;任芳-《穆尔西时期埃及穆斯林兄弟会兴衰研究》-2016（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 义经济建设与管理思想发展阶段划分的几点看法兼对流行观点的商榷[J].<em class='similar'>湖南师范大学社会科学学报,2015(03)9赵轶峰.</em>历史分期的概念与历史编纂学的实践[J]史学集刊,2001(04)[10]苏共中央马克思&nbsp;&nbsp;&nbsp;&nbsp;-《大学生论文联合库》-2015（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 革命压倒改良湖湘文化精神与五四时期湖南报刊互动关系解读之一[J].<em class='similar'>湖南师范大学社会科学学报,2013(03):87-92.</em>[10]余习惠,赵颖峰.论&quot;五四&quot;时期湖南
-                                        大公报 的新闻舆论对公众&nbsp;&nbsp;&nbsp;&nbsp;李璐-《湖南《大公报》&ldquo;反袁称帝&rdquo;传播策略研究》-2015（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            6
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;86&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>穆斯林兄弟会拔得头筹。2012年6月,穆尔西被选举为埃及历史上第一位民选总统。穆尔西上任后,第一件事就是宣布军方宪法声明无效,此后,穆尔西利用民选总统的合法身份扩张制宪权。</em>2012年宪法最终在这一年的12月历经两
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 以来第一位民选总统。穆尔西上台后,利用其民选总统的合法身份,<em class='similar'>极力扩张制宪权,随即宣布军方的&quot;宪法声明&quot;无效,</em>宣布军方解散议会无效,要求议会重新工作,&nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《后穆巴拉克时代埃及的宪法变迁》-2015（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="n_table_xu_a">
-                            7
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
-                            <div class="n_text_red_ax">
-                                此处有&nbsp;100&nbsp;字相似
-                            </div>
-                            <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>2011年2月11日,执政30年之久的埃及前总统胡斯尼穆巴拉克迫于民众示威浪潮下台。穆斯林兄弟会候选人穆罕默德穆尔西在次年举行的总统选举中胜出。穆尔西作为第一位&quot;民选总统&quot;,承载着埃及民众的殷切渴盼,</em>民众把穆尔西当作革命英雄般拥戴,对即将到
-                            </div>
-                        </td>
-                        <td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="n_bgd_biao_c"> 要求穆尔西下台$$新华社特稿(徐超)2011年2月11日,<em class='similar'>执政30年之久的埃及前总统胡斯尼穆巴拉克迫于民众示威浪潮下台。穆斯林兄弟会候选人穆罕默德穆尔西在次年2013年7月3日,</em>。2013年7月3日,&nbsp;&nbsp;&nbsp;&nbsp;徐超-《轮回:从穆巴拉克到穆尔西》-2013（是否引证：
-                                        <span class="n_text_yz">False</span>）
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">2</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及社会转型期的政治合法性研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">4.4%（336）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《上海外国语大学博士论文》- 2014</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
             </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">3</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">英国在伊拉克的委任统治研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">2.0%（151）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《辽宁大学硕士论文》- 2017</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">4</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">青年土耳其党及其执政实践研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.9%（143）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《西北大学博士论文》- 2017</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">5</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及穆斯林兄弟会政党化问题研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.8%（137）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《外交学院硕士论文》- 2011</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">6</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及宪法的创设、沿革及其修订</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.8%（136）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《阿拉伯世界研究》- 2009</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">7</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及宪法的发展及其特点</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.6%（118）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《武汉大学学报(社会科学版)》- 2002</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">8</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">宪政主义、绝对主义与现代伊斯兰主义</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.3%（101）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《南开大学博士论文》- 2008</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">9</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及近代以来教育发展与埃及现代化</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.3%（96）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《西北大学博士论文》- 2002</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">10</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">困顿与变革:伊朗萨法维王朝阿拔斯一世改革</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.2%（91）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《长江大学学报(社科版)》- 2018</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">11</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及现代政党政治的演变</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.2%（89）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《南开学报(哲学社会科学版)》- 2007</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">12</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">当代中东伊斯兰国家民主化若干问题研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.0%（79）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《中国社会科学院研究生院博士论文》- 2003</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">13</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">伊斯兰传统文明的基本特征与中东现代化进程的历史轨迹</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.0%（79）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《史学理论研究》- 2007</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">14</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及伊斯兰政治势力与政权的关系</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">1.0%（74）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《西亚非洲》- 1990</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">15</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">&ldquo;七月革命&rdquo;与埃及现代化进程的路标性转换</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.8%（64）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《内蒙古民族大学学报(社会科学版)》- 2004</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">16</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">沙俄对伊朗扩张政策演变（1779-1828)</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.8%（61）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《哈尔滨师范大学社会科学学报》- 2018</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">17</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">中国与埃及现行宪政法律制度比较</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.8%（61）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《西亚非洲》- 2010</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">18</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">&ldquo;一带一路&rdquo;资本技术合作中的风险与应对&mdash;&mdash;以先进生产技术对政治的影响为视角</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.8%（61）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《云南社会科学》- 2018</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">19</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及穆斯林兄弟会发展演变研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.8%（58）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《云南大学硕士论文》- 2013</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">20</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">大国博弈视角下的南波斯洋枪队始末(1916&mdash;1921)</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.7%（55）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《文化学刊》- 2018</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">21</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">法律硕士专业学位研究联考应试指导(综合考试课)</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.7%（54）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《中国人民大学出版社》- 2003</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">22</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">从选举政治到广场政治:埃及穆巴拉克时代的民众政治参与</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.7%（52）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《西亚非洲》- 2013</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">23</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">藏外佛教文献</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.7%（51）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《中國人民大學出版社》- 2008</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">24</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">圣域的眼泪</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.7%（51）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《中国城市出版社》- 1999</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">26</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">沙特阿拉伯宗教政治初探</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">0.7%（50）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《西亚非洲》- 2008</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div></div><tbody>
+<div class="n_qwdz_ywnr">
+    <table border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; table-layout: fixed;"
+           id="table2" class="n_bgd_biao">
+        <tbody>
+        <tr id="Repeater1_ctl00_tr_item">
+            <td class="n_bgd_biao_b" width="330" colspan="2">原文内容
+            </td>
+            <td width="310" class="n_bgd_biao_bs">相似内容来源
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; table-layout: fixed;"
+           id="table3" class="n_bgd_biao">
+        <tbody><tr>
+            <td class="n_table_xu_a">
+                1
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;47&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>而后随着英国殖民统治日渐加深,民族矛盾逐渐上升为埃及现代化进程中社会矛盾的主要形式。在此期间,</em>埃及人民现代政治思想的萌芽渐渐孕育而出。</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">埃及穆巴拉克政权对穆斯林兄弟会的政策研究 &nbsp;&nbsp;&nbsp;&nbsp;蒋灏-《上海外国语大学博士论文》-2011（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.被称为欧洲内阁。随着殖民侵略的加深和殖民统治的建立,<em class='similar'>民族对立日趋尖锐,民族矛盾逐渐上升为埃及现代化进程中社会主要矛盾。</em>在1882年阿拉比起义中,埃及民众出于对列强控制和掠夺埃及的反抗,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">纳赛尔主义与埃及的现代化 &nbsp;&nbsp;&nbsp;&nbsp;哈全安-《世界历史》-2002（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.冲击导致埃及社会矛盾的错综交织。随着殖民侵略的加深和殖民统治的建立,<em class='similar'>民族对立日趋尖锐,民族矛盾逐渐上升为埃及现代化进程中社会矛盾的主要形式。1882年奥拉比领导的武装起义,</em>首开埃及民众反抗英国殖民统治的先河。19191921年,<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                2
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;146&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>埃及进入共和制时代。1971年,埃及颁布永久宪法。这是一部希冀允许更多自由的新民主宪法。值得一提的是,伊斯兰教法成为主要的立法来源。然而,自美国以反恐的名义发动伊拉克和阿富汗战争并大力推行对中东国家的&quot;民主改造&quot;政策以来,埃及国内政治改革进程开始发生复杂而微妙的变化。加之埃及近年内政局更迭,</em>经济发展迟缓,社会局势动荡,宗教势力崛起</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">西方宪政主义对埃及宪政发展的影响 &nbsp;&nbsp;&nbsp;&nbsp;鲁蓉蓉-《湖南师范大学硕士论文》-2016（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.经济上实施对外开放政策,发展私营经济,引进外资,改革国营经济。<em class='similar'>政治上颁布1971年永久宪法,确立了总统共和制的代议制政体。</em>外交上,缓和与美国的关系,签订埃以和平条约和戴维营协议,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">&ldquo;法老&rdquo;、总统和国家&mdash;&mdash;从塞西当选埃及总统说开去 &nbsp;&nbsp;&nbsp;&nbsp;王猛-《世界知识》-2014（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.,不仅将胜利的民主推向了练的低调将军,都因为表面的软弱无总统<em class='similar'>颁布了埃及第一部永久宪法,对罪恶的民主,</em>还在自以为是的正确里为而被当作过渡人物委以重任,塞西内去纳赛尔化,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">埃及宪法的创设、沿革及其修订 &nbsp;&nbsp;&nbsp;&nbsp;孔令涛-《阿拉伯世界研究》-2009（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.埃及颁布永久宪法,该体制在30多年里<em class='similar'>一直保持着稳定状态。然而,自从美国以反恐的名义发动伊拉克和阿富汗战争并大力推行对中东伊斯兰国家的&quot;民埃及国内政治改革进程发生了复杂而微妙的</em>了复杂而微妙的<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">埃及宪法的创设、沿革及其修订 &nbsp;&nbsp;&nbsp;&nbsp;孔令涛-《阿拉伯世界研究》-2009（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.自从美国以反恐的名义发动伊<em class='similar'>拉克和阿富汗战争并大力推行对中东伊斯兰国家的&quot;民主改造&quot;以来,埃及国内政治改革进程发生了复杂而微妙的改变;加之埃及近年来经济发展遭遇困难</em>,贫困现象激增,社会动荡加剧,宗教势力崛起,<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                3
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;85&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>对这一问题的研究,有助于认识发展中资本主义国家在现代化过程中模仿西方宪政模式所遭遇的波折等问题,以及了解埃及人民期待以此为契机使历经动荡的埃及逐步走向稳定发展的期望。一、</em>埃及的制宪历程</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">浅析当代埃及政党制度的演进 &nbsp;&nbsp;&nbsp;&nbsp;毕健康-《世界历史》-2001（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.从而形成民族民主党一党独大的局面,故谓之有限多党制。对这一制度的研究,<em class='similar'>将有助于认识发展中资本主义国家在现代化过程中政治制度的变化;西方政治制度模</em>式同一些发展中国家社会、经济、<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">埃及新宪法草案出炉 &nbsp;&nbsp;&nbsp;&nbsp;刘水明；张梦旭；刘睿-《人民日报》-2013（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.$$埃及新宪法草案的出炉,是政治过渡进程取得的一项重要成果。<em class='similar'>人们期待以此为契机,使历经动荡的埃及逐步走向稳定和发展。</em>$$(本报开罗12月2日电)<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                4
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;32&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>受世界大局势的影响,埃及人民智力的觉醒和现代政治思想的萌生初现,</em>而受到震撼世界的1917年俄国十月革命成</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">埃及社会转型期的政治合法性研究 &nbsp;&nbsp;&nbsp;&nbsp;郑已东-《上海外国语大学博士论文》-2014（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.伴随着新式学校的出现和印刷出版业的发展,西方文化和现代政治思想幵始从基督教欧洲传人,<em class='similar'>19世纪的埃及智力开始觉醒,现代政治思想开始萌生。19世纪埃及智力的觉醒与现代政治思想的萌生,</em>再先表现为伊斯兰现主义的兴起。统治模式决定反抗模式,<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                5
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;70&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>民族主义运动兴起。终于,在1922年,英国宣布埃及为独立国家。虽然英国承认了埃及享有独立主权国家的地位,但仍保留了英国在埃及的四项重要特权。</em>由此可见,埃及政府只是获得了一定程度上的</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">中东国家建构中的少数族群问题 &nbsp;&nbsp;&nbsp;&nbsp;张燕军-《阿拉伯世界研究》-2014（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.纳哈斯帕夏和一位科普特人马克拉姆&quot;即乌贝都拉帕<em class='similar'>夏&quot;共同领导民族主义运动;1922年,埃及宣布独立,</em>1924年1月,扎格鲁尔组建内阁,其中包括两位科普特人:莫克斯哈纳担任公共工程部长,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">圣域的眼泪 &nbsp;&nbsp;&nbsp;&nbsp;(德)赫尔穆特&middot;麦切尔(H.Mej cher)著-《中国城市出版社》-1999（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.赛义德拉加卜哈拉兹: 埃及近现代简史 ,<em class='similar'>商务印书馆年版,第页。第173页方面宣布承认埃及为&quot;独立的主权国家&quot;,但英国仍要保留四项特保护权:保障</em>帝国交通线的安全;埃及抵抗外来的直接或间保护外国接的侵略;人利益和少数民族问题;<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                6
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;21&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>制定并颁布了埃及作为独立国家的第一部宪法。</em></div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">世界现代史 上 &nbsp;&nbsp;&nbsp;&nbsp;王斯德-《高等教育出版社》-1988（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.英国仍然控制着埃及的国防及全国的交通线。年法。<em class='similar'>宪法宣布:埃及是一个君主立宪的月,埃及颁布了宪独立国家&quot;。宪法反映了资产阶级的利益,</em>又保留了封建贵族、地主的特权(如国王有权解散议会、<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                7
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;39&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>此次宪法赋予国王以广泛的权力,包括任免首相,解散内阁和议会以及延长议会的任期。</em>埃及的政体也因此明显区别于欧洲的议会民主</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">全球变局美国与伊拉克 &nbsp;&nbsp;&nbsp;&nbsp;中国现代国际关系研究所-《时事出版社》-2003（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.以便从中渔利;另一方面凭借其占领军,肆无忌惮地插手埃及内政<em class='similar'>。王室:1923年宪法赋予国王很大权力,他有权任免首相,</em>解散下院,钦定上院五分之二的议员。但福阿德和法鲁克国王在位期间,<br></div></td></tr></tbody></table></td></tr></tbody></table></div></tbody><div class="n_bodymid_bf">
+    <table width="640" class="n_table_jiebf" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td width="25" height="30" class="n_bf_bt"></td>
+            <td width="499" class="n_text_block_bs"><a name="34255109_000"></a>浅析埃及新宪法_第2部分</td>
+            <td width="116" class="n_table_jiebf_zzs">总字数： <span class="n_text_block_bs">5801</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table width="640" class="n_table_jiebfs" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td width="90" style="text-indent: 1em;">相似文献列表</td>
+                        <td width="150" class="n_table_jiebf_fzb">文字复制比：</td>
+                        <td width="100">
+                            <div class="n_jcjg_am">34.1%</div>
+                        </td>
+                        <td class="n_table_jiebf_fzb" style="text-align: left;">疑似剽窃观点（0）</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">1</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">穆尔西时期埃及穆斯林兄弟会兴衰研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">8.8%（513）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《外交学院硕士论文》- 2016</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">2</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">政治变革中新旧埃及宪法的比较分析</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">7.2%（417）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《亚非纵横》- 2014</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">3</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">后穆巴拉克时代埃及的宪法变迁</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">7.1%（414）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《西亚非洲》- 2015</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">4</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">穆斯林兄弟会对埃及宪政发展的影响</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">5.8%（335）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《湖南师范大学硕士论文》- 2016</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">5</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">埃及宪法变迁研究</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">3.2%（183）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《湘潭大学硕士论文》- 2012</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">6</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">近年来我国学者关于国外政治转型问题的研究述评&mdash;&mdash;基于比较政治的学科视角</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">2.6%（152）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《当代世界与社会主义》- 2018</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">7</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">西方宪政主义对埃及宪政发展的影响</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">2.5%（145）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《湖南师范大学硕士论文》- 2016</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><div class="n_xu">
+        <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td width="20" class="n_xu_a n_text_back_a">8</td>
+                <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">轮回:从穆巴拉克到穆尔西</a>
+                </td>
+                <td width="100" class="n_xu_d n_text_red_d">2.1%（123）</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="n_text_block_b"> - 《新华每日电讯》- 2013</td>
+                <td width="100" class="n_xu_da">是否引证： <span class="n_text_yz">否</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div></div><tbody>
+<div class="n_qwdz_ywnr">
+    <table border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; table-layout: fixed;"
+           id="table2" class="n_bgd_biao">
+        <tbody>
+        <tr id="Repeater1_ctl00_tr_item">
+            <td class="n_bgd_biao_b" width="330" colspan="2">原文内容
+            </td>
+            <td width="310" class="n_bgd_biao_bs">相似内容来源
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; table-layout: fixed;"
+           id="table3" class="n_bgd_biao">
+        <tbody><tr>
+            <td class="n_table_xu_a">
+                1
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;34&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>2005年,穆巴拉克总统要求议会修改第76条,允许多候选人总统选举。</em>然而,它被认为对党派和独立的总统候选人都</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">埃及宪法变迁的方式和特色 &nbsp;&nbsp;&nbsp;&nbsp;丁峰-《时代法学》-2018（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.经次公民投票,最终批准了对1971年宪法的第一次修正[14]。<em class='similar'>2005年2月26日,穆巴拉克总统向人民议会提议修改宪法第76条的要求,</em>5月10日,人民议会以405票赞成、<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">中东权威主义政治 &nbsp;&nbsp;&nbsp;&nbsp;曹轶-《上海外国语大学硕士论文》-2010（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.另一半仍将由王室任命产生。为了满足社会各界加快政治改革的愿望,<em class='similar'>2005年2月26日,埃及总统穆巴拉克要求人民议会和协商会议修改宪法第76条,</em>即总统产生方式由公民直选,从多名候选人中选出,<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                2
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;174&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>2011年2月11日,穆巴拉克辞去总统职务并将权力移交军方。军方随即发表声明,宣布暂时中止于1971年制定的《阿拉伯埃及共和国永久宪法》,解散议会,任命宪法修改委员会。在军方的主导下,埃及开始了修宪进程。2011年3月19日,由军方主导的阿拉伯埃及共和国宪法修正案举行全民公决,以70%的支持率获得通过。3月23日,最高委员会正式发布《宪法宣言》。</em></div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">后穆巴拉克时代埃及的宪法变迁 &nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《西亚非洲》-2015（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.经受住2011年&quot;一二五革命&quot;的强烈政治冲击,埃及武装部队最高<em class='similar'>委员会于2月13日发布声明,宣布中止1971年 阿拉伯埃及共和国永久宪法 ,解散议会,及议会与总</em>人组成的宪法修改委员会,要求在6个月内完成宪法的修改以及议会与总<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">穆尔西时期埃及穆斯林兄弟会兴衰研究 &nbsp;&nbsp;&nbsp;&nbsp;任芳-《外交学院硕士论文》-2016（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.防止权力的外溢,军方宣布1971年宪法中止,<em class='similar'>解散议会并任命修宪委员会,于是在军方主导下,埃及启动修宪进程。新宪法明确了最高军事委员会在立法、</em>预算、任命国民议会议员、<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">埃及宪法变迁研究 &nbsp;&nbsp;&nbsp;&nbsp;董小菡-《湘潭大学硕士论文》-2012（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.并于15日任命<em class='similar'>了由8人组成的宪法修改委员会。3月19日,埃及宪法修正案举行全民公决,并以70%的支持率获得通过,</em>该修正案涉及与总统选举相关的9项条款。<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">宪法公投对后穆巴拉克时代埃及社会政治的影响 &nbsp;&nbsp;&nbsp;&nbsp;余建华-《阿拉伯世界研究》-2013（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.临时政府频频更迭,<em class='similar'>抗议示威接二连三,虽然与埃及政治重建进程密切相关的宪法修正案在2011年3月19日的全民公决中以77.2%的支持率获得通过,但军方承诺的</em>半年内举行议会和总统选举日期多次被推迟。在民众催促军方交权的社<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">后穆巴拉克时代埃及的宪法变迁 &nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《西亚非洲》-2015（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.员会<em class='similar'>向埃及民众公布了修宪草案3月19日该草案经全民公投,以70%的支持率获得通过。3月23日,最高委员会正式发布了&quot;军方63条&quot;,</em>即具有临时宪法性质的 宪法宣言 。(二) 宪法宣言 的重大变化与影响 宪法<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                3
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;87&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>《宪法宣言》共63条,重点修改了涉及与总统选举相关的9项条款,为凸显军方地位,宪法宣言第56条规定了最高军事委员会在立法、预算、任命国民议会议员、颁布和废除法律等方面的大权。</em></div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">埃及宪法变迁研究 &nbsp;&nbsp;&nbsp;&nbsp;董小菡-《湘潭大学硕士论文》-2012（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.埃及宪法修正案举行全民公决,并以70%的支持率获得通<em class='similar'>过,该修正案涉及与总统选举相关的9项条款。</em>军政府统治下的埃及并非得到社会的稳定,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">埃及宪法变迁研究 &nbsp;&nbsp;&nbsp;&nbsp;董小菡-《湘潭大学硕士论文》-2012（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.埃及宪法修正案举行全民公决,并以70%的支持率获得通<em class='similar'>过,该修正案涉及与总统选举相关的9项条款。</em>军政府统治下的埃及并非得到社会的稳定,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">后穆巴拉克时代埃及的宪法变迁 &nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《西亚非洲》-2015（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.应在就职后的60天内任命一名或多名副总统&quot;。此外,<em class='similar'> 宪法宣言 第56条规定了埃及武装部队最髙委员会在立法、预算、</em>任命国民议会议员、<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">后穆巴拉克时代埃及的宪法变迁 &nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《西亚非洲》-2015（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1. 宪法宣言 第56条<em class='similar'>规定了埃及武装部队最髙委员会在立法、预算、任命国民议会议员、</em>颁布和废除法律等方面的大权;第61条规定武装部队最高委员会继续行使此宣言中<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">穆尔西时期埃及穆斯林兄弟会兴衰研究 &nbsp;&nbsp;&nbsp;&nbsp;任芳-《外交学院硕士论文》-2016（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.于是在军方主导下,埃及启动修宪进程。<em class='similar'>新宪法明确了最高军事委员会在立法、预算、任命国民议会议员、同时限定了总统的权力,</em>大权,同时限定了总统的权力,<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                4
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;106&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>[footnoteRef:7]由于军方还政于民的时间表迟迟没有出台,2011年6月28日至29日,埃及首都开罗发生了自穆巴拉克倒台以来最严重的一次流血冲突。埃及民众想借以推翻穆巴拉克政权的势头,冲垮军方过渡政府。</em>然而军方却愈加无节制的笼权,</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">埃及宪法变迁研究 &nbsp;&nbsp;&nbsp;&nbsp;董小菡-《湘潭大学硕士论文》-2012（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.<em class='similar'>的埃及并非得到社会的稳定,2011年6月28日至29日,埃及首都开罗发生了自穆巴拉克倒台以来最严重的流血冲突,数千示威民众与安全部最高委员会&quot;的标语。</em>打倒武装部队最高委员会&quot;的标语。<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">埃及宪法变迁研究 &nbsp;&nbsp;&nbsp;&nbsp;董小菡-《湘潭大学硕士论文》-2012（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.示威者打出&quot;打倒武装部队最高委员会&quot;的标语。&quot;二次革命&quot;的口号在埃及正式响起,<em class='similar'>埃及的民众准备用推翻穆巴拉克政权的劲头,来推翻当前的军人过渡政府。</em>2011年11月初,副总理塞勒米提出一份&quot;宪法原则性文件&quot;并由军方通过。这项&quot;原则性文件&quot;中有<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                5
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;86&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>新一轮的示威抗议随即爆发,并蔓延至整个国家。[7:丁峰、夏新华.政治转型时期埃及的宪法危机及启示[J].湖南师范大学社会科学学报,2015,(03).](六)2012年宪法</em></div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">近年来我国学者关于国外政治转型问题的研究述评&mdash;&mdash;基于比较政治的学科视角 &nbsp;&nbsp;&nbsp;&nbsp;吕同舟-《当代世界与社会主义》-2018（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.(2)李伟建 中东政治转型及中国中东外交 ,载于 西亚非洲 2012年第4期。<em class='similar'>(3)夏新华、丁峰 政治转型时期埃及的宪法危机及启示 ,</em>载于 湖南师范大学社会科学学报 2015年第3期。(4)吴彦 沙特阿拉伯宗教政治<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">穆斯林兄弟会对埃及宪政发展的影响 &nbsp;&nbsp;&nbsp;&nbsp;王新岳-《湖南师范大学硕士论文》-2016（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.回顾埃及穆斯林兄弟会与埃及宪政发展的历程,对穆斯林兄弟会和埃<em class='similar'>及宪政二者之(1)夏新华,丁峰.政治转型时期埃及的宪法危机及启示[J].</em>湖南师范大学社会科学学报,2015(3).2间的相互关系和经验教训进行研究、<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">穆尔西时期埃及穆斯林兄弟会兴衰研究 &nbsp;&nbsp;&nbsp;&nbsp;任芳-《外交学院硕士论文》-2016（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.nalOfInternationalSecurityAssistanceManagement,III(DISAMAnnual2014),<em class='similar'>pp.23-24.夏新华、丁峰: 政治转型时期埃及的宪法危机及启示 ,载 湖南师范大学社会科学学报 &quot;Morsi sMoment,</em>GhoshBobby&amp;KhalilAshraf,&quot;Morsi sMoment,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">穆尔西时期埃及穆斯林兄弟会兴衰研究 &nbsp;&nbsp;&nbsp;&nbsp;任芳-《外交学院硕士论文》-2016（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.nnual2014),<em class='similar'>pp.23-24.夏新华、丁峰: 政治转型时期埃及的宪法危机及启示 ,载 湖南师范大学社会科学学报 2015年第&quot;Morsi sMoment,</em>obby&amp;KhalilAshraf,&quot;Morsi sMoment,<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">大学生论文联合库 &nbsp;&nbsp;&nbsp;&nbsp;-《大学生论文联合库》-2015（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.义经济建设与管理思想发展阶段划分的几点看法兼对流行观点的商榷[J].<em class='similar'>湖南师范大学社会科学学报,2015(03)9赵轶峰.</em>历史分期的概念与历史编纂学的实践[J]史学集刊,2001(04)[10]苏共中央马克思<br></div></td></tr><tr>
+                        <td class="n_bgd_biao_c">湖南《大公报》&ldquo;反袁称帝&rdquo;传播策略研究 &nbsp;&nbsp;&nbsp;&nbsp;李璐-《湖南师范大学硕士论文》-2015（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.革命压倒改良湖湘文化精神与五四时期湖南报刊互动关系解读之一[J].<em class='similar'>湖南师范大学社会科学学报,2013(03):87-92.</em>[10]余习惠,赵颖峰.论&quot;五四&quot;时期湖南 大公报 的新闻舆论对公众<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                6
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;86&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>穆斯林兄弟会拔得头筹。2012年6月,穆尔西被选举为埃及历史上第一位民选总统。穆尔西上任后,第一件事就是宣布军方宪法声明无效,此后,穆尔西利用民选总统的合法身份扩张制宪权。</em>2012年宪法最终在这一年的12月历经两</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">后穆巴拉克时代埃及的宪法变迁 &nbsp;&nbsp;&nbsp;&nbsp;丁峰；夏新华-《西亚非洲》-2015（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.以来第一位民选总统。穆尔西上台后,利用其民选总统的合法身份,<em class='similar'>极力扩张制宪权,随即宣布军方的&quot;宪法声明&quot;无效,</em>宣布军方解散议会无效,要求议会重新工作,<br></div></td></tr></tbody></table></td></tr><tr>
+            <td class="n_table_xu_a">
+                7
+            </td>
+            <td class="n_bgd_biao_KU" style="vertical-align: top; width: 309px;">
+                <div class="n_text_red_ax">
+                    此处有&nbsp;100&nbsp;字相似
+                </div>
+                <div class="n_bgd_biao_KUa n_red huanhang"><em class='similar'>2011年2月11日,执政30年之久的埃及前总统胡斯尼穆巴拉克迫于民众示威浪潮下台。穆斯林兄弟会候选人穆罕默德穆尔西在次年举行的总统选举中胜出。穆尔西作为第一位&quot;民选总统&quot;,承载着埃及民众的殷切渴盼,</em>民众把穆尔西当作革命英雄般拥戴,对即将到</div>
+            </td><td class="n_bgd_biao_KU" style="vertical-align: top; width: 310px;">
+                <table>
+                    <tbody><tr>
+                        <td class="n_bgd_biao_c">轮回:从穆巴拉克到穆尔西 &nbsp;&nbsp;&nbsp;&nbsp;徐超-《新华每日电讯》-2013（是否引证：
+                            <span class="n_text_yz">否</span>）
+                        </td>
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.要求穆尔西下台$$新华社特稿(徐超)2011年2月11日,<em class='similar'>执政30年之久的埃及前总统胡斯尼穆巴拉克迫于民众示威浪潮下台。穆斯林兄弟会候选人穆罕默德穆尔西在次年2013年7月3日,</em>。2013年7月3日,<br></div></td></tr></tbody></table></td></tr></tbody></table></div></tbody>
         </DIV><!-----------------------------------以上为第五部分------------------------------------------------>
 
         <!------------------------------------以下为说明部分----------------------------------------------->

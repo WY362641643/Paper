@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'logout',views.logout),
     url(r'detection/$',views.detection),
     url(r'upload/',views.upload),
-    url(r'detection/doc/download', views.textdownload),
+    url(r'^/user/detection/doc/download', views.textdownload),
     url(r'fenjie/common/download',views.examining_report),
     url(r'file/package',views.file_package),
     url(r'retry', views.examining_report),
@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'detectionlist/$',views.detectionlist),
     url(r'user/detection/list$',views.detectionlist),
     url(r'user/detection/doc/resubmit',views.resubmit),
-    url(r'delete/data',views.deletedata),
+    url(r'delete/data',views.deletedata),  # 超过 15天,删除数据
     url(r'errorlist/',views.errorlist),
     url(r'docpack/add', views.addDocPack),
     url(r'docpack/',views.docpack),

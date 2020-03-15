@@ -77,7 +77,13 @@
             text-align: left;
         }
         em {
-            color:#860505;
+            font－family:宋体;
+            color:red;
+            text-align: left;
+            line-height: 180%;
+            text-indent: 2em;
+            font-size: 12px;
+            font-style: normal;
         }
 
         html, body {
@@ -1400,7 +1406,7 @@
             </TABLE>
         </DIV>
         <DIV class="n_bodytop">
-            <DIV class="n_bt">文本复制检测报告单<SPAN class="n_jie">(<SPAN id="Label_Report_Type_Name">全文标明引文</SPAN>)</SPAN>
+            <DIV class="n_bt">文本复制检测报告单<SPAN class="n_jie">(<SPAN id="Label_Report_Type_Name">~title_type^</SPAN>)</SPAN>
             </DIV>
             <TABLE width="100%" class="n_table_a"
                    style="border-top-color: rgb(3, 93, 3); border-top-width: 2px; border-top-style: solid;"
@@ -1651,9 +1657,8 @@
 
 <script>
 //这里请求网络api获取json格式解析出data和word_count
-var data = ~similar_offsets^;
+var json = ~similar_offsets^;
 var word_count = ~word_count^;
-{#var json = JSON.parse(data);#}
 
 var c=document.getElementById("myCanvas");
 var ctx=c.getContext("2d");

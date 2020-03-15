@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录</title>
-
 <!--图标样式-->
 <link rel="stylesheet" href="/static/cnki/all.min.css">
-
 <link rel="stylesheet" href="/static/cnki/stylelogin.css">
-
-
 <script>if (window.top !== window.self) {
         window.top.location = window.location;
     }</script>
@@ -17,7 +13,6 @@
 
 <body>
 <div class="container" id="container">
-	
 	<div class="form-container sign-in-container">
 		<form class="m-t" role="form" action="/agency/login" method="post">
             {% csrf_token %}
@@ -36,17 +31,10 @@
 			<div class="overlay-panel overlay-right">
 				<h1>你好，欢迎登录</h1>
 				<h3>代理管理系统！</h3>
-				
 			</div>	
 		</div>
 	</div>
 </div>
-			
-		
-	
-
-
-
 <script>
     $(function () {
         $("#kaptcha").on('click', function () {
@@ -54,8 +42,5 @@
         });
     });
 </script>
-
-
-
 
 </body></html>

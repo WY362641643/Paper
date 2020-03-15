@@ -49,7 +49,7 @@ def cnki(request):
                 jsonDict = {"status": False, "info": "检测卡错误", "data": []}
                 return HttpResponse(json.dumps(jsonDict), content_type="application/json")
         suffix = upload_file_name.split(".")[-1]
-        path = os.path.join(settings.BASE_DIR, 'static/cnkifile/{}'.format(upload_file_name))
+        path = os.path.join(settings.BASE_DIR, 'static/file/{}'.format(upload_file_name))
         if 'docx' in suffix:
             text = MDW.filedocx(path)
         elif 'txt' in suffix:
@@ -104,7 +104,7 @@ def upload_file(request):
             return HttpResponse(json.dumps(jsonDict), content_type="application/json")
         # 获取程序需要写入的文件路径
         filename = timestr + file_obj.name
-        path = os.path.join(settings.BASE_DIR, 'static/cnkifile/{}'.format(filename))
+        path = os.path.join(settings.BASE_DIR, 'static/file/{}'.format(filename))
         # 根据路径打开指定的文件(二进制形式打开)
         f = open(path, 'wb+')
         # chunks将对应的文件数据转换成若干片段, 分段写入, 可以有效提
@@ -141,7 +141,7 @@ def multiple_upload_file(request):
             return HttpResponse(json.dumps(jsonDict), content_type="application/json")
         # 获取程序需要写入的文件路径
         filename = timestr + file_obj.name
-        path = os.path.join(settings.BASE_DIR, 'static/cnkifile/{}'.format(filename))
+        path = os.path.join(settings.BASE_DIR, 'static/file/{}'.format(filename))
         # 根据路径打开指定的文件(二进制形式打开)
         f = open(path, 'wb+')
         # chunks将对应的文件数据转换成若干片段, 分段写入, 可以有效提
@@ -156,8 +156,6 @@ def multiple_upload_file(request):
             "upload_file_wordnum": 3993}
                     }
         return HttpResponse(json.dumps(jsonDict), content_type="application/json")
-
-
 # 检测淘宝订单号
 def ajax_check_order(request):
     if request.method == 'GET':
@@ -208,7 +206,7 @@ def multiple(request):
                 continue
             suffix = upload_file_name.split(".")[-1]
             author, title = upload_file_name.split('_')[-2:]
-            path = os.path.join(settings.BASE_DIR, 'static/cnkifile/{}'.format(upload_file_name))
+            path = os.path.join(settings.BASE_DIR, 'static/file/{}'.format(upload_file_name))
             if 'docx' in suffix:
                 text = MDW.filedocx(path)
             elif 'txt' in suffix:

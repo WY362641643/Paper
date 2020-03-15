@@ -50,7 +50,11 @@
         }
         function fmt_action(value, row, rowIndex) {
             var action = "";
-            action += "&nbsp;<a href='/agency/user/detection/doc/download?id=" + row.id + "' >下载原文</a>&nbsp;";
+            if (row.state == 5) {
+                action += "&nbsp;<a href='javascript:alert(\"系统只保留近7天的数据\");'>下载原文</a>&nbsp;";
+            }else {
+                action += "&nbsp;<a href='/agency/user/detection/doc/download?id=" + row.id + "' >下载原文</a>&nbsp;";
+            }
             if (row.state == -2) {
                 {#action += "&nbsp;<a href='javascript:openSubmitTextWin(\"" + row.id + "\",\"" + row.title + "\");' >提交文本</a>&nbsp;";#}
                 action += "&nbsp;<a href='/agency/user/detection/doc/resubmit?id=" + row.id + "' target=\"_blank\">重新检测</a>&nbsp;";
@@ -182,7 +186,7 @@
 </head>
 <body>
 <table id="detectionGrid" class="easyui-datagrid"
-       data-options="url:'/agency/user/detection/list',pagination:true,rownumbers:true,pageSize:20,fitColumns:true,checkbox:true,toolbar:'#listBar'">
+       data-options="url:'/agency/user/detection/list',pagination:true,rownumbers:true,pageSize:10,fitColumns:true,checkbox:true,toolbar:'#listBar'">
     <thead>
     <tr>
         <th data-options="field:'taskid',width:100,checkbox:true"></th>

@@ -9,6 +9,10 @@ import requests
 import json
 import time
 from hashlib import md5
-for i in range(1000):
-    s = i//50
-    print(s)
+x = 2
+y = 1
+z = 1
+if x and not y or not z:
+    print('1111')
+else:
+    print('0')

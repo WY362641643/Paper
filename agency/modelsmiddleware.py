@@ -58,14 +58,14 @@ A_head = '''<div class="n_bodymid_bf">
         </tr>
         </tbody>
     </table>'''
-A_body = '''<div class="n_xu">
+A_body='''<div class="n_xu">
         <table class="n_table_a" border="0" cellspacing="0" cellpadding="0">
             <tbody>
             <tr>
                 <td width="20" class="n_xu_a n_text_back_a">{index}</td>
                 <td width="500" class="n_text_G2"><a href="http://www.cnki.net" target="_blank">{paragraph_title}</a>
                 </td>
-                <td width="100" class="n_xu_d n_text_red_d">{paragraph_similarity}</td>
+                <td width="100" class="n_xu_d n_text_red_d">{paragraph_similarity}（{similar_word_count}）</td>
             </tr>
             <tr>
                 <td></td>
@@ -130,10 +130,13 @@ A_paragraph_ywnr = '''<tr>
                 <table>
                     <tbody>'''
 A_paragraph_xsnrly = '''<tr>
-                        <td class="n_bgd_biao_c"> {text}&nbsp;&nbsp;&nbsp;&nbsp;{author}-《{title}》-{year}（是否引证：
+                        <td class="n_bgd_biao_c">{title} &nbsp;&nbsp;&nbsp;&nbsp;{author}-《{source}》-{year}（是否引证：
                             <span class="n_text_yz">{reference}</span>）
                         </td>
-                    </tr>'''
+                    </tr>
+                    <tr>
+          <td>
+            <div class="n_bgd_biao_KUa huanhang n_red">1.{text}<br></div></td></tr>'''
 n_table_a_child = '''<TR>
     <TD width="20" height="25">&nbsp;                                    </TD>
     <TD style="width: 58px; text-align: left;">
@@ -196,7 +199,7 @@ def post_examiningz_report(id,state=False):
     :return:
     '''
     obj = DetectionList.objects.get(id=id)
-    if obj.zipurl and not state:
+    if obj.zipurl and not state and os.path.exists(obj.zipurl):
         return obj.zipurl
     else:
         if obj.zipurl:
@@ -219,9 +222,10 @@ def post_examiningz_report(id,state=False):
         accobj = obj.account
         advertpathobjlist = accobj.packdocument_set.all()
         advertpath_list = []
+        filename =str(obj.orderacc)+ '_' + str(obj.author) + '_' + str(obj.title).split('.')[0]
         for advert_path_obj in advertpathobjlist:
             advertpath_list.append(advert_path_obj.filename)
-        zippath = Areport(data,advertpath_list)
+        zippath = Areport(data,filename,advertpath_list)
         obj.report_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 报告时间
         obj.zipurl=zippath
         obj.iscode = 4
@@ -564,12 +568,13 @@ def deletedata15day(id):
         pass
 # 批量下载前压缩
 def zipDir(dirpath_list,path,outFullName,advertpath_list=''):
-    """
-    压缩指定文件夹
+    '''
+        压缩指定文件夹
     :param dirpath: 目标文件夹路径
-    :param outFullName: 压缩文件保存路径+xxxx.zip
-    :return: 无
-    """
+    :param outFullName: 压缩文件保存路径+文件名.zip
+    :param advertpath_list: 广告路径(列表)
+    :return: 压缩路径
+    '''
     zips = zipfile.ZipFile(outFullName, "w", zipfile.ZIP_DEFLATED)
     filenamelist=[]
     for filepath in dirpath_list:
@@ -579,7 +584,7 @@ def zipDir(dirpath_list,path,outFullName,advertpath_list=''):
         zips.write(os.path.join(dpath,filename),os.path.join('',filename))
     # 添加广告
     if advertpath_list:
-        path = 'static/advertfile'
+        path = 'static/fileadvert'
         filenamelist = []
         for filepath in advertpath_list:
             filenamelist.append(filepath.split('/')[-1])
@@ -591,9 +596,8 @@ def zipDir(dirpath_list,path,outFullName,advertpath_list=''):
 def html_pdf(url,filename):
     pdfkit.from_url(url, filename)
 # 生成 A系统的检测报告
-def Areport(resDict,advertpath_list=''):
-    timestr = str(resDict['title'].split('.')[0]) + '_' + ''.join(random.sample(source, 2))
-    path = os.path.join(settings.BASE_DIR, 'static/report/{0}'.format(timestr))
+def Areport(resDict,filename,advertpath_list=''):
+    path = os.path.join(settings.BASE_DIR, 'static/report/{0}'.format(filename))
     def reference(ruselt):
         if ruselt:
             return '是'
@@ -607,7 +611,7 @@ def Areport(resDict,advertpath_list=''):
         paragraph_head = {
             'paragraph_chapter': paragraph['chapter'],
             'paragraph_word_count': paragraph['word_count'],
-            'paragraph_similarity': str(float('%.4f' % (float(paragraph['similarity']) * 100))) + '%',
+            'paragraph_similarity': str(float('%.2f' % (float(paragraph['similarity']) * 100))) + '%',
         }
         paragraphtd = A_head.format(**paragraph_head)
         body_list = paragraph['sources']
@@ -618,8 +622,9 @@ def Areport(resDict,advertpath_list=''):
                 source_max_similar_title = body['title']
             try:
                 paragraph_body = {
+                    'similar_word_count': body['similar_word_count'],  # 文献复制字数
                     'paragraph_reference': reference(body['reference']),
-                    'paragraph_similarity': str(float('%.4f' % (float(body['similarity']) * 100))) + '%',
+                    'paragraph_similarity': str(float('%.2f' % (float(body['similarity']) * 100))) + '%',
                     'paragraph_source': body['source'],
                     'paragraph_title': body['title'],
                     'paragraph_year': body['year'],
@@ -631,7 +636,7 @@ def Areport(resDict,advertpath_list=''):
         paragraphtd += '</div>'
         # A 系统的全文标明引用报告
         paragraph_list.append(paragraphtd)
-        text = paragraph['text']
+        text = paragraph['text'].replace('<em ','<em style="text-decoration: underline;" ')
         plagiarize = re.findall(r'<em.*?</em>', text, flags=re.S)
         quanwenbiaominyinyong += paragraphtd + A_paragraph_text.format(paragraph_text=text) + A_plagiarize_head
         plagiarizes = ''
@@ -662,10 +667,11 @@ def Areport(resDict,advertpath_list=''):
                 try:
                     sources_table = {
                         'text': sources['text'],
-                        'reference': sources['reference'],
+                        'reference': reference(sources['reference']),
                         'year': sources['year'],
                         'author': sources['author'],
                         'title': sources['title'],
+                        'source': sources['source']
                     }
                     paragraph_child += A_paragraph_xsnrly.format(**sources_table)
                 except:
@@ -683,12 +689,12 @@ def Areport(resDict,advertpath_list=''):
         msg = {
             "chapter": paragraph["chapter"],
             "word_count": paragraph['word_count'],
-            "similarity": str(float('%.4f' % (float(paragraph["similarity"]) * 100))) + '%',
+            "similarity": str(float('%.2f' % (float(paragraph["similarity"]) * 100))) + '%',
             "word_similar_count": paragraph["word_similar_count"]
         }
         n_table_a += n_table_a_child.format(**msg)
     n_table_a += '</TBODY></TABLE>'
-    similarity = float('%.4f' % (float(resDict['similarity']) * 100))
+    similarity = float('%.2f' % (float(resDict['similarity'])*100))
     circular_bead = similarity * 3.6
     no_problem = 100 - similarity
     similar_offsetsed = resDict["report_annotation_ref"]['similar_offsets']
@@ -745,14 +751,14 @@ def Areport(resDict,advertpath_list=''):
     with open(qwdz, 'w', encoding='utf-8')as f:
         f.write(htmlqwdz)
     message['paragraphtd'] = quanwenbiaominyinyong
-    message['title'] = '全文标明引文'
+    message['title_type'] = '全文标明引文'
     htmlqwbmyy = html.format(**message)
     htmlqwbmyy = re.sub('￥\$', '{', htmlqwbmyy, flags=re.S)
     htmlqwbmyy = re.sub('￥', '}', htmlqwbmyy, flags=re.S)
     qwbmyy = path + 'A-全文标明引用.html'
     with open(qwbmyy, 'w', encoding='utf-8')as f:
         f.write(htmlqwbmyy)
-    zippath = os.path.join(settings.BASE_DIR, 'static/zipfiles/{0}{1}'.format(timestr, '.zip'))
+    zippath = os.path.join(settings.BASE_DIR, 'static/fileszip/{0}{1}'.format(filename, '.zip'))
     zipDir([qwbmyy,qwdz],'static/report/', zippath,advertpath_list)
     if os.path.exists(qwdz):
         os.remove(qwdz)
@@ -780,18 +786,19 @@ def create(accobj):
 def deletdoc(accobj,ids):
     try:
         if isinstance(ids,list):
+            # 批量删除多个广告
             for id in ids:
                 if id:
                     obj = Packdocument.objects.get(account=accobj,id=id)
                     filename = obj.filename
-                    filepath = os.path.join(settings.BASE_DIR, 'static/advertfile/{}'.format(filename))
+                    filepath = os.path.join(settings.BASE_DIR, 'static/fileadvert/{}'.format(filename))
                     if os.path.exists(filepath):
                         os.remove(filepath)
                     obj.delete()
         else:
             obj = Packdocument.objects.get(account=accobj, id=ids)
             filename = obj.filename
-            filepath = os.path.join(settings.BASE_DIR, 'static/file/'.format(filename))
+            filepath = os.path.join(settings.BASE_DIR, 'static/fileadvert/'.format(filename))
             if os.path.exists(filepath):
                 os.remove(filepath)
             obj.delete()
